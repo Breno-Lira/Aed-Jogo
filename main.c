@@ -48,6 +48,7 @@ void DrawInimigo(Inimigo *inimigo, int larguraBarra);
 void DrawBoss(Boss *boss, int larguraBarra);
 void BossRecebeDano(Boss *boss, int dano);
 void DrawAtaqueReginaldo(Inimigo *inimigos, Tropa *Reginaldo, int *numInimigos, Boss *chefe, bool boss);
+void Menu();
 
 int main(void){   
     const int screenWidth = 776;
@@ -287,4 +288,28 @@ void BossRecebeDano(Boss *boss, int dano) {
     boss->vida -= dano;
     boss->tomandoDano = true;
     boss->frameDano = 40; 
+}
+
+void Menu(){
+    Rectangle botaojogar = {100, 150, 200, 50};
+    Rectangle botaoranking = {100, 150, 200, 50};
+    Rectangle botaoexit = {100, 150, 200, 50};
+
+        while (!WindowShouldClose()) {
+
+        if (CheckCollisionPointRec(GetMousePosition(), botaojogar) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            DrawText("Play Clicked!", 300, 150, 20, DARKGREEN);
+        }
+
+        if (CheckCollisionPointRec(GetMousePosition(), botaoranking) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            DrawText("Ranking Clicked!", 300, 250, 20, DARKGREEN);
+        }
+
+        if (CheckCollisionPointRec(GetMousePosition(), botaoexit) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            DrawText("Exit Clicked!", 300, 350, 20, DARKGREEN);
+        }
+    }
+
+    CloseWindow();
+    return 0;
 }
