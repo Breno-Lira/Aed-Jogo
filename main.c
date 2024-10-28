@@ -18,6 +18,18 @@ typedef struct Inimigo{
     bool vivo;
 }Inimigo;
 
+typedef struct Boss{
+    Texture foto;
+    double vida;
+    double vidaMax;
+    int dano;
+    double posX;
+    double posY;
+    double velocidade;
+    bool vivo;
+}Boss;
+
+
 typedef struct Tropa{
     Texture foto, fotoAtaque;
     double posx;
@@ -28,9 +40,11 @@ typedef struct Tropa{
 
 
 void InitInimigo(Inimigo *inimigo, const char* foto, double vida,int xp,int dano, double posX, double posY ,double velocidade, bool vivo);
+void InitBoss(Boss *boss, const char* foto, double vida,int dano, double posX, double posY ,double velocidade, bool vivo);
 void InitTropas(Tropa *tropas, const char* foto, const char* fotoAtaque , double posx, double posy ,double posxataque ,int posyataque);
 void DrawInimigo(Inimigo *inimigo, int larguraBarra);
-void DrawAtaqueReginaldo(Inimigo *inimigos, Tropa *Reginaldo, int numInimigos);
+void DrawBoss(Boss *boss, int larguraBarra);
+void DrawAtaqueReginaldo(Inimigo *inimigos, Tropa *Reginaldo, int *numInimigos, Boss *chefe, bool boss);
 
 int main(void){   
     const int screenWidth = 776;
@@ -61,10 +75,12 @@ int main(void){
     InitInimigo(&inimigos2[numInimigos2++], "./textures/inimigo.png", 500, 100, 20, 1000, 320 , 1.0, true);
     InitInimigo(&inimigos2[numInimigos2++], "./textures/inimigo.png", 500, 100, 20, 1050, 320 , 1.0, true);
 
-    //Texture ReginaldoAtaque = LoadTexture("./textures/Reginaldo-ataque.png");
+    Boss bossTubarao;
+    InitBoss(&bossTubarao, "./textures/Tubarao1.png", 200, 400, 700, screenHeight-230, 0.3, true);
     
-
     int largurabarra = 50;
+    int largurabarraBoss = 400;
+    bool boss = false;
 
     while (!WindowShouldClose()) {
         BeginDrawing();
@@ -74,9 +90,9 @@ int main(void){
         DrawTexture(Reginaldo.foto, Reginaldo.posx, Reginaldo.posy, WHITE);
         DrawTexture(Reginaldo2.foto, Reginaldo2.posx, Reginaldo2.posy, WHITE);
 
-        DrawAtaqueReginaldo(inimigos1 , &Reginaldo , numInimigos1);
+        DrawAtaqueReginaldo(inimigos1 , &Reginaldo , &numInimigos1, &bossTubarao, boss);
 
-        DrawAtaqueReginaldo(inimigos2 , &Reginaldo2 , numInimigos2);
+        DrawAtaqueReginaldo(inimigos2 , &Reginaldo2 , &numInimigos2, &bossTubarao, boss);
         
         
          for (int i = 0; i < numInimigos1; i++) {
@@ -85,6 +101,15 @@ int main(void){
 
         for (int i = 0; i < numInimigos2; i++) {
             DrawInimigo(&inimigos2[i], largurabarra);
+        }
+
+        if (numInimigos1+numInimigos2+numInimigos3<=0){
+            boss = true;
+            DrawBoss(&bossTubarao, largurabarraBoss);
+            if (bossTubarao.vivo == false){
+                DrawRectangle(300, 90, 200, 50, BROWN);
+                DrawText ("YOU WIN!", 350 , 100, 20 ,YELLOW);
+            }
         }
 
         EndDrawing();
@@ -117,6 +142,17 @@ void InitInimigo(Inimigo *inimigo, const char* foto, double vida,int xp,int dano
     inimigo->posY = posY;
     inimigo->velocidade = velocidade;
     inimigo->vivo = vivo;
+}
+
+void InitBoss(Boss *boss, const char* foto, double vida, int dano, double posX, double posY ,double velocidade, bool vivo){
+    boss->foto = LoadTexture(foto);
+    boss->vida = vida;
+    boss->vidaMax = vida;
+    boss->dano = dano;
+    boss->posX = posX;
+    boss->posY = posY;
+    boss->velocidade = velocidade;
+    boss->vivo = vivo;
 }
 
 void InitTropas(Tropa *tropas, const char* foto, const char* fotoAtaque , double posx, double posy ,double posxataque ,int posyataque) {
@@ -156,31 +192,72 @@ void DrawInimigo(Inimigo *inimigo, int larguraBarra){
 
 }
 
-void DrawAtaqueReginaldo(Inimigo *inimigos, Tropa *Reginaldo, int numInimigos) {
+void DrawBoss(Boss *boss, int larguraBarra){ 
+    if (boss->posX >= 100){
+            boss->posX -= boss->velocidade;
+        }
+
+    if (boss->vida > 0) {
+        DrawTexture(boss->foto, boss->posX, boss->posY, WHITE);
+
+        int barraPosX = (772 - larguraBarra) / 2; // Centraliza no eixo X
+        int barraPosY = 70;
+        
+        int larguraAtual = (boss->vida * larguraBarra) / boss->vidaMax;
+        Color corBarra = RED;
+
+        DrawText ("TUBARÃO DE BOA VIAGEM", barraPosX + 50, 40, 20 ,BLACK);
+        DrawRectangle(barraPosX, barraPosY, larguraAtual, 20, corBarra); // Barra preenchida
+        DrawRectangleLines(barraPosX, barraPosY, larguraBarra, 20, BLACK); // Contorno da barra
+
+    } 
+    else {
+        boss->vivo = false;
+        boss->posX = 20000;
+        UnloadTexture(boss->foto);
+    }
+
+}
+
+void DrawAtaqueReginaldo(Inimigo *inimigos, Tropa *Reginaldo, int *numInimigos, Boss *chefe ,bool boss) {
     int alvoIndex = -1;
     double menorDistancia = 10000; 
 
-    for (int i = 0; i < numInimigos; i++) {
-        if (inimigos[i].vivo && inimigos[i].posX < menorDistancia) {
-            menorDistancia = inimigos[i].posX;
-            alvoIndex = i;
+    if (boss == false){
+        for (int i = 0; i < *numInimigos; i++) {
+            if (inimigos[i].vivo && inimigos[i].posX < menorDistancia) {
+                menorDistancia = inimigos[i].posX;
+                alvoIndex = i;
+            }
         }
-    }
 
-    if (alvoIndex != -1) {
-        Inimigo *alvo = &inimigos[alvoIndex];
+        if (alvoIndex != -1) {
+            Inimigo *alvo = &inimigos[alvoIndex];
 
-        
-        if (Reginaldo->posxataque < alvo->posX - 20 && alvo->posX < 780) {
-            DrawTexture(Reginaldo->fotoAtaque, Reginaldo->posxataque, Reginaldo->posyataque, WHITE);
-            Reginaldo->posxataque += 3;
-        } 
-        else {
-            Reginaldo->posxataque = 25;
-            alvo->vida -= 100;
-            if (alvo->vida <= 0) {
-                alvo->vivo = false;
+            if (Reginaldo->posxataque < alvo->posX - 20 && alvo->posX < 780) {
+                DrawTexture(Reginaldo->fotoAtaque, Reginaldo->posxataque, Reginaldo->posyataque, WHITE);
+                Reginaldo->posxataque += 3;
+            } 
+            else {
+                Reginaldo->posxataque = 25;
+                alvo->vida -= 100;
+                if (alvo->vida <= 0) {
+                    inimigos[alvoIndex] = inimigos[*numInimigos - 1];
+                    (*numInimigos)--;
+                }
             }
         }
     }
+    else{
+         if (Reginaldo->posxataque < chefe->posX - 20 && chefe->posX < 780) {
+                DrawTexture(Reginaldo->fotoAtaque, Reginaldo->posxataque, Reginaldo->posyataque, WHITE);
+                Reginaldo->posxataque += 3;
+            } 
+            else {
+                Reginaldo->posxataque = 25;
+                chefe->vida -= 100;
+            }
+    }
+
+
 }
