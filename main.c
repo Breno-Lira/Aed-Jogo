@@ -18,8 +18,8 @@ typedef struct Inimigo{
     bool vivo;
 }Inimigo;
 
-typedef struct Boss{
-    Texture foto;
+typedef struct Boss {
+    Texture foto[12];
     double vida;
     double vidaMax;
     int dano;
@@ -27,8 +27,10 @@ typedef struct Boss{
     double posY;
     double velocidade;
     bool vivo;
-}Boss;
-
+    int frameAtual;      
+    bool tomandoDano;
+    int frameDano;    
+} Boss;
 
 typedef struct Tropa{
     Texture foto, fotoAtaque;
@@ -40,10 +42,11 @@ typedef struct Tropa{
 
 
 void InitInimigo(Inimigo *inimigo, const char* foto, double vida,int xp,int dano, double posX, double posY ,double velocidade, bool vivo);
-void InitBoss(Boss *boss, const char* foto, double vida,int dano, double posX, double posY ,double velocidade, bool vivo);
+void InitBoss(Boss *boss, const char* fotos[7], double vida, int dano, double posX, double posY, double velocidade, bool vivo);
 void InitTropas(Tropa *tropas, const char* foto, const char* fotoAtaque , double posx, double posy ,double posxataque ,int posyataque);
 void DrawInimigo(Inimigo *inimigo, int larguraBarra);
 void DrawBoss(Boss *boss, int larguraBarra);
+void BossRecebeDano(Boss *boss, int dano);
 void DrawAtaqueReginaldo(Inimigo *inimigos, Tropa *Reginaldo, int *numInimigos, Boss *chefe, bool boss);
 
 int main(void){   
@@ -76,7 +79,13 @@ int main(void){
     InitInimigo(&inimigos2[numInimigos2++], "./textures/inimigo.png", 500, 100, 20, 1050, 320 , 1.0, true);
 
     Boss bossTubarao;
-    InitBoss(&bossTubarao, "./textures/Tubarao1.png", 200, 400, 700, screenHeight-230, 0.3, true);
+    const char* fotosTubarao[7] = {
+    "./textures/Tubarao1.png", "./textures/Tubarao2.png",
+    "./textures/Tubarao4.png", "./textures/Tubarao8.png", "./textures/Tubarao10.png", 
+    "./textures/Tubarao11.png", "./textures/Tubarao 12.png"
+    };
+
+    InitBoss(&bossTubarao, fotosTubarao, 20000, 400, 700, screenHeight-230, 0.3, true);
     
     int largurabarra = 50;
     int largurabarraBoss = 400;
@@ -144,8 +153,10 @@ void InitInimigo(Inimigo *inimigo, const char* foto, double vida,int xp,int dano
     inimigo->vivo = vivo;
 }
 
-void InitBoss(Boss *boss, const char* foto, double vida, int dano, double posX, double posY ,double velocidade, bool vivo){
-    boss->foto = LoadTexture(foto);
+void InitBoss(Boss *boss, const char* fotos[7], double vida, int dano, double posX, double posY, double velocidade, bool vivo) {
+    for (int i = 0; i < 7; i++) {
+        boss->foto[i] = LoadTexture(fotos[i]);
+    }
     boss->vida = vida;
     boss->vidaMax = vida;
     boss->dano = dano;
@@ -153,6 +164,10 @@ void InitBoss(Boss *boss, const char* foto, double vida, int dano, double posX, 
     boss->posY = posY;
     boss->velocidade = velocidade;
     boss->vivo = vivo;
+    boss->frameAtual = 0;
+    boss->tomandoDano = false;
+    boss->frameDano = 0;
+
 }
 
 void InitTropas(Tropa *tropas, const char* foto, const char* fotoAtaque , double posx, double posy ,double posxataque ,int posyataque) {
@@ -192,31 +207,38 @@ void DrawInimigo(Inimigo *inimigo, int larguraBarra){
 
 }
 
-void DrawBoss(Boss *boss, int larguraBarra){ 
-    if (boss->posX >= 100){
-            boss->posX -= boss->velocidade;
-        }
+void DrawBoss(Boss *boss, int larguraBarra) {
+    if (boss->posX >= 100) {
+        boss->posX -= boss->velocidade;
+    }
 
     if (boss->vida > 0) {
-        DrawTexture(boss->foto, boss->posX, boss->posY, WHITE);
-
-        int barraPosX = (772 - larguraBarra) / 2; // Centraliza no eixo X
-        int barraPosY = 70;
         
+        int imagemIndex = (boss->frameDano > 0) ? 1 : 0;  
+        DrawTexture(boss->foto[imagemIndex], boss->posX, boss->posY, WHITE);
+
+        
+        if (boss->frameDano > 0) {
+            boss->frameDano--;
+        }
+
+        
+        int barraPosX = (772 - larguraBarra) / 2;
+        int barraPosY = 70;
         int larguraAtual = (boss->vida * larguraBarra) / boss->vidaMax;
+
         Color corBarra = RED;
-
-        DrawText ("TUBARÃO DE BOA VIAGEM", barraPosX + 50, 40, 20 ,BLACK);
-        DrawRectangle(barraPosX, barraPosY, larguraAtual, 20, corBarra); // Barra preenchida
-        DrawRectangleLines(barraPosX, barraPosY, larguraBarra, 20, BLACK); // Contorno da barra
-
+        DrawText("TUBARÃO DE BOA VIAGEM", barraPosX + 50, 40, 20, BLACK);
+        DrawRectangle(barraPosX, barraPosY, larguraAtual, 20, corBarra);
+        DrawRectangleLines(barraPosX, barraPosY, larguraBarra, 20, BLACK);
     } 
     else {
         boss->vivo = false;
         boss->posX = 20000;
-        UnloadTexture(boss->foto);
+        for (int i = 0; i < 12; i++) {
+            UnloadTexture(boss->foto[i]);
+        }
     }
-
 }
 
 void DrawAtaqueReginaldo(Inimigo *inimigos, Tropa *Reginaldo, int *numInimigos, Boss *chefe ,bool boss) {
@@ -255,9 +277,14 @@ void DrawAtaqueReginaldo(Inimigo *inimigos, Tropa *Reginaldo, int *numInimigos, 
             } 
             else {
                 Reginaldo->posxataque = 25;
-                chefe->vida -= 100;
+                BossRecebeDano(chefe, 100);
             }
     }
 
+}
 
+void BossRecebeDano(Boss *boss, int dano) {
+    boss->vida -= dano;
+    boss->tomandoDano = true;
+    boss->frameDano = 40; 
 }
