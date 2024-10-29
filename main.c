@@ -96,7 +96,7 @@ int main(void){
     "./textures/Tubarao11.png", "./textures/Tubarao12.png", "./textures/Tubarao3.png"
     }; 
 
-    InitBoss(&bossTubarao, fotosTubarao, 50000, 400, 1450, screenHeight-300, 0.5, true);
+    InitBoss(&bossTubarao, fotosTubarao, 50000, 400, 1450, screenHeight-300, 5, true);
     
     int largurabarra = 50;
     int largurabarraBoss = 400;
@@ -125,8 +125,38 @@ int main(void){
         //Inicio selecao personagem
         if (CheckCollisionPointRec(mousePosition, botaoPosicionar) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) { 
             botaoclicado = true;
+            bool botaoclicado = true;
+
+            RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
+            BeginTextureMode(telaCongelada);  
+            ClearBackground(RAYWHITE);  
+            BeginDrawing();
+            DrawTexture(praia, 0, 0, WHITE);
+            DrawRectangleRec(botaoQuadrado, GREEN);
+            DrawRectangleRec(botaoQuadrado2, BLUE);
+            DrawRectangleRec(botaoPosicionar, GRAY);
+            DrawText("Posicionar", botaoPosicionar.x + 10, botaoPosicionar.y + 10, 20, BLACK);
+            DrawTexture(icone, 300, 10, WHITE);
+
+            
+            for (int i = 0; i < numInimigos1; i++) {
+                DrawInimigo(&inimigos1[i], largurabarra);
+            }
+             for (int i = 0; i < numInimigos2; i++) {
+                DrawInimigo(&inimigos2[i], largurabarra);
+            }
+
+            if (numInimigos1+numInimigos2+numInimigos3<=0){
+                boss = true;
+                DrawBoss(&bossTubarao, largurabarraBoss);
+                //PlayMusicStream(soundBoss);
+            }
+            EndDrawing();
+            EndTextureMode();
+
             while (botaoclicado && !WindowShouldClose()) {
                 BeginDrawing();
+                DrawTextureRec(telaCongelada.texture, (Rectangle){ 0, 0, (float)telaCongelada.texture.width, (float)-telaCongelada.texture.height }, (Vector2){ 0, 0 }, WHITE);
                 DrawText("Escolha um local...", 550, 300, 20, DARKGRAY);
                 EndDrawing();
                 Vector2 mousePosition = GetMousePosition();
@@ -147,6 +177,7 @@ int main(void){
                 }
             }
 
+            UnloadRenderTexture(telaCongelada); 
         }   
         //Fim selecao de personagem 
 
@@ -288,7 +319,7 @@ void DrawInimigo(Inimigo *inimigo, int larguraBarra){
 void DrawBoss(Boss *boss, int larguraBarra) {
     if (boss->vida > 0) {
 
-        if (boss->posX >= 120) {
+        if (boss->posX >= 320) {
             boss->posX -= boss->velocidade;
 
             int imagemIndex = (boss->frameDano > 0) ? 1 : 0;  
@@ -386,7 +417,7 @@ void DrawAtaqueReginaldo(Inimigo *inimigos, Tropa *Reginaldo, int *numInimigos, 
                 DrawTexture(Reginaldo->fotoAtaque, Reginaldo->posxataque, Reginaldo->posyataque, WHITE);
                 Reginaldo->posxataque += 3;
             } 
-            else {
+            else if (Reginaldo->posxataque >= chefe->posX - 20){
                 Reginaldo->posxataque = Reginaldo->posx+5;
                 BossRecebeDano(chefe, 100);
             }
