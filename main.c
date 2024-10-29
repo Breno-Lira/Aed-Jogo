@@ -19,7 +19,7 @@ typedef struct Inimigo{
 }Inimigo;
 
 typedef struct Boss {
-    Texture foto[12];
+    Texture foto[8];
     double vida;
     double vidaMax;
     int dano;
@@ -29,7 +29,9 @@ typedef struct Boss {
     bool vivo;
     int frameAtual;      
     bool tomandoDano;
-    int frameDano;    
+    int frameDano;
+     int frameAtaque;      
+    int indiceAtaque;
 } Boss;
 
 typedef struct Tropa{
@@ -42,7 +44,7 @@ typedef struct Tropa{
 
 
 void InitInimigo(Inimigo *inimigo, const char* foto, double vida,int xp,int dano, double posX, double posY ,double velocidade, bool vivo);
-void InitBoss(Boss *boss, const char* fotos[7], double vida, int dano, double posX, double posY, double velocidade, bool vivo);
+void InitBoss(Boss *boss, const char* fotos[8], double vida, int dano, double posX, double posY, double velocidade, bool vivo);
 void InitTropas(Tropa *tropas, const char* foto, const char* fotoAtaque , double posx, double posy ,double posxataque ,int posyataque);
 void DrawInimigo(Inimigo *inimigo, int larguraBarra);
 void DrawBoss(Boss *boss, int larguraBarra);
@@ -72,21 +74,21 @@ int main(void){
     int numInimigos2 = 0;
     int numInimigos1 = 0;
     
-    InitInimigo(&inimigos1[numInimigos1++], "./textures/inimigo.png", 800, 100, 40, 700, 415 , 0.8, true);
+    /*InitInimigo(&inimigos1[numInimigos1++], "./textures/inimigo.png", 800, 100, 40, 700, 415 , 0.8, true);
     InitInimigo(&inimigos1[numInimigos1++], "./textures/inimigo.png", 500, 100, 20, 1200, 415 , 1.5, true);
 
     InitInimigo(&inimigos2[numInimigos2++], "./textures/inimigo.png", 800, 100, 40, 700, 320 , 0.5, true);
     InitInimigo(&inimigos2[numInimigos2++], "./textures/inimigo.png", 500, 100, 20, 1000, 320 , 1.0, true);
-    InitInimigo(&inimigos2[numInimigos2++], "./textures/inimigo.png", 500, 100, 20, 1050, 320 , 1.0, true);
+    InitInimigo(&inimigos2[numInimigos2++], "./textures/inimigo.png", 500, 100, 20, 1050, 320 , 1.0, true);*/
 
     Boss bossTubarao;
-    const char* fotosTubarao[7] = {
+    const char* fotosTubarao[8] = {
     "./textures/Tubarao1.png", "./textures/Tubarao2.png",
     "./textures/Tubarao4.png", "./textures/Tubarao8.png", "./textures/Tubarao10.png", 
-    "./textures/Tubarao11.png", "./textures/Tubarao 12.png"
-    };
+    "./textures/Tubarao11.png", "./textures/Tubarao12.png", "./textures/Tubarao3.png"
+    }; 
 
-    InitBoss(&bossTubarao, fotosTubarao, 20000, 400, 700, screenHeight-230, 0.3, true);
+    InitBoss(&bossTubarao, fotosTubarao, 50000, 400, 700, screenHeight-230, 1.0, true);
     
     int largurabarra = 50;
     int largurabarraBoss = 400;
@@ -100,8 +102,8 @@ int main(void){
         DrawTexture(Reginaldo.foto, Reginaldo.posx, Reginaldo.posy, WHITE);
         DrawTexture(Reginaldo2.foto, Reginaldo2.posx, Reginaldo2.posy, WHITE);
 
+        
         DrawAtaqueReginaldo(inimigos1 , &Reginaldo , &numInimigos1, &bossTubarao, boss);
-
         DrawAtaqueReginaldo(inimigos2 , &Reginaldo2 , &numInimigos2, &bossTubarao, boss);
         
         
@@ -154,8 +156,8 @@ void InitInimigo(Inimigo *inimigo, const char* foto, double vida,int xp,int dano
     inimigo->vivo = vivo;
 }
 
-void InitBoss(Boss *boss, const char* fotos[7], double vida, int dano, double posX, double posY, double velocidade, bool vivo) {
-    for (int i = 0; i < 7; i++) {
+void InitBoss(Boss *boss, const char* fotos[8], double vida, int dano, double posX, double posY, double velocidade, bool vivo) {
+    for (int i = 0; i < 8; i++) {
         boss->foto[i] = LoadTexture(fotos[i]);
     }
     boss->vida = vida;
@@ -168,6 +170,8 @@ void InitBoss(Boss *boss, const char* fotos[7], double vida, int dano, double po
     boss->frameAtual = 0;
     boss->tomandoDano = false;
     boss->frameDano = 0;
+    boss->frameAtaque = 0;
+    boss->indiceAtaque = 0;
 
 }
 
@@ -209,20 +213,53 @@ void DrawInimigo(Inimigo *inimigo, int larguraBarra){
 }
 
 void DrawBoss(Boss *boss, int larguraBarra) {
-    if (boss->posX >= 100) {
-        boss->posX -= boss->velocidade;
-    }
-
     if (boss->vida > 0) {
-        
-        int imagemIndex = (boss->frameDano > 0) ? 1 : 0;  
-        DrawTexture(boss->foto[imagemIndex], boss->posX, boss->posY, WHITE);
 
-        
-        if (boss->frameDano > 0) {
-            boss->frameDano--;
+        if (boss->posX >= 120) {
+            boss->posX -= boss->velocidade;
+
+            int imagemIndex = (boss->frameDano > 0) ? 1 : 0;  
+            DrawTexture(boss->foto[imagemIndex], boss->posX, boss->posY-10, WHITE);
+
+            
+            if (boss->frameDano > 0) {
+                boss->frameDano--;
+            }
+
         }
+        else{
 
+            // Ativação da sequência de ataque
+            const int ataqueFrames[] = {2, 1, 3, 5, 6, 7};
+
+            // Desenha o frame atual da sequência de ataque
+            int indice = ataqueFrames[boss->indiceAtaque];
+            if (indice == 3){
+                DrawTexture(boss->foto[indice], boss->posX, boss->posY - 40, WHITE);
+            }
+            else if (indice == 4){
+                DrawTexture(boss->foto[indice], boss->posX-40, boss->posY - 60, WHITE);
+            }
+            else if (indice == 5){
+                DrawTexture(boss->foto[indice], boss->posX-220, boss->posY - 70, WHITE);
+            }
+            else if (indice == 6){
+                DrawTexture(boss->foto[indice], boss->posX-240, boss->posY - 80, WHITE);
+            }
+            else{
+                DrawTexture(boss->foto[indice], boss->posX, boss->posY - 40, WHITE);
+            }
+            
+            
+
+            if (boss->frameAtaque >= 15) { 
+                boss->indiceAtaque = (boss->indiceAtaque + 1) % 6; 
+                boss->frameAtaque = 0; 
+            } else {
+                boss->frameAtaque++;
+            }
+
+        }
         
         int barraPosX = (772 - larguraBarra) / 2;
         int barraPosY = 70;
@@ -236,7 +273,7 @@ void DrawBoss(Boss *boss, int larguraBarra) {
     else {
         boss->vivo = false;
         boss->posX = 20000;
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < 7; i++) {
             UnloadTexture(boss->foto[i]);
         }
     }
@@ -293,7 +330,7 @@ void BossRecebeDano(Boss *boss, int dano) {
 void Menu(){
     Rectangle botaojogar = {100, 150, 200, 50};
     Rectangle botaoranking = {100, 150, 200, 50};
-    Rectangle botaoexit = {100, 150, 200, 50};
+    Rectangle botaoexit = {100, 150, 200, 50};  
 
         while (!WindowShouldClose()) {
 
@@ -311,5 +348,4 @@ void Menu(){
     }
 
     CloseWindow();
-    return 0;
 }
