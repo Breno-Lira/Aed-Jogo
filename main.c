@@ -36,36 +36,44 @@ typedef struct Boss {
 
 typedef struct Tropa{
     Texture foto, fotoAtaque;
+    char nome[10];
     double posx;
     double posy;
     double posxataque;
     double posyataque;
+    int lane;
+    struct Tropa *prox;
 }Tropa;
 
 
 void InitInimigo(Inimigo *inimigo, const char* foto, double vida,int xp,int dano, double posX, double posY ,double velocidade, bool vivo);
 void InitBoss(Boss *boss, const char* fotos[8], double vida, int dano, double posX, double posY, double velocidade, bool vivo);
-void InitTropas(Tropa *tropas, const char* foto, const char* fotoAtaque , double posx, double posy ,double posxataque ,int posyataque);
+void InitTropas(Tropa *tropas, const char* foto, const char* fotoAtaque , char nome[10] ,double posx, double posy ,double posxataque ,int posyataque);
 void DrawInimigo(Inimigo *inimigo, int larguraBarra);
+void DrawInimigo2(Inimigo *inimigo, int larguraBarra);
 void DrawBoss(Boss *boss, int larguraBarra);
 void BossRecebeDano(Boss *boss, int dano);
 void DrawAtaqueReginaldo(Inimigo *inimigos, Tropa *Reginaldo, int *numInimigos, Boss *chefe, bool boss);
 void Menu();
+void inserirTropa(Tropa **head, Tropa **tail, Tropa *tropa ,float posX, float posY, int lane);
+//void imprimirTropaCompleta(Tropa *head, Tropa *tail ,Inimigo *inimigos1, Inimigo *inimigos2, int numInimigos1, int numInimigos2, Boss bossTubarao, bool boss);
 
 int main(void){   
-    const int screenWidth = 776;
-    const int screenHeight = 522;
+    const int screenWidth = 1320;
+    const int screenHeight = 600;
     InitWindow(screenWidth, screenHeight, "Minha Primeira Tela com Raylib");
+    Tropa *head = NULL;
+    Tropa *tail = NULL;
 
-    Texture praia;
-    praia = LoadTexture("./textures/Praia.png");
+    Texture praia, icone;
+    icone = LoadTexture("./textures/iconeReginaldo.png");
+    praia = LoadTexture("./textures/base1.png");
 
     SetTargetFPS(90);
 
     Tropa Reginaldo, Reginaldo2;
-    InitTropas(&Reginaldo, "./textures/Torre-Reginaldo.png" , "./textures/Reginaldo-ataque.png" ,  20, 400, 25, 420);
-
-    InitTropas(&Reginaldo2, "./textures/Torre-Reginaldo.png" , "./textures/Reginaldo-ataque.png" ,  20, 320 , 25, 340);
+    InitTropas(&Reginaldo, "./textures/Torre-Reginaldo.png" , "./textures/Reginaldo-ataque.png" , "Reginaldo" , 0, 0, 0, 0);
+    InitTropas(&Reginaldo2, "./textures/Torre-Reginaldo.png" , "./textures/Reginaldo-ataque.png" , "Reginaldo" , 0, 0 , 0 , 0);
 
     Inimigo inimigos3[10];
     Inimigo inimigos2[10];
@@ -74,12 +82,12 @@ int main(void){
     int numInimigos2 = 0;
     int numInimigos1 = 0;
     
-    /*InitInimigo(&inimigos1[numInimigos1++], "./textures/inimigo.png", 800, 100, 40, 700, 415 , 0.8, true);
-    InitInimigo(&inimigos1[numInimigos1++], "./textures/inimigo.png", 500, 100, 20, 1200, 415 , 1.5, true);
-
-    InitInimigo(&inimigos2[numInimigos2++], "./textures/inimigo.png", 800, 100, 40, 700, 320 , 0.5, true);
-    InitInimigo(&inimigos2[numInimigos2++], "./textures/inimigo.png", 500, 100, 20, 1000, 320 , 1.0, true);
-    InitInimigo(&inimigos2[numInimigos2++], "./textures/inimigo.png", 500, 100, 20, 1050, 320 , 1.0, true);*/
+    InitInimigo(&inimigos1[numInimigos1++], "./textures/inimigo.png", 800, 100, 40, 1350, 500 , 0.8, true);
+    InitInimigo(&inimigos1[numInimigos1++], "./textures/inimigo.png", 500, 100, 20, 1400, 500 , 1.5, true);
+    
+    InitInimigo(&inimigos2[numInimigos2++], "./textures/inimigo.png", 800, 100, 40, 1400, 400 , 0.5, true);
+    InitInimigo(&inimigos2[numInimigos2++], "./textures/inimigo.png", 500, 100, 20, 1500, 400 , 1.5, true);
+    InitInimigo(&inimigos2[numInimigos2++], "./textures/inimigo.png", 500, 100, 20, 1550, 400 , 1.5, true);
 
     Boss bossTubarao;
     const char* fotosTubarao[8] = {
@@ -88,29 +96,118 @@ int main(void){
     "./textures/Tubarao11.png", "./textures/Tubarao12.png", "./textures/Tubarao3.png"
     }; 
 
-    InitBoss(&bossTubarao, fotosTubarao, 50000, 400, 700, screenHeight-230, 1.0, true);
+    InitBoss(&bossTubarao, fotosTubarao, 50000, 400, 1450, screenHeight-300, 0.5, true);
     
     int largurabarra = 50;
     int largurabarraBoss = 400;
     bool boss = false;
+    Rectangle botaoPosicionar = { 450, 10, 100, 30 }; 
+    Rectangle botaoQuadrado = { 360, 490, 50, 50 }; 
+    Rectangle botaoQuadrado2 = { 360, 360, 50, 50 };
+
+    InitAudioDevice();
+    Music soundBoss = LoadMusicStream("./audio/audio-teste2.mp3");
 
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
-        DrawTexture(praia, 0, 0, WHITE);
+        Vector2 mousePosition = GetMousePosition();
+        UpdateMusicStream(soundBoss);  
 
-        DrawTexture(Reginaldo.foto, Reginaldo.posx, Reginaldo.posy, WHITE);
-        DrawTexture(Reginaldo2.foto, Reginaldo2.posx, Reginaldo2.posy, WHITE);
+        DrawTexture(praia, 0, 0, WHITE); 
+        DrawRectangleRec(botaoQuadrado, GREEN);
+        DrawRectangleRec(botaoQuadrado2, BLUE);  
+        DrawRectangleRec(botaoPosicionar, GRAY);  
+        DrawText("Posicionar", botaoPosicionar.x + 10, botaoPosicionar.y + 10, 20, BLACK);
+        DrawTexture(icone, 300, 10, WHITE);
 
-        
-        DrawAtaqueReginaldo(inimigos1 , &Reginaldo , &numInimigos1, &bossTubarao, boss);
-        DrawAtaqueReginaldo(inimigos2 , &Reginaldo2 , &numInimigos2, &bossTubarao, boss);
-        
-        
-         for (int i = 0; i < numInimigos1; i++) {
-            DrawInimigo(&inimigos1[i], largurabarra);
+        //Inicio selecao personagem
+        if (CheckCollisionPointRec(mousePosition, botaoPosicionar) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) { 
+            bool botaoclicado = true;
+
+            RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
+            BeginTextureMode(telaCongelada);  
+            ClearBackground(RAYWHITE);  
+            BeginDrawing();
+            DrawTexture(praia, 0, 0, WHITE);
+            DrawRectangleRec(botaoQuadrado, GREEN);
+            DrawRectangleRec(botaoQuadrado2, BLUE);
+            DrawRectangleRec(botaoPosicionar, GRAY);
+            DrawText("Posicionar", botaoPosicionar.x + 10, botaoPosicionar.y + 10, 20, BLACK);
+            DrawTexture(icone, 300, 10, WHITE);
+
+            
+            for (int i = 0; i < numInimigos1; i++) {
+                DrawInimigo(&inimigos1[i], largurabarra);
+            }
+             for (int i = 0; i < numInimigos1; i++) {
+                DrawInimigo(&inimigos2[i], largurabarra);
+            }
+
+            if (numInimigos1+numInimigos2+numInimigos3<=0){
+                boss = true;
+                DrawBoss(&bossTubarao, largurabarraBoss);
+                //PlayMusicStream(soundBoss);
+            }
+            EndDrawing();
+            EndTextureMode();
+
+            while (botaoclicado && !WindowShouldClose()) {
+                BeginDrawing();
+                DrawTextureRec(telaCongelada.texture, (Rectangle){ 0, 0, (float)telaCongelada.texture.width, (float)-telaCongelada.texture.height }, (Vector2){ 0, 0 }, WHITE);
+                DrawText("Escolha um local...", 550, 300, 20, DARKGRAY);
+                Vector2 mousePosition = GetMousePosition();
+                EndDrawing();
+
+                if (CheckCollisionPointRec(mousePosition, botaoQuadrado) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+                    inserirTropa(&head, &tail, &Reginaldo, botaoQuadrado.x, botaoQuadrado.y, 1);
+                    botaoclicado = false;
+
+                }
+                else if (CheckCollisionPointRec(mousePosition, botaoQuadrado2) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+                   inserirTropa(&head, &tail, &Reginaldo2, botaoQuadrado2.x, botaoQuadrado2.y, 2);
+                   botaoclicado = false;
+
+                }
+                
+                else if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){  
+                    botaoclicado = false;
+                }
+            }
+
+            UnloadRenderTexture(telaCongelada);  
+        }   
+        //Fim selecao de personagem 
+
+       if (head!=NULL){
+            do{
+
+                DrawTexture(head->foto, head->posx, head->posy, WHITE);
+                if (strcmp(head->nome, Reginaldo.nome) == 0){
+                    if (head->lane == 1){
+                        DrawAtaqueReginaldo(inimigos1 , head , &numInimigos1, &bossTubarao, boss);
+                    }
+                    else if (head->lane == 2){
+                        DrawAtaqueReginaldo(inimigos2 , head , &numInimigos2, &bossTubarao, boss);
+                    }
+                }
+            head = head->prox;
+
+            }while (head!= tail->prox);
         }
 
+
+        /*
+        DrawTexture(Reginaldo.foto, Reginaldo.posx, Reginaldo.posy, WHITE);
+        DrawTexture(Reginaldo2.foto, Reginaldo2.posx, Reginaldo2.posy, WHITE);        
+        DrawAtaqueReginaldo(inimigos1 , &Reginaldo , &numInimigos1, &bossTubarao, boss);
+        DrawAtaqueReginaldo(inimigos2 , &Reginaldo2 , &numInimigos2, &bossTubarao, boss);
+        */
+        
+        for (int i = 0; i < numInimigos1; i++) {
+            DrawInimigo(&inimigos1[i], largurabarra);
+        }
+        
         for (int i = 0; i < numInimigos2; i++) {
             DrawInimigo(&inimigos2[i], largurabarra);
         }
@@ -118,12 +215,14 @@ int main(void){
         if (numInimigos1+numInimigos2+numInimigos3<=0){
             boss = true;
             DrawBoss(&bossTubarao, largurabarraBoss);
+            //PlayMusicStream(soundBoss);
+
             if (bossTubarao.vivo == false){
                 DrawRectangle(300, 90, 200, 50, BROWN);
                 DrawText ("YOU WIN!", 350 , 100, 20 ,YELLOW);
             }
         }
-
+ 
         EndDrawing();
     }
 
@@ -139,7 +238,9 @@ int main(void){
         UnloadTexture(inimigos3[i].foto); 
     }
 
+    UnloadMusicStream(soundBoss);
     CloseWindow();
+    CloseAudioDevice();
 
     return 0;
 }
@@ -175,9 +276,10 @@ void InitBoss(Boss *boss, const char* fotos[8], double vida, int dano, double po
 
 }
 
-void InitTropas(Tropa *tropas, const char* foto, const char* fotoAtaque , double posx, double posy ,double posxataque ,int posyataque) {
+void InitTropas(Tropa *tropas, const char* foto, const char* fotoAtaque , char nome[10] ,double posx, double posy ,double posxataque ,int posyataque) {
     tropas->foto = LoadTexture(foto);
     tropas->fotoAtaque = LoadTexture(fotoAtaque);
+    strcpy(tropas->nome, nome);
     tropas->posx = posx;
     tropas->posy = posy;
     tropas->posxataque = posxataque;
@@ -185,7 +287,7 @@ void InitTropas(Tropa *tropas, const char* foto, const char* fotoAtaque , double
 }
 
 void DrawInimigo(Inimigo *inimigo, int larguraBarra){ 
-    if (inimigo->posX >= 100){
+    if (inimigo->posX >= 120){
             inimigo->posX -= inimigo->velocidade;
         }
 
@@ -299,7 +401,7 @@ void DrawAtaqueReginaldo(Inimigo *inimigos, Tropa *Reginaldo, int *numInimigos, 
                 Reginaldo->posxataque += 3;
             } 
             else {
-                Reginaldo->posxataque = 25;
+                Reginaldo->posxataque = Reginaldo->posx+5;
                 alvo->vida -= 100;
                 if (alvo->vida <= 0) {
                     inimigos[alvoIndex] = inimigos[*numInimigos - 1];
@@ -309,12 +411,12 @@ void DrawAtaqueReginaldo(Inimigo *inimigos, Tropa *Reginaldo, int *numInimigos, 
         }
     }
     else{
-         if (Reginaldo->posxataque < chefe->posX - 20 && chefe->posX < 780) {
+         if (Reginaldo->posxataque < chefe->posX - 20 && chefe->posX < 1500) {
                 DrawTexture(Reginaldo->fotoAtaque, Reginaldo->posxataque, Reginaldo->posyataque, WHITE);
                 Reginaldo->posxataque += 3;
             } 
             else {
-                Reginaldo->posxataque = 25;
+                Reginaldo->posxataque = Reginaldo->posx+5;
                 BossRecebeDano(chefe, 100);
             }
     }
@@ -328,6 +430,14 @@ void BossRecebeDano(Boss *boss, int dano) {
 }
 
 void Menu(){
+
+   /* Texture menu;
+    menu = LoadTexture("./textures/");
+
+    falta o caminho do foto do menu*/
+
+
+
     Rectangle botaojogar = {100, 150, 200, 50};
     Rectangle botaoranking = {100, 150, 200, 50};
     Rectangle botaoexit = {100, 150, 200, 50};  
@@ -335,17 +445,59 @@ void Menu(){
         while (!WindowShouldClose()) {
 
         if (CheckCollisionPointRec(GetMousePosition(), botaojogar) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            DrawText("Play Clicked!", 300, 150, 20, DARKGREEN);
+
         }
 
         if (CheckCollisionPointRec(GetMousePosition(), botaoranking) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            DrawText("Ranking Clicked!", 300, 250, 20, DARKGREEN);
+
         }
 
         if (CheckCollisionPointRec(GetMousePosition(), botaoexit) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            DrawText("Exit Clicked!", 300, 350, 20, DARKGREEN);
         }
     }
 
     CloseWindow();
 }
+
+void inserirTropa(Tropa **head, Tropa **tail, Tropa *tropa ,float posX, float posY, int lane){
+    Tropa *novo = (Tropa*) malloc (sizeof(Tropa));
+    double posx = posX;
+
+    double posy = posY;
+    novo = tropa;
+    novo->posx = posx;
+    novo->posy = posy;
+    novo->posxataque = posx+5;
+    novo->posyataque = posy+20;
+    novo->lane = lane;
+
+    if (*head == NULL){
+        *head = novo;
+        *tail = *head;
+        (*head)->prox = *head; 
+    }
+    else{
+        novo->prox = *head;
+        (*tail)->prox = novo;
+        *tail = novo;
+    }
+}
+
+/*void imprimirTropaCompleta(Tropa *head, Tropa *tail ,Inimigo *inimigos1, Inimigo *inimigos2, int numInimigos1, int numInimigos2, Boss bossTubarao, bool boss){
+    if (head!=NULL){
+            do{
+
+                DrawTexture(head->foto, head->posx, head->posy, WHITE);
+                if (strcmp(head->nome, "Reginaldo") == 0){
+                    if (head->lane == 1){
+                        DrawAtaqueReginaldo(inimigos1 , head , &numInimigos1, &bossTubarao, boss);
+                    }
+                    else if (head->lane == 2){
+                        DrawAtaqueReginaldo(inimigos2 , head , &numInimigos2, &bossTubarao, boss);
+                    }
+                }
+            head = head->prox;
+
+            }while (head!= tail->prox);
+        }
+}*/
