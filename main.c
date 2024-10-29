@@ -104,6 +104,7 @@ int main(void){
     Rectangle botaoPosicionar = { 450, 10, 100, 30 }; 
     Rectangle botaoQuadrado = { 360, 490, 50, 50 }; 
     Rectangle botaoQuadrado2 = { 360, 360, 50, 50 };
+    bool botaoclicado = false;
 
     InitAudioDevice();
     Music soundBoss = LoadMusicStream("./audio/audio-teste2.mp3");
@@ -123,41 +124,12 @@ int main(void){
 
         //Inicio selecao personagem
         if (CheckCollisionPointRec(mousePosition, botaoPosicionar) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) { 
-            bool botaoclicado = true;
-
-            RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
-            BeginTextureMode(telaCongelada);  
-            ClearBackground(RAYWHITE);  
-            BeginDrawing();
-            DrawTexture(praia, 0, 0, WHITE);
-            DrawRectangleRec(botaoQuadrado, GREEN);
-            DrawRectangleRec(botaoQuadrado2, BLUE);
-            DrawRectangleRec(botaoPosicionar, GRAY);
-            DrawText("Posicionar", botaoPosicionar.x + 10, botaoPosicionar.y + 10, 20, BLACK);
-            DrawTexture(icone, 300, 10, WHITE);
-
-            
-            for (int i = 0; i < numInimigos1; i++) {
-                DrawInimigo(&inimigos1[i], largurabarra);
-            }
-             for (int i = 0; i < numInimigos1; i++) {
-                DrawInimigo(&inimigos2[i], largurabarra);
-            }
-
-            if (numInimigos1+numInimigos2+numInimigos3<=0){
-                boss = true;
-                DrawBoss(&bossTubarao, largurabarraBoss);
-                //PlayMusicStream(soundBoss);
-            }
-            EndDrawing();
-            EndTextureMode();
-
+            botaoclicado = true;
             while (botaoclicado && !WindowShouldClose()) {
                 BeginDrawing();
-                DrawTextureRec(telaCongelada.texture, (Rectangle){ 0, 0, (float)telaCongelada.texture.width, (float)-telaCongelada.texture.height }, (Vector2){ 0, 0 }, WHITE);
                 DrawText("Escolha um local...", 550, 300, 20, DARKGRAY);
-                Vector2 mousePosition = GetMousePosition();
                 EndDrawing();
+                Vector2 mousePosition = GetMousePosition();
 
                 if (CheckCollisionPointRec(mousePosition, botaoQuadrado) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
                     inserirTropa(&head, &tail, &Reginaldo, botaoQuadrado.x, botaoQuadrado.y, 1);
@@ -175,7 +147,6 @@ int main(void){
                 }
             }
 
-            UnloadRenderTexture(telaCongelada);  
         }   
         //Fim selecao de personagem 
 
@@ -396,11 +367,11 @@ void DrawAtaqueReginaldo(Inimigo *inimigos, Tropa *Reginaldo, int *numInimigos, 
         if (alvoIndex != -1) {
             Inimigo *alvo = &inimigos[alvoIndex];
 
-            if (Reginaldo->posxataque < alvo->posX - 20 && alvo->posX < 780) {
+            if (Reginaldo->posxataque < alvo->posX - 20 && alvo->posX < 1350) {
                 DrawTexture(Reginaldo->fotoAtaque, Reginaldo->posxataque, Reginaldo->posyataque, WHITE);
                 Reginaldo->posxataque += 3;
             } 
-            else {
+            else if (Reginaldo->posxataque >= alvo->posX - 20){
                 Reginaldo->posxataque = Reginaldo->posx+5;
                 alvo->vida -= 100;
                 if (alvo->vida <= 0) {
