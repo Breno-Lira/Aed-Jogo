@@ -42,6 +42,7 @@ typedef struct Tropa{
     double posxataque;
     double posyataque;
     int lane;
+    int posicao;
     struct Tropa *prox;
 }Tropa;
 
@@ -55,11 +56,14 @@ void DrawBoss(Boss *boss, int larguraBarra);
 void BossRecebeDano(Boss *boss, int dano);
 void DrawAtaqueReginaldo(Inimigo *inimigos, Tropa *Reginaldo, int *numInimigos, Boss *chefe, bool boss);
 void Menu();
-void inserirTropa(Tropa **head, Tropa **tail, Tropa *tropa ,float posX, float posY, int lane);
+void inserirTropa(Tropa **head, Tropa **tail, Tropa *tropa ,float posX, float posY, int lane, int posicao);
 void imprimirTropaCompleta(Tropa *head, Tropa *tail ,Inimigo *inimigos1, Inimigo *inimigos2, Inimigo *inimigos3 ,int *numInimigos1, int *numInimigos2, int *numInimigos3,Boss *bossTubarao, bool boss);
-void SalvarTelacongelada(Tropa *head, Tropa *tail, RenderTexture2D telaCongelada, Texture2D praia, Rectangle botaoQuadrado, Rectangle botaoQuadrado2, Rectangle botaoQuadrado3,Rectangle botaoPosicionar, 
+void SalvarTelacongelada(Tropa *head, Tropa *tail, RenderTexture2D telaCongelada, Texture2D praia, Rectangle botaoQuadrado, Rectangle botaoQuadrado2, Rectangle botaoQuadrado3
+                         ,Rectangle botaoQuadrado4, Rectangle botaoQuadrado5, Rectangle botaoQuadrado6,Rectangle botaoPosicionar, 
                          Texture2D icone, Inimigo* inimigos1, int numInimigos1, Inimigo* inimigos2, int numInimigos2, Inimigo* Inimigos3,
-                         int numInimigos3, Boss* bossTubarao, int largurabarra, int largurabarraBoss, bool boss);
+                         int numInimigos3, Boss* bossTubarao, int largurabarra, int largurabarraBoss, bool boss, Rectangle botaoRemover);
+void RemoverTropa(Tropa **head, Tropa **tail, int posicao);
+
 
 int main(void){   
     const int screenWidth = 1320;
@@ -74,10 +78,13 @@ int main(void){
 
     SetTargetFPS(90);
 
-    Tropa Reginaldo, Reginaldo2, Reginaldo3;
+    Tropa Reginaldo, Reginaldo2, Reginaldo3, Reginaldo4, Reginaldo5, Reginaldo6;
     InitTropas(&Reginaldo, "./textures/Torre-Reginaldo.png" , "./textures/Reginaldo-ataque.png" , "Reginaldo" , 20, 290, 25, 300);
     InitTropas(&Reginaldo2, "./textures/Torre-Reginaldo.png" , "./textures/Reginaldo-ataque.png" , "Reginaldo" , 20, 390 , 25 , 400);
     InitTropas(&Reginaldo3, "./textures/Torre-Reginaldo.png" , "./textures/Reginaldo-ataque.png" , "Reginaldo" , 20, 520, 25 , 530);
+    InitTropas(&Reginaldo4, "./textures/Torre-Reginaldo.png" , "./textures/Reginaldo-ataque.png" , "Reginaldo" , 20, 290, 25, 300);
+    InitTropas(&Reginaldo5, "./textures/Torre-Reginaldo.png" , "./textures/Reginaldo-ataque.png" , "Reginaldo" , 20, 390 , 25 , 400);
+    InitTropas(&Reginaldo6, "./textures/Torre-Reginaldo.png" , "./textures/Reginaldo-ataque.png" , "Reginaldo" , 20, 520, 25 , 530);
 
     Inimigo inimigos3[10];
     Inimigo inimigos2[10];
@@ -111,9 +118,15 @@ int main(void){
     int largurabarraBoss = 400;
     bool boss = false;
     Rectangle botaoPosicionar = { 450, 10, 100, 30 }; 
+    Rectangle botaoRemover = { 650, 10, 100, 30 }; 
+
     Rectangle botaoQuadrado = { 20, 260, 50, 50 }; 
     Rectangle botaoQuadrado2 = { 20, 390, 50, 50 };
     Rectangle botaoQuadrado3 = { 20, 520, 50, 50 };
+
+    Rectangle botaoQuadrado4 = { 100, 300, 50, 50 }; 
+    Rectangle botaoQuadrado5 = { 100, 430, 50, 50 };
+    Rectangle botaoQuadrado6 = { 100, 540, 50, 50 };
 
     InitAudioDevice();
     Music soundBoss = LoadMusicStream("./audio/audio-teste2.mp3");
@@ -130,8 +143,10 @@ int main(void){
         /*DrawRectangleRec(botaoQuadrado, GREEN);
         DrawRectangleRec(botaoQuadrado2, BLUE);  
         DrawRectangleRec(botaoQuadrado3, RED);*/
-        DrawRectangleRec(botaoPosicionar, GRAY);  
+        DrawRectangleRec(botaoPosicionar, GRAY); 
         DrawText("Posicionar", botaoPosicionar.x + 10, botaoPosicionar.y + 10, 20, BLACK);
+        DrawRectangleRec(botaoRemover, RED); 
+        DrawText("Remover", botaoRemover.x + 10, botaoRemover.y + 10, 20, BLACK);
         DrawTexture(icone, 300, 10, WHITE);
 
         //Inicio selecao personagem
@@ -140,9 +155,10 @@ int main(void){
 
             RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
 
-            SalvarTelacongelada(head, tail, telaCongelada ,praia, botaoQuadrado, botaoQuadrado2, botaoQuadrado3, botaoPosicionar, 
+            SalvarTelacongelada(head, tail, telaCongelada ,praia, botaoQuadrado, botaoQuadrado2, botaoQuadrado3, 
+                        botaoQuadrado4, botaoQuadrado5, botaoQuadrado6, botaoPosicionar, 
                          icone, inimigos1, numInimigos1, inimigos2, numInimigos2, inimigos3,
-                         numInimigos3, &bossTubarao, largurabarra, largurabarraBoss, boss);
+                         numInimigos3, &bossTubarao, largurabarra, largurabarraBoss, boss, botaoRemover);
 
             
             while (botaoclicado && !WindowShouldClose()) {
@@ -153,17 +169,32 @@ int main(void){
                 Vector2 mousePosition = GetMousePosition();
 
                 if (CheckCollisionPointRec(mousePosition, botaoQuadrado) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-                    inserirTropa(&head, &tail, &Reginaldo, botaoQuadrado.x, botaoQuadrado.y, 1);
+                    inserirTropa(&head, &tail, &Reginaldo, botaoQuadrado.x, botaoQuadrado.y, 1, 1);
                     botaoclicado = false;
 
                 }
                 else if (CheckCollisionPointRec(mousePosition, botaoQuadrado2) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-                   inserirTropa(&head, &tail, &Reginaldo2, botaoQuadrado2.x, botaoQuadrado2.y, 2);
+                   inserirTropa(&head, &tail, &Reginaldo2, botaoQuadrado2.x, botaoQuadrado2.y, 2, 2);
                    botaoclicado = false;
 
                 }
                 else if (CheckCollisionPointRec(mousePosition, botaoQuadrado3) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-                   inserirTropa(&head, &tail, &Reginaldo3, botaoQuadrado3.x, botaoQuadrado3.y, 3);
+                   inserirTropa(&head, &tail, &Reginaldo3, botaoQuadrado3.x, botaoQuadrado3.y-20, 3, 3);
+                   botaoclicado = false;
+
+                }
+                else if (CheckCollisionPointRec(mousePosition, botaoQuadrado4) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+                   inserirTropa(&head, &tail, &Reginaldo4, botaoQuadrado4.x, botaoQuadrado4.y, 1, 4);
+                   botaoclicado = false;
+
+                }
+                else if (CheckCollisionPointRec(mousePosition, botaoQuadrado5) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+                   inserirTropa(&head, &tail, &Reginaldo5, botaoQuadrado5.x, botaoQuadrado5.y, 2, 5);
+                   botaoclicado = false;
+
+                }
+                else if (CheckCollisionPointRec(mousePosition, botaoQuadrado6) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+                   inserirTropa(&head, &tail, &Reginaldo6, botaoQuadrado6.x, botaoQuadrado6.y-20, 3, 6);
                    botaoclicado = false;
 
                 }
@@ -174,7 +205,64 @@ int main(void){
             }
 
             UnloadRenderTexture(telaCongelada); 
-        }   
+        }  
+
+        else if(CheckCollisionPointRec(mousePosition, botaoRemover) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+            bool botaoclicado = true;
+
+            RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
+
+            SalvarTelacongelada(head, tail, telaCongelada ,praia, botaoQuadrado, botaoQuadrado2, botaoQuadrado3, 
+                        botaoQuadrado4, botaoQuadrado5, botaoQuadrado6, botaoPosicionar, 
+                         icone, inimigos1, numInimigos1, inimigos2, numInimigos2, inimigos3,
+                         numInimigos3, &bossTubarao, largurabarra, largurabarraBoss, boss, botaoRemover);
+
+            
+            while (botaoclicado && !WindowShouldClose()) {
+                BeginDrawing();
+                DrawTextureRec(telaCongelada.texture, (Rectangle){ 0, 0, (float)telaCongelada.texture.width, (float)-telaCongelada.texture.height }, (Vector2){ 0, 0 }, WHITE);
+                DrawText("Escolha um local...", 550, 300, 20, DARKGRAY);
+                EndDrawing();
+                Vector2 mousePosition = GetMousePosition();
+
+                if (CheckCollisionPointRec(mousePosition, botaoQuadrado) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+                    RemoverTropa(&head, &tail, 1);
+                    botaoclicado = false;
+
+                }
+                else if (CheckCollisionPointRec(mousePosition, botaoQuadrado2) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+                   RemoverTropa(&head, &tail, 2);
+                   botaoclicado = false;
+
+                }
+                else if (CheckCollisionPointRec(mousePosition, botaoQuadrado3) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+                   RemoverTropa(&head, &tail, 3);
+                   botaoclicado = false;
+
+                }
+                else if (CheckCollisionPointRec(mousePosition, botaoQuadrado4) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+                   RemoverTropa(&head, &tail, 4);
+                   botaoclicado = false;
+
+                }
+                else if (CheckCollisionPointRec(mousePosition, botaoQuadrado5) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+                   RemoverTropa(&head, &tail, 5);
+                   botaoclicado = false;
+
+                }
+                else if (CheckCollisionPointRec(mousePosition, botaoQuadrado6) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+                   RemoverTropa(&head, &tail, 6);
+                   botaoclicado = false;
+
+                }
+                
+                else if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){  
+                    botaoclicado = false;
+                }
+            }
+
+            UnloadRenderTexture(telaCongelada);
+        }
         //Fim selecao de personagem 
 
        /*if (head!=NULL){
@@ -467,7 +555,7 @@ void Menu(){
     CloseWindow();
 }
 
-void inserirTropa(Tropa **head, Tropa **tail, Tropa *tropa ,float posX, float posY, int lane){
+void inserirTropa(Tropa **head, Tropa **tail, Tropa *tropa ,float posX, float posY, int lane, int posicao){
     Tropa *novo = (Tropa*) malloc (sizeof(Tropa));
     double posx = posX;
 
@@ -478,6 +566,7 @@ void inserirTropa(Tropa **head, Tropa **tail, Tropa *tropa ,float posX, float po
     novo->posxataque = posx+5;
     novo->posyataque = posy+20;
     novo->lane = lane;
+    novo->posicao = posicao;
 
     if (*head == NULL){
         *head = novo;
@@ -513,9 +602,10 @@ void imprimirTropaCompleta(Tropa *head, Tropa *tail ,Inimigo *inimigos1, Inimigo
         }
 }
 
-void SalvarTelacongelada(Tropa *head, Tropa *tail ,RenderTexture2D telaCongelada, Texture2D praia, Rectangle botaoQuadrado, Rectangle botaoQuadrado2, Rectangle botaoQuadrado3,Rectangle botaoPosicionar, 
+void SalvarTelacongelada(Tropa *head, Tropa *tail, RenderTexture2D telaCongelada, Texture2D praia, Rectangle botaoQuadrado, Rectangle botaoQuadrado2, Rectangle botaoQuadrado3
+                         ,Rectangle botaoQuadrado4, Rectangle botaoQuadrado5, Rectangle botaoQuadrado6,Rectangle botaoPosicionar, 
                          Texture2D icone, Inimigo* inimigos1, int numInimigos1, Inimigo* inimigos2, int numInimigos2, Inimigo* inimigos3,
-                         int numInimigos3, Boss* bossTubarao, int largurabarra, int largurabarraBoss, bool boss){
+                         int numInimigos3, Boss* bossTubarao, int largurabarra, int largurabarraBoss, bool boss, Rectangle botaoRemover){
     
             BeginTextureMode(telaCongelada);  
             ClearBackground(RAYWHITE);  
@@ -524,7 +614,12 @@ void SalvarTelacongelada(Tropa *head, Tropa *tail ,RenderTexture2D telaCongelada
             DrawRectangleRec(botaoQuadrado, GREEN);
             DrawRectangleRec(botaoQuadrado2, BLUE);
             DrawRectangleRec(botaoQuadrado3, RED);
+            DrawRectangleRec(botaoQuadrado4, DARKGREEN);
+            DrawRectangleRec(botaoQuadrado5, DARKBLUE);
+            DrawRectangleRec(botaoQuadrado6, DARKPURPLE);
             DrawRectangleRec(botaoPosicionar, GRAY);
+            DrawRectangleRec(botaoRemover, RED);
+            DrawText("Remover", botaoRemover.x + 10, botaoRemover.y + 10, 20, BLACK);
             DrawText("Posicionar", botaoPosicionar.x + 10, botaoPosicionar.y + 10, 20, BLACK);
             DrawTexture(icone, 300, 10, WHITE);
             imprimirTropaCompleta(head, tail , inimigos1, inimigos2, inimigos3,&numInimigos1, &numInimigos2, &numInimigos3, bossTubarao, boss);
@@ -548,4 +643,46 @@ void SalvarTelacongelada(Tropa *head, Tropa *tail ,RenderTexture2D telaCongelada
             }
             EndDrawing();
             EndTextureMode();
+}
+
+
+void RemoverTropa(Tropa **head, Tropa **tail, int posicao) { 
+    if (*head != NULL) {
+        Tropa *aux = *head;
+        Tropa *prev = NULL;
+
+        
+        do {
+            if (aux->posicao == posicao) {
+               
+                if (aux == *head) {
+                    
+                    if (aux == *tail) {
+                        *head = NULL;
+                        *tail = NULL; 
+                    } else {
+                        *head = aux->prox; 
+                        (*tail)->prox = *head; 
+                    }
+                } 
+                
+                else if (aux == *tail) {
+                    *tail = prev; 
+                    (*tail)->prox = *head; 
+                } 
+                
+                else {
+                    if (prev != NULL) {
+                        prev->prox = aux->prox; 
+                    }
+                }
+
+                
+                return; 
+            }
+
+            prev = aux; 
+            aux = aux->prox; 
+        } while (aux != *head); 
+    }
 }
