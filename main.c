@@ -200,16 +200,16 @@ int main(void){
             DrawText(textoVida, 220, 18 , 30 , RED);
 
             Texture b1, b2, b3, b4, b5, b6;
-            b1 = LoadTexture("./textures/areaEspada");
-            b2 = LoadTexture("./textures/areaEspada");
-            b3 = LoadTexture("./textures/areaEspada");
-            b4 = LoadTexture("./textures/areaArcoFlecha");
-            b5 = LoadTexture("./textures/areaArcoFlecha");
-            b6 = LoadTexture("./textures/areaArcoFlecha");
+            b1 = LoadTexture("./textures/areaEspada.png");
+            b2 = LoadTexture("./textures/botaoSair.png");
+            b3 = LoadTexture("./textures/botaoComeçar.png");
+            b4 = LoadTexture("./textures/simboloSeta.png");
+            b5 = LoadTexture("./textures/areaArcoFlecha.png");
+            b6 = LoadTexture("./textures/areaArcoFlecha.png");
 
             DrawTexture(b1, 20, 260, WHITE);
             DrawTexture(b2, 20, 390, WHITE);
-            DrawTexture(b3, 20, 520, WHITE);
+            DrawTexture(b3, 20, 250, WHITE);
            
             DrawTexture(b4, 100, 300, WHITE);
             DrawTexture(b5, 100, 430, WHITE);
