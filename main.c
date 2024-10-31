@@ -78,6 +78,12 @@ void removerTropaBotao(Tropa **head, Tropa **tail, RenderTexture2D telaCongelada
                       Boss *bossTubarao, int largurabarra, int largurabarraBoss, bool boss, Rectangle botaoRemover, double *vidaPraia);
 void RemoverTropa(Tropa **head, Tropa **tail, int posicao);
 
+bool casa1=true;
+bool casa2=true;
+bool casa3=true;
+bool casa4=true;
+bool casa5=true;
+bool casa6=true;
 
 int main(void){   
     const int screenWidth = 1316;
@@ -148,7 +154,7 @@ int main(void){
     double vidaPraia = 2000;
     double vidaPraiaMax = 2000; 
 
-    GameScreen currentScreen = MENU;
+    GameScreen currentScreen = NIVEL;
     Texture selecao;
     int nivel = 1;
 
@@ -165,14 +171,26 @@ int main(void){
             break;
 
         case NIVEL:
+             casa1=true;
+             casa2=true;
+             casa3=true;
+             casa4=true;
+             casa5=true;
+             casa6=true;
+             Rectangle botaoVoltar = { 32, 30, 70, 35 }; 
              Rectangle botaoComecar = { 560, 460, 170, 70 };
             //if (nivel == 1){
                 selecao = LoadTexture("./textures/selecao.png");
                 DrawTexture(selecao, 0, 0, WHITE); 
                 DrawRectangleRec( botaoComecar , (Color){ 255, 255, 255, 0 });
+                DrawRectangleRec( botaoVoltar , (Color){ 255, 255, 255, 0 });
                
                 if (CheckCollisionPointRec(mousePosition, botaoComecar) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
                         currentScreen = JOGO;
+                        break;
+                }
+                if (CheckCollisionPointRec(mousePosition, botaoVoltar) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+                        currentScreen = MENU;
                         break;
                 }
 
@@ -200,20 +218,47 @@ int main(void){
             DrawText(textoVida, 220, 18 , 30 , RED);
 
             Texture b1, b2, b3, b4, b5, b6;
-            b1 = LoadTexture("./textures/areaEspada.png");
-            b2 = LoadTexture("./textures/botaoSair.png");
-            b3 = LoadTexture("./textures/botaoComeçar.png");
-            b4 = LoadTexture("./textures/simboloSeta.png");
-            b5 = LoadTexture("./textures/areaArcoFlecha.png");
-            b6 = LoadTexture("./textures/areaArcoFlecha.png");
+            b1 = LoadTexture("./textures/Arco.png");
+            b2 = LoadTexture("./textures/Arco.png");
+            b3 = LoadTexture("./textures/Arco.png");
+            b4 = LoadTexture("./textures/areaEspada.png");
+            b5 = LoadTexture("./textures/areaEspada.png");
+            b6 = LoadTexture("./textures/areaEspada.png");
 
             DrawTexture(b1, 20, 260, WHITE);
             DrawTexture(b2, 20, 390, WHITE);
-            DrawTexture(b3, 20, 250, WHITE);
+            DrawTexture(b3, 20, 520, WHITE);
            
             DrawTexture(b4, 100, 300, WHITE);
             DrawTexture(b5, 100, 430, WHITE);
             DrawTexture(b6, 100, 540, WHITE);
+
+            Rectangle pause = { 1250, 8, 40, 40 };
+            DrawRectangleRec(pause, (Color){ 255, 255, 255, 0 });
+
+            if (CheckCollisionPointRec(mousePosition, pause) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossTubarao.vivo){
+                RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
+                bool pausa = true;
+
+                SalvarTelacongelada(head, tail, telaCongelada, praia, botaoQuadrado, botaoQuadrado2, botaoQuadrado3, 
+                    botaoQuadrado4, botaoQuadrado5, botaoQuadrado6, botaoPosicionar, icone, inimigos1, numInimigos1, 
+                    inimigos2, numInimigos2, inimigos3, numInimigos3, &bossTubarao, largurabarra, largurabarraBoss, boss, botaoRemover, &vidaPraia);
+
+                while (pausa && !WindowShouldClose()) {
+                    BeginDrawing();
+                    DrawTextureRec(telaCongelada.texture, (Rectangle){ 0, 0, (float)telaCongelada.texture.width, (float)-telaCongelada.texture.height }, (Vector2){ 0, 0 }, WHITE);
+                    DrawText("JOGO PAUSADO", 550, 300, 30, BLACK);
+                    EndDrawing(); 
+                    Vector2 mousePosition = GetMousePosition();
+
+                    if (CheckCollisionPointRec(mousePosition, pause) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                        pausa = false;
+                    }
+                    
+                }
+
+            }
+
 
             //"Tela de derrota"
             if (vidaPraia <= 0) {
@@ -268,8 +313,6 @@ int main(void){
                 
             }
             //Fim selecao de personagem 
-
-        
 
         imprimirTropaCompleta(head, tail, inimigos1, inimigos2, inimigos3, &numInimigos1, &numInimigos2, &numInimigos3, &bossTubarao, boss);
             
@@ -518,9 +561,9 @@ void DrawAtaqueReginaldo(Inimigo *inimigos, Tropa *Reginaldo, int *numInimigos, 
             Reginaldo->posxataque = Reginaldo->posx+5;
             BossRecebeDano(chefe, 1000);
         }
-        /*else if (Reginaldo->posxataque > Reginaldo->posx+5){
+        else if (Reginaldo->posxataque > Reginaldo->posx+5){
                 Reginaldo->posxataque = Reginaldo->posx+5;
-        }*/
+        }
     }
 
 }
@@ -610,14 +653,24 @@ void SalvarTelacongelada(Tropa *head, Tropa *tail, RenderTexture2D telaCongelada
             
 
             
-
-            DrawRectangleRec(botaoQuadrado, GREEN);
-            DrawRectangleRec(botaoQuadrado2, BLUE);
-            DrawRectangleRec(botaoQuadrado3, RED);
-            DrawRectangleRec(botaoQuadrado4, DARKGREEN);
-            DrawRectangleRec(botaoQuadrado5, DARKBLUE);
-            DrawRectangleRec(botaoQuadrado6, DARKPURPLE);
-
+            if (casa1==true){
+                DrawRectangleRec(botaoQuadrado, GREEN);
+            }
+            if (casa2==true){
+                DrawRectangleRec(botaoQuadrado2, BLUE);
+            }
+            if (casa3==true){
+                DrawRectangleRec(botaoQuadrado3, RED);
+            }
+            if (casa4==true){
+                DrawRectangleRec(botaoQuadrado4, DARKGREEN);
+            }
+            if (casa5==true){
+                DrawRectangleRec(botaoQuadrado5, DARKBLUE);
+            }
+            if (casa6==true){
+                DrawRectangleRec(botaoQuadrado6, DARKPURPLE);
+            }
             
 
             DrawRectangleRec(botaoPosicionar, (Color){ 255, 255, 255, 0 });
@@ -706,35 +759,42 @@ void adicionarTropa(Tropa **head, Tropa **tail, Tropa *tropa, Tropa *tropa2, Tro
     while (botaoclicado && !WindowShouldClose()) {
         BeginDrawing();
         DrawTextureRec(telaCongelada.texture, (Rectangle){ 0, 0, (float)telaCongelada.texture.width, (float)-telaCongelada.texture.height }, (Vector2){ 0, 0 }, WHITE);
-        DrawText("Escolha um local...", 550, 300, 20, DARKGRAY);
+        DrawText("Escolha um local...", 550, 250, 20, BLACK);
         EndDrawing();
+        
 
         Vector2 mousePosition = GetMousePosition();
 
         // Verifica em qual quadrado o usuário clicou para posicionar a tropa
-        if (CheckCollisionPointRec(mousePosition, botaoQuadrado) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        if (CheckCollisionPointRec(mousePosition, botaoQuadrado) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && casa1==true) {
             inserirTropa(head, tail, tropa, botaoQuadrado.x, botaoQuadrado.y, 1, 1);
             botaoclicado = false;
+            casa1=false;
         }
-        else if (CheckCollisionPointRec(mousePosition, botaoQuadrado2) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        else if (CheckCollisionPointRec(mousePosition, botaoQuadrado2) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && casa2==true) {
             inserirTropa(head, tail, tropa2, botaoQuadrado2.x, botaoQuadrado2.y, 2, 2);
             botaoclicado = false;
+            casa2=false;
         }
-        else if (CheckCollisionPointRec(mousePosition, botaoQuadrado3) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        else if (CheckCollisionPointRec(mousePosition, botaoQuadrado3) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && casa3==true) {
             inserirTropa(head, tail, tropa3, botaoQuadrado3.x, botaoQuadrado3.y - 20, 3, 3);
             botaoclicado = false;
+            casa3=false;
         }
-        else if (CheckCollisionPointRec(mousePosition, botaoQuadrado4) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        else if (CheckCollisionPointRec(mousePosition, botaoQuadrado4) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && casa4==true) {
             inserirTropa(head, tail, tropa4, botaoQuadrado4.x, botaoQuadrado4.y, 1, 4);
             botaoclicado = false;
+            casa4=false;
         }
-        else if (CheckCollisionPointRec(mousePosition, botaoQuadrado5) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        else if (CheckCollisionPointRec(mousePosition, botaoQuadrado5) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && casa5==true) {
             inserirTropa(head, tail, tropa5, botaoQuadrado5.x, botaoQuadrado5.y-15, 2, 5);
             botaoclicado = false;
+            casa5=false;
         }
-        else if (CheckCollisionPointRec(mousePosition, botaoQuadrado6) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        else if (CheckCollisionPointRec(mousePosition, botaoQuadrado6) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && casa6==true) {
             inserirTropa(head, tail, tropa6, botaoQuadrado6.x, botaoQuadrado6.y - 20, 3, 6);
             botaoclicado = false;
+            casa6=false;
         }
         else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             botaoclicado = false;  // Sai do loop se clicar fora dos botões
@@ -763,7 +823,7 @@ void removerTropaBotao(Tropa **head, Tropa **tail, RenderTexture2D telaCongelada
     while (botaoclicado && !WindowShouldClose()) {
         BeginDrawing();
         DrawTextureRec(telaCongelada.texture, (Rectangle){ 0, 0, (float)telaCongelada.texture.width, (float)-telaCongelada.texture.height }, (Vector2){ 0, 0 }, WHITE);
-        DrawText("Escolha uma tropa para remover...", 550, 300, 20, DARKGRAY);
+        DrawText("Escolha uma tropa para remover...", 550, 250, 20, BLACK);
         EndDrawing();
 
         Vector2 mousePosition = GetMousePosition();
@@ -772,26 +832,32 @@ void removerTropaBotao(Tropa **head, Tropa **tail, RenderTexture2D telaCongelada
         if (CheckCollisionPointRec(mousePosition, botaoQuadrado) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             RemoverTropa(head, tail, 1);
             botaoclicado = false;
+            casa1=true;
         }
         else if (CheckCollisionPointRec(mousePosition, botaoQuadrado2) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             RemoverTropa(head, tail, 2);
             botaoclicado = false;
+            casa2=true;
         }
         else if (CheckCollisionPointRec(mousePosition, botaoQuadrado3) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             RemoverTropa(head, tail, 3);
             botaoclicado = false;
+            casa3=true;
         }
         else if (CheckCollisionPointRec(mousePosition, botaoQuadrado4) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             RemoverTropa(head, tail, 4);
             botaoclicado = false;
+            casa4=true;
         }
         else if (CheckCollisionPointRec(mousePosition, botaoQuadrado5) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             RemoverTropa(head, tail, 5);
             botaoclicado = false;
+            casa5=true;
         }
         else if (CheckCollisionPointRec(mousePosition, botaoQuadrado6) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             RemoverTropa(head, tail, 6);
             botaoclicado = false;
+            casa6=true;
         }
         else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             botaoclicado = false;  // Sai do loop se clicar fora dos botões
