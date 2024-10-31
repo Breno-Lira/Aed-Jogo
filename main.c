@@ -41,6 +41,7 @@ typedef struct Tropa{
     double posy;
     double posxataque;
     double posyataque;
+    bool ataqueAtivo;
     int lane;
     int posicao;
     struct Tropa *prox;
@@ -164,12 +165,12 @@ int main(void){
             break;
 
         case NIVEL:
-             Rectangle botaoComecar = { 570, 460, 150, 70 };
+             Rectangle botaoComecar = { 560, 460, 170, 70 };
             //if (nivel == 1){
                 selecao = LoadTexture("./textures/selecao.png");
                 DrawTexture(selecao, 0, 0, WHITE); 
-                DrawRectangleRec( botaoComecar , BLACK);
-                DrawText("COMECAR", 589, 480 , 20, WHITE);
+                DrawRectangleRec( botaoComecar , (Color){ 255, 255, 255, 0 });
+               
                 if (CheckCollisionPointRec(mousePosition, botaoComecar) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
                         currentScreen = JOGO;
                         break;
@@ -197,6 +198,22 @@ int main(void){
             char textoVida[10];
             snprintf(textoVida, sizeof(textoVida), "%.0f%%", porcentagemVida);
             DrawText(textoVida, 220, 18 , 30 , RED);
+
+            Texture b1, b2, b3, b4, b5, b6;
+            b1 = LoadTexture("./textures/areaEspada");
+            b2 = LoadTexture("./textures/areaEspada");
+            b3 = LoadTexture("./textures/areaEspada");
+            b4 = LoadTexture("./textures/areaArcoFlecha");
+            b5 = LoadTexture("./textures/areaArcoFlecha");
+            b6 = LoadTexture("./textures/areaArcoFlecha");
+
+            DrawTexture(b1, 20, 260, WHITE);
+            DrawTexture(b2, 20, 390, WHITE);
+            DrawTexture(b3, 20, 520, WHITE);
+           
+            DrawTexture(b4, 100, 300, WHITE);
+            DrawTexture(b5, 100, 430, WHITE);
+            DrawTexture(b6, 100, 540, WHITE);
 
             //"Tela de derrota"
             if (vidaPraia <= 0) {
@@ -473,6 +490,7 @@ void DrawAtaqueReginaldo(Inimigo *inimigos, Tropa *Reginaldo, int *numInimigos, 
 
         if (alvoIndex != -1) {
             Inimigo *alvo = &inimigos[alvoIndex];
+            
 
             if (Reginaldo->posxataque < alvo->posX - 20 && alvo->posX < 1350) {
                 DrawTexture(Reginaldo->fotoAtaque, Reginaldo->posxataque, Reginaldo->posyataque, WHITE);
@@ -486,10 +504,13 @@ void DrawAtaqueReginaldo(Inimigo *inimigos, Tropa *Reginaldo, int *numInimigos, 
                     (*numInimigos)--;
                 }
             }
+            else{
+                Reginaldo->posxataque = Reginaldo->posx+5;
+            }
         }
     }
     else{
-         if (Reginaldo->posxataque < chefe->posX - 20 && chefe->posX < 1500) {
+         if (Reginaldo->posxataque < chefe->posX - 20 && chefe->posX < 1300) {
             DrawTexture(Reginaldo->fotoAtaque, Reginaldo->posxataque, Reginaldo->posyataque, WHITE);
             Reginaldo->posxataque += 3;
         } 
@@ -497,6 +518,9 @@ void DrawAtaqueReginaldo(Inimigo *inimigos, Tropa *Reginaldo, int *numInimigos, 
             Reginaldo->posxataque = Reginaldo->posx+5;
             BossRecebeDano(chefe, 1000);
         }
+        /*else if (Reginaldo->posxataque > Reginaldo->posx+5){
+                Reginaldo->posxataque = Reginaldo->posx+5;
+        }*/
     }
 
 }
@@ -583,12 +607,19 @@ void SalvarTelacongelada(Tropa *head, Tropa *tail, RenderTexture2D telaCongelada
             ClearBackground(RAYWHITE);  
             BeginDrawing();
             DrawTexture(praia, 0, 0, WHITE);
+            
+
+            
+
             DrawRectangleRec(botaoQuadrado, GREEN);
             DrawRectangleRec(botaoQuadrado2, BLUE);
             DrawRectangleRec(botaoQuadrado3, RED);
             DrawRectangleRec(botaoQuadrado4, DARKGREEN);
             DrawRectangleRec(botaoQuadrado5, DARKBLUE);
             DrawRectangleRec(botaoQuadrado6, DARKPURPLE);
+
+            
+
             DrawRectangleRec(botaoPosicionar, (Color){ 255, 255, 255, 0 });
             DrawRectangleRec(botaoRemover, (Color){ 255, 255, 255, 0 });
             imprimirTropaCompleta(head, tail , inimigos1, inimigos2, inimigos3,&numInimigos1, &numInimigos2, &numInimigos3, bossTubarao, boss);
