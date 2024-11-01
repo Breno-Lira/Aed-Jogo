@@ -70,6 +70,7 @@ void removerTropaBotao(Tropa **head, Tropa **tail, RenderTexture2D telaCongelada
                       Inimigo *inimigos1, int numInimigos1,Inimigo *inimigos2, int numInimigos2, Inimigo *inimigos3, int numInimigos3, 
                       Boss *bossTubarao,  bool boss, Rectangle botaoRemover, double *vidaPraia);
 void RemoverTropa(Tropa **head, Tropa **tail, int posicao);
+void DrawAtaqueCaboclo(Inimigo *inimigos, Tropa *Caboclo, int *numInimigos, Boss *chefe ,bool boss);
 
 bool casa1=true;
 bool casa2=true;
@@ -79,6 +80,7 @@ bool casa5=true;
 bool casa6=true;
 
 Rectangle botaoPosicionar = { 348, 14, 40, 40 }; 
+Rectangle botaoPosicionar2 = { 412, 14, 40, 40 }; 
 Rectangle botaoRemover = { 917, 11, 50, 50 }; 
 
 Rectangle botaoQuadrado = { 20, 260, 64, 64 }; 
@@ -110,12 +112,17 @@ int main(void){
     SetTargetFPS(90);
 
     Tropa Reginaldo, Reginaldo2, Reginaldo3, Reginaldo4, Reginaldo5, Reginaldo6;
+    Tropa Caboclo, Caboclo2,Caboclo3;
     InitTropas(&Reginaldo, "./textures/Torre-Reginaldo.png" , "./textures/Reginaldo-ataque.png" , "Reginaldo" , 20, 290, 25, 300);
     InitTropas(&Reginaldo2, "./textures/Torre-Reginaldo.png" , "./textures/Reginaldo-ataque.png" , "Reginaldo" , 20, 390 , 25 , 400);
     InitTropas(&Reginaldo3, "./textures/Torre-Reginaldo.png" , "./textures/Reginaldo-ataque.png" , "Reginaldo" , 20, 520, 25 , 530);
     InitTropas(&Reginaldo4, "./textures/Torre-Reginaldo.png" , "./textures/Reginaldo-ataque.png" , "Reginaldo" , 20, 290, 25, 300);
     InitTropas(&Reginaldo5, "./textures/Torre-Reginaldo.png" , "./textures/Reginaldo-ataque.png" , "Reginaldo" , 20, 390 , 25 , 400);
     InitTropas(&Reginaldo6, "./textures/Torre-Reginaldo.png" , "./textures/Reginaldo-ataque.png" , "Reginaldo" , 20, 520, 25 , 530);
+
+    InitTropas(&Caboclo, "./textures/Caboclo.png" , "./textures/Caboclo-ataque.png" , "CabocloLa" , 20, 290, 25, 300);
+    InitTropas(&Caboclo2, "./textures/Caboclo.png" , "./textures/Caboclo-ataque.png" , "CabocloLa" , 20, 290, 25, 300);
+    InitTropas(&Caboclo3, "./textures/Caboclo.png" , "./textures/Caboclo-ataque.png" , "CabocloLa" , 20, 290, 25, 300);
 
     Inimigo inimigos3[10];
     Inimigo inimigos2[10];
@@ -149,7 +156,7 @@ int main(void){
     double vidaPraia = 2000;
     double vidaPraiaMax = 2000; 
 
-    GameScreen currentScreen = NIVEL;
+    GameScreen currentScreen = JOGO;
     Texture selecao;
     int nivel = 1;
     Rectangle pause = { 1250, 8, 40, 40 };
@@ -202,6 +209,7 @@ int main(void){
 
             DrawTexture(praia, 0, 0, WHITE); 
             DrawRectangleRec(botaoPosicionar, (Color){ 255, 255, 255, 0 }); 
+            DrawRectangleRec(botaoPosicionar2, BLACK); 
             DrawRectangleRec(botaoRemover, (Color){ 255, 255, 255, 0 }); 
             
 
@@ -272,6 +280,17 @@ int main(void){
                             praia,  inimigos1, numInimigos1, inimigos2, numInimigos2, 
                             inimigos3, numInimigos3, &bossTubarao,  boss, botaoRemover, &vidaPraia);
             
+            }
+            else if(CheckCollisionPointRec(mousePosition, botaoPosicionar2) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossTubarao.vivo){
+                
+                RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
+
+                 adicionarTropa(&head, &tail, &Caboclo, &Caboclo2, &Caboclo3,
+                            &Reginaldo4, &Reginaldo5, &Reginaldo6, telaCongelada, 
+                            praia,  inimigos1, numInimigos1, inimigos2, numInimigos2, 
+                            inimigos3, numInimigos3, &bossTubarao,  boss, botaoRemover, &vidaPraia);
+
+                
             }
             else if(CheckCollisionPointRec(mousePosition, botaoRemover) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossTubarao.vivo){
                 
@@ -735,6 +754,17 @@ void imprimirTropaCompleta(Tropa *head, Tropa *tail ,Inimigo *inimigos1, Inimigo
                     DrawAtaqueReginaldo(inimigos3 , head , numInimigos3, bossTubarao, boss);
                 }
             }
+            else if (strcmp(head->nome, "CabocloLa") == 0){
+                if (head->lane == 1){
+                    DrawAtaqueCaboclo(inimigos1 , head , numInimigos1, bossTubarao, boss);
+                }
+                else if (head->lane == 2){
+                    DrawAtaqueCaboclo(inimigos2 , head , numInimigos2, bossTubarao, boss);
+                }
+                else if (head->lane == 3){
+                    DrawAtaqueCaboclo(inimigos3 , head , numInimigos3, bossTubarao, boss);
+                }
+            }
         head = head->prox;
 
         }while (head!= tail->prox);
@@ -853,8 +883,7 @@ void RemoverTropa(Tropa **head, Tropa **tail, int posicao) {
 }
 
 void adicionarTropa(Tropa **head, Tropa **tail, Tropa *tropa, Tropa *tropa2, Tropa *tropa3,
-                        Tropa *tropa4, Tropa *tropa5, Tropa *tropa6, RenderTexture2D telaCongelada, 
-                        Texture2D mapa,  
+                        Tropa *tropa4, Tropa *tropa5, Tropa *tropa6, RenderTexture2D telaCongelada, Texture2D mapa,  
                          Inimigo *inimigos1, int numInimigos1, Inimigo *inimigos2, int numInimigos2, 
                         Inimigo *inimigos3, int numInimigos3, Boss *bossTubarao, bool boss, Rectangle botaoRemover, double *vidaPraia) {
     
@@ -970,4 +999,47 @@ void removerTropaBotao(Tropa **head, Tropa **tail, RenderTexture2D telaCongelada
     }
 
     UnloadRenderTexture(telaCongelada);  // Libera a memória da textura congelada
+}
+
+void DrawAtaqueCaboclo(Inimigo *inimigos, Tropa *Caboclo, int *numInimigos, Boss *chefe ,bool boss) {
+    if (boss == false){
+        for (int i = 0; i < *numInimigos; i++) {
+            if (Caboclo->posxataque > 1315) {
+                Caboclo->posxataque = Caboclo->posx+5;
+            }
+            else if (Caboclo->posxataque >= inimigos[i].posX - 20 &&  Caboclo->posxataque <= inimigos[i].posX + 20){
+                DrawTexture(Caboclo->fotoAtaque, Caboclo->posxataque, Caboclo->posyataque, WHITE);
+                inimigos[i].vida -= 50;
+                if (inimigos[i].vida <= 0) {
+                    inimigos[i] = inimigos[*numInimigos - 1];
+                    (*numInimigos)--;
+                }
+            }
+            else if (inimigos[i].posX < 1320) {
+                DrawTexture(Caboclo->fotoAtaque, Caboclo->posxataque, Caboclo->posyataque, WHITE);
+                
+            } 
+            
+        }
+        Caboclo->posxataque += 3;
+    }
+    
+    else{
+        if (Caboclo->posxataque > 1315) {
+                Caboclo->posxataque = Caboclo->posx+5;
+        }
+        else if (Caboclo->posxataque >= chefe->posX - 20 &&  Caboclo->posxataque <= chefe->posX + 5){
+                DrawTexture(Caboclo->fotoAtaque, Caboclo->posxataque, Caboclo->posyataque, WHITE);
+                Caboclo->posxataque += 3;
+                BossRecebeDano(chefe, 50);
+        }
+        else if (chefe->posX < 1320) {
+                DrawTexture(Caboclo->fotoAtaque, Caboclo->posxataque, Caboclo->posyataque, WHITE);
+                Caboclo->posxataque += 3;
+        }
+        else if (Caboclo->posxataque > Caboclo->posx+5){
+                Caboclo->posxataque = Caboclo->posx+5;
+        }
+    }
+
 }
