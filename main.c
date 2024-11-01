@@ -81,13 +81,13 @@ bool casa6=true;
 Rectangle botaoPosicionar = { 348, 14, 40, 40 }; 
 Rectangle botaoRemover = { 917, 11, 50, 50 }; 
 
-Rectangle botaoQuadrado = { 20, 260, 50, 50 }; 
-Rectangle botaoQuadrado2 = { 20, 390, 50, 50 };
-Rectangle botaoQuadrado3 = { 20, 520, 50, 50 };
+Rectangle botaoQuadrado = { 20, 260, 64, 64 }; 
+Rectangle botaoQuadrado2 = { 20, 390, 64, 64 };
+Rectangle botaoQuadrado3 = { 20, 520, 64, 64 };
 
-Rectangle botaoQuadrado4 = { 100, 300, 50, 50 }; 
-Rectangle botaoQuadrado5 = { 100, 430, 50, 50 };
-Rectangle botaoQuadrado6 = { 100, 540, 50, 50 };
+Rectangle botaoQuadrado4 = { 100, 300, 64, 64 }; 
+Rectangle botaoQuadrado5 = { 100, 430, 64, 64 };
+Rectangle botaoQuadrado6 = { 100, 540, 64, 64 };
 
 int largurabarra = 50;
 int largurabarraBoss = 400; 
@@ -208,22 +208,6 @@ int main(void){
             char textoVida[10];
             snprintf(textoVida, sizeof(textoVida), "%.0f%%", porcentagemVida);
             DrawText(textoVida, 220, 18 , 30 , RED);
-
-            Texture b1, b2, b3, b4, b5, b6;
-            b1 = LoadTexture("./textures/areaArcoFlecha.png");
-            b2 = LoadTexture("./textures/areaArcoFlecha.png");
-            b3 = LoadTexture("./textures/areaArcoFlecha.png");
-            b4 = LoadTexture("./textures/areaEspada.png");
-            b5 = LoadTexture("./textures/areaEspada.png");
-            b6 = LoadTexture("./textures/placaTubarao.png");
-
-            DrawTexture(b1, 20, 260, WHITE);
-            DrawTexture(b2, 20, 390, WHITE);
-            DrawTexture(b3, 20, 520, WHITE);
-           
-            DrawTexture(b4, 100, 300, WHITE);
-            DrawTexture(b5, 100, 430, WHITE);
-            DrawTexture(b6, 100, 540, WHITE);
 
             Rectangle pause = { 1250, 8, 40, 40 };
             DrawRectangleRec(pause, (Color){ 255, 255, 255, 0 });
@@ -634,26 +618,39 @@ void SalvarTelacongelada(Tropa *head, Tropa *tail, RenderTexture2D telaCongelada
             ClearBackground(RAYWHITE);  
             BeginDrawing();
             DrawTexture(praia, 0, 0, WHITE);
-            
+
+            Texture b1, b2, b3, b4, b5, b6;
+            b1 = LoadTexture("./textures/areaArcoFlecha.png");
+            b2 = LoadTexture("./textures/areaArcoFlecha.png");
+            b3 = LoadTexture("./textures/areaArcoFlecha.png");
+            b4 = LoadTexture("./textures/areaEspada.png");
+            b5 = LoadTexture("./textures/areaEspada.png");
+            b6 = LoadTexture("./textures/areaEspada.png");
 
             
             if (casa1==true){
-                DrawRectangleRec(botaoQuadrado, GREEN);
+                DrawRectangleRec(botaoQuadrado, (Color){ 255, 255, 255, 0 });
+                DrawTexture(b1, 20, 260, WHITE);
             }
             if (casa2==true){
-                DrawRectangleRec(botaoQuadrado2, BLUE);
+                DrawRectangleRec(botaoQuadrado2, (Color){ 255, 255, 255, 0 });
+                DrawTexture(b2, 20, 390, WHITE);
             }
             if (casa3==true){
-                DrawRectangleRec(botaoQuadrado3, RED);
+                DrawRectangleRec(botaoQuadrado3, (Color){ 255, 255, 255, 0 });
+                DrawTexture(b3, 20, 520, WHITE);
             }
             if (casa4==true){
-                DrawRectangleRec(botaoQuadrado4, DARKGREEN);
+                DrawRectangleRec(botaoQuadrado4, (Color){ 255, 255, 255, 0 });
+                DrawTexture(b4, 100, 300, WHITE);
             }
             if (casa5==true){
-                DrawRectangleRec(botaoQuadrado5, DARKBLUE);
+                DrawRectangleRec(botaoQuadrado5, (Color){ 255, 255, 255, 0 });
+                DrawTexture(b5, 100, 430, WHITE);
             }
             if (casa6==true){
-                DrawRectangleRec(botaoQuadrado6, DARKPURPLE);
+                DrawRectangleRec(botaoQuadrado6, (Color){ 255, 255, 255, 0 });
+                DrawTexture(b6, 100, 540, WHITE);
             }
             
 
