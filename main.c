@@ -52,30 +52,23 @@ typedef enum GameScreen { MENU, NIVEL ,JOGO, FIM} GameScreen;
 void InitInimigo(Inimigo *inimigo, const char* foto, double vida,int xp,int dano, double posX, double posY ,double velocidade, bool vivo);
 void InitBoss(Boss *boss, const char* fotos[8], double vida, int dano, double posX, double posY, double velocidade, bool vivo);
 void InitTropas(Tropa *tropas, const char* foto, const char* fotoAtaque , char nome[10] ,double posx, double posy ,double posxataque ,int posyataque);
-void DrawInimigo(Inimigo *inimigo, int larguraBarra, double *vidaPraia);
-void DrawBoss(Boss *boss, int larguraBarra, double *vidaPraia);
+void DrawInimigo(Inimigo *inimigo, double *vidaPraia);
+void DrawBoss(Boss *boss, double *vidaPraia);
 void BossRecebeDano(Boss *boss, int dano);
 void DrawAtaqueReginaldo(Inimigo *inimigos, Tropa *Reginaldo, int *numInimigos, Boss *chefe, bool boss);
 void Menu(GameScreen *currentScreen);
 void inserirTropa(Tropa **head, Tropa **tail, Tropa *tropa ,float posX, float posY, int lane, int posicao);
 void imprimirTropaCompleta(Tropa *head, Tropa *tail ,Inimigo *inimigos1, Inimigo *inimigos2, Inimigo *inimigos3 ,int *numInimigos1, int *numInimigos2, int *numInimigos3,Boss *bossTubarao, bool boss);
-void SalvarTelacongelada(Tropa *head, Tropa *tail, RenderTexture2D telaCongelada, Texture2D praia, Rectangle botaoQuadrado, Rectangle botaoQuadrado2, Rectangle botaoQuadrado3
-                         ,Rectangle botaoQuadrado4, Rectangle botaoQuadrado5, Rectangle botaoQuadrado6,Rectangle botaoPosicionar, 
-                         Texture2D icone, Inimigo* inimigos1, int numInimigos1, Inimigo* inimigos2, int numInimigos2, Inimigo* Inimigos3,
-                         int numInimigos3, Boss* bossTubarao, int largurabarra, int largurabarraBoss, bool boss, Rectangle botaoRemover, double *vidaPraia);
+void SalvarTelacongelada(Tropa *head, Tropa *tail, RenderTexture2D telaCongelada, Texture2D praia, 
+                         Inimigo* inimigos1, int numInimigos1, Inimigo* inimigos2, int numInimigos2, Inimigo* Inimigos3,
+                         int numInimigos3, Boss* bossTubarao, bool boss, Rectangle botaoRemover, double *vidaPraia);
 void adicionarTropa(Tropa **head, Tropa **tail, Tropa *tropa, Tropa *tropa2, Tropa *tropa3,
-                        Tropa *tropa4, Tropa *tropa5, Tropa *tropa6, RenderTexture2D telaCongelada, 
-                        Texture2D praia, Rectangle botaoQuadrado, Rectangle botaoQuadrado2, Rectangle botaoQuadrado3, 
-                        Rectangle botaoQuadrado4, Rectangle botaoQuadrado5, Rectangle botaoQuadrado6, Rectangle botaoPosicionar, 
-                        Texture2D icone, Inimigo *inimigos1, int numInimigos1, Inimigo *inimigos2, int numInimigos2, 
-                        Inimigo *inimigos3, int numInimigos3, Boss *bossTubarao, int largurabarra, 
-                        int largurabarraBoss, bool boss, Rectangle botaoRemover, double *vidaPraia);
-void removerTropaBotao(Tropa **head, Tropa **tail, RenderTexture2D telaCongelada, Texture2D praia,
-                      Rectangle botaoQuadrado, Rectangle botaoQuadrado2, Rectangle botaoQuadrado3,
-                      Rectangle botaoQuadrado4, Rectangle botaoQuadrado5, Rectangle botaoQuadrado6, 
-                      Rectangle botaoPosicionar, Texture2D icone, Inimigo *inimigos1, int numInimigos1,
-                      Inimigo *inimigos2, int numInimigos2, Inimigo *inimigos3, int numInimigos3, 
-                      Boss *bossTubarao, int largurabarra, int largurabarraBoss, bool boss, Rectangle botaoRemover, double *vidaPraia);
+                        Tropa *tropa4, Tropa *tropa5, Tropa *tropa6, RenderTexture2D telaCongelada, Texture2D praia,
+                     Inimigo *inimigos1, int numInimigos1, Inimigo *inimigos2, int numInimigos2, 
+                        Inimigo *inimigos3, int numInimigos3, Boss *bossTubarao, bool boss, Rectangle botaoRemover, double *vidaPraia);
+void removerTropaBotao(Tropa **head, Tropa **tail, RenderTexture2D telaCongelada, Texture2D praia, 
+                      Inimigo *inimigos1, int numInimigos1,Inimigo *inimigos2, int numInimigos2, Inimigo *inimigos3, int numInimigos3, 
+                      Boss *bossTubarao,  bool boss, Rectangle botaoRemover, double *vidaPraia);
 void RemoverTropa(Tropa **head, Tropa **tail, int posicao);
 
 bool casa1=true;
@@ -85,6 +78,22 @@ bool casa4=true;
 bool casa5=true;
 bool casa6=true;
 
+Rectangle botaoPosicionar = { 348, 14, 40, 40 }; 
+Rectangle botaoRemover = { 917, 11, 50, 50 }; 
+
+Rectangle botaoQuadrado = { 20, 260, 50, 50 }; 
+Rectangle botaoQuadrado2 = { 20, 390, 50, 50 };
+Rectangle botaoQuadrado3 = { 20, 520, 50, 50 };
+
+Rectangle botaoQuadrado4 = { 100, 300, 50, 50 }; 
+Rectangle botaoQuadrado5 = { 100, 430, 50, 50 };
+Rectangle botaoQuadrado6 = { 100, 540, 50, 50 };
+
+int largurabarra = 50;
+int largurabarraBoss = 400; 
+bool boss = false;
+
+
 int main(void){   
     const int screenWidth = 1316;
     const int screenHeight = 600;
@@ -92,8 +101,7 @@ int main(void){
     Tropa *head = NULL;
     Tropa *tail = NULL;
 
-    Texture praia, icone;
-    icone = LoadTexture("./textures/iconeReginaldo.png");
+    Texture praia;
     praia = LoadTexture("./textures/praiaNova.png");
 
     SetTargetFPS(90);
@@ -129,25 +137,9 @@ int main(void){
     const char* fotosTubarao[8] = {
     "./textures/Tubarao1.png", "./textures/Tubarao2.png",
     "./textures/Tubarao4.png", "./textures/Tubarao8.png", "./textures/Tubarao10.png", 
-    "./textures/Tubarao11.png", "./textures/Tubarao12.png", "./textures/Tubarao3.png"
-    }; 
-
+    "./textures/Tubarao11.png", "./textures/Tubarao12.png", "./textures/Tubarao3.png"}; 
     InitBoss(&bossTubarao, fotosTubarao, 20000, 40, 1450, screenHeight-300, 5, true);
     
-    int largurabarra = 50;
-    int largurabarraBoss = 400;
-    bool boss = false;
-    Rectangle botaoPosicionar = { 348, 14, 40, 40 }; 
-    Rectangle botaoRemover = { 917, 11, 50, 50 }; 
-
-    Rectangle botaoQuadrado = { 20, 260, 50, 50 }; 
-    Rectangle botaoQuadrado2 = { 20, 390, 50, 50 };
-    Rectangle botaoQuadrado3 = { 20, 520, 50, 50 };
-
-    Rectangle botaoQuadrado4 = { 100, 300, 50, 50 }; 
-    Rectangle botaoQuadrado5 = { 100, 430, 50, 50 };
-    Rectangle botaoQuadrado6 = { 100, 540, 50, 50 };
-
 
     InitAudioDevice();
     Music soundBoss = LoadMusicStream("./audio/audio-teste2.mp3");
@@ -240,9 +232,8 @@ int main(void){
                 RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
                 bool pausa = true;
 
-                SalvarTelacongelada(head, tail, telaCongelada, praia, botaoQuadrado, botaoQuadrado2, botaoQuadrado3, 
-                    botaoQuadrado4, botaoQuadrado5, botaoQuadrado6, botaoPosicionar, icone, inimigos1, numInimigos1, 
-                    inimigos2, numInimigos2, inimigos3, numInimigos3, &bossTubarao, largurabarra, largurabarraBoss, boss, botaoRemover, &vidaPraia);
+                SalvarTelacongelada(head, tail, telaCongelada, praia, inimigos1, numInimigos1, 
+                    inimigos2, numInimigos2, inimigos3, numInimigos3, &bossTubarao,  boss, botaoRemover, &vidaPraia);
 
                 while (pausa && !WindowShouldClose()) {
                     BeginDrawing();
@@ -264,9 +255,8 @@ int main(void){
             if (vidaPraia <= 0) {
                 Rectangle botaosair = { 270, 250, 100, 100 };
                 RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
-                SalvarTelacongelada(head, tail, telaCongelada, praia, botaoQuadrado, botaoQuadrado2, botaoQuadrado3, 
-                            botaoQuadrado4, botaoQuadrado5, botaoQuadrado6, botaoPosicionar, icone, inimigos1, numInimigos1, 
-                            inimigos2, numInimigos2, inimigos3, numInimigos3, &bossTubarao, largurabarra, largurabarraBoss, boss, botaoRemover, &vidaPraia);
+                SalvarTelacongelada(head, tail, telaCongelada, praia, inimigos1, numInimigos1, 
+                            inimigos2, numInimigos2, inimigos3, numInimigos3, &bossTubarao,  boss, botaoRemover, &vidaPraia);
 
                             
                 while(1){
@@ -292,11 +282,8 @@ int main(void){
 
                 adicionarTropa(&head, &tail, &Reginaldo, &Reginaldo2, &Reginaldo3,
                             &Reginaldo4, &Reginaldo5, &Reginaldo6, telaCongelada, 
-                            praia, botaoQuadrado, botaoQuadrado2, botaoQuadrado3, 
-                            botaoQuadrado4, botaoQuadrado5, botaoQuadrado6, botaoPosicionar, 
-                            icone,  inimigos1, numInimigos1, inimigos2, numInimigos2, 
-                            inimigos3, numInimigos3, &bossTubarao, largurabarra, 
-                            largurabarraBoss, boss, botaoRemover, &vidaPraia);
+                            praia,  inimigos1, numInimigos1, inimigos2, numInimigos2, 
+                            inimigos3, numInimigos3, &bossTubarao,  boss, botaoRemover, &vidaPraia);
             
             }
             else if(CheckCollisionPointRec(mousePosition, botaoRemover) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossTubarao.vivo){
@@ -304,11 +291,9 @@ int main(void){
                 RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
 
                 removerTropaBotao(&head, &tail, telaCongelada, praia,
-                        botaoQuadrado, botaoQuadrado2, botaoQuadrado3,
-                        botaoQuadrado4, botaoQuadrado5, botaoQuadrado6, 
-                        botaoPosicionar, icone, inimigos1, numInimigos1,
+                        inimigos1, numInimigos1,
                         inimigos2, numInimigos2, inimigos3, numInimigos3, 
-                        &bossTubarao, largurabarra, largurabarraBoss, boss, botaoRemover, &vidaPraia);
+                        &bossTubarao,  boss, botaoRemover, &vidaPraia);
 
                 
             }
@@ -318,27 +303,27 @@ int main(void){
             
 
             for (int i = 0; i < numInimigos1; i++) {
-                DrawInimigo(&inimigos1[i], largurabarra, &vidaPraia);
+                DrawInimigo(&inimigos1[i],  &vidaPraia);
             }
             
             for (int i = 0; i < numInimigos2; i++) {
-                DrawInimigo(&inimigos2[i], largurabarra, &vidaPraia);
+                DrawInimigo(&inimigos2[i],  &vidaPraia);
             }
 
             for (int i = 0; i < numInimigos3; i++) {
-                DrawInimigo(&inimigos3[i], largurabarra, &vidaPraia);
+                DrawInimigo(&inimigos3[i],  &vidaPraia);
             }
 
 
             if (numInimigos1+numInimigos2+numInimigos3<=0){
                 boss = true;
-                DrawBoss(&bossTubarao, largurabarraBoss, &vidaPraia);
+                DrawBoss(&bossTubarao,  &vidaPraia);
                 //PlayMusicStream(soundBoss);
 
                 if (bossTubarao.vivo == false){
                     Rectangle botaoWin = { 650, 400, 100, 100 };
                     nivel+=1;
-                       
+                    boss = false;
                     Vector2 mousePosition = GetMousePosition();
                     DrawRectangle(620, 290, 200, 50, BROWN);
                     DrawRectangleRec(botaoWin, BROWN);
@@ -420,7 +405,7 @@ void InitTropas(Tropa *tropas, const char* foto, const char* fotoAtaque , char n
     tropas->posyataque = posyataque;
 }
 
-void DrawInimigo(Inimigo *inimigo, int larguraBarra, double *vidaPraia){ 
+void DrawInimigo(Inimigo *inimigo, double *vidaPraia){ 
     if (inimigo->posX >= 140){
             inimigo->posX -= inimigo->velocidade;
         }
@@ -432,7 +417,7 @@ void DrawInimigo(Inimigo *inimigo, int larguraBarra, double *vidaPraia){
     if (inimigo->vida > 0) {
         DrawTexture(inimigo->foto, inimigo->posX, inimigo->posY, WHITE);
         
-        int larguraAtual = (inimigo->vida * larguraBarra) / inimigo->vidaMax;
+        int larguraAtual = (inimigo->vida * largurabarra) / inimigo->vidaMax;
         Color corBarra = GREEN;
         if (inimigo->vida <= 340 && inimigo->vida > 150) {
             corBarra = ORANGE;
@@ -442,7 +427,7 @@ void DrawInimigo(Inimigo *inimigo, int larguraBarra, double *vidaPraia){
         }
 
         DrawRectangle(inimigo->posX + 40, inimigo->posY - 10, larguraAtual, 5, corBarra);
-        DrawRectangleLines(inimigo->posX + 40, inimigo->posY - 10, larguraBarra, 5, BLACK);
+        DrawRectangleLines(inimigo->posX + 40, inimigo->posY - 10, largurabarra, 5, BLACK);
     } 
     else {
         inimigo->vivo = false;
@@ -451,7 +436,7 @@ void DrawInimigo(Inimigo *inimigo, int larguraBarra, double *vidaPraia){
     }
 }
 
-void DrawBoss(Boss *boss, int larguraBarra, double *vidaPraia) {
+void DrawBoss(Boss *boss, double *vidaPraia) {
     if (boss->vida > 0) {
 
         if (boss->posX >= 140) {
@@ -501,14 +486,14 @@ void DrawBoss(Boss *boss, int larguraBarra, double *vidaPraia) {
 
         }
         
-        int barraPosX = (772 - larguraBarra) / 2;
+        int barraPosX = (772 - largurabarra) / 2;
         int barraPosY = 70;
-        int larguraAtual = (boss->vida * larguraBarra) / boss->vidaMax;
+        int larguraAtual = (boss->vida * largurabarraBoss) / boss->vidaMax;
 
         Color corBarra = RED;
         DrawText("TUBARÃO DE BOA VIAGEM", barraPosX + 50, 40, 20, BLACK);
         DrawRectangle(barraPosX, barraPosY, larguraAtual, 20, corBarra);
-        DrawRectangleLines(barraPosX, barraPosY, larguraBarra, 20, BLACK);
+        DrawRectangleLines(barraPosX, barraPosY, largurabarraBoss, 20, BLACK);
     } 
     else {
         boss->vivo = false;
@@ -541,7 +526,7 @@ void DrawAtaqueReginaldo(Inimigo *inimigos, Tropa *Reginaldo, int *numInimigos, 
             } 
             else if (Reginaldo->posxataque >= alvo->posX - 20){
                 Reginaldo->posxataque = Reginaldo->posx+5;
-                alvo->vida -= 1000;
+                alvo->vida -= 100;
                 if (alvo->vida <= 0) {
                     inimigos[alvoIndex] = inimigos[*numInimigos - 1];
                     (*numInimigos)--;
@@ -641,10 +626,9 @@ void imprimirTropaCompleta(Tropa *head, Tropa *tail ,Inimigo *inimigos1, Inimigo
     }
 }
 
-void SalvarTelacongelada(Tropa *head, Tropa *tail, RenderTexture2D telaCongelada, Texture2D praia, Rectangle botaoQuadrado, Rectangle botaoQuadrado2, Rectangle botaoQuadrado3
-                         ,Rectangle botaoQuadrado4, Rectangle botaoQuadrado5, Rectangle botaoQuadrado6,Rectangle botaoPosicionar, 
-                         Texture2D icone, Inimigo* inimigos1, int numInimigos1, Inimigo* inimigos2, int numInimigos2, Inimigo* inimigos3,
-                         int numInimigos3, Boss* bossTubarao, int largurabarra, int largurabarraBoss, bool boss, Rectangle botaoRemover, double *vidaPraia){
+void SalvarTelacongelada(Tropa *head, Tropa *tail, RenderTexture2D telaCongelada, Texture2D praia,  
+                          Inimigo* inimigos1, int numInimigos1, Inimigo* inimigos2, int numInimigos2, Inimigo* inimigos3,
+                         int numInimigos3, Boss* bossTubarao, bool boss, Rectangle botaoRemover, double *vidaPraia){
     
             BeginTextureMode(telaCongelada);  
             ClearBackground(RAYWHITE);  
@@ -679,19 +663,19 @@ void SalvarTelacongelada(Tropa *head, Tropa *tail, RenderTexture2D telaCongelada
 
             
             for (int i = 0; i < numInimigos1; i++) {
-                DrawInimigo(&inimigos1[i], largurabarra, vidaPraia);
+                DrawInimigo(&inimigos1[i], vidaPraia);
             }
              for (int i = 0; i < numInimigos2; i++) {
-                DrawInimigo(&inimigos2[i], largurabarra, vidaPraia);
+                DrawInimigo(&inimigos2[i], vidaPraia);
             }
             for (int i = 0; i < numInimigos3; i++) {
-                DrawInimigo(&inimigos3[i], largurabarra, vidaPraia);
+                DrawInimigo(&inimigos3[i], vidaPraia);
             }
 
 
             if (numInimigos1+numInimigos2+numInimigos3<=0){
                 boss = true;
-                DrawBoss(bossTubarao, largurabarraBoss, vidaPraia);
+                DrawBoss(bossTubarao, vidaPraia);
                 //PlayMusicStream(soundBoss);
             }
             EndDrawing();
@@ -742,18 +726,15 @@ void RemoverTropa(Tropa **head, Tropa **tail, int posicao) {
 
 void adicionarTropa(Tropa **head, Tropa **tail, Tropa *tropa, Tropa *tropa2, Tropa *tropa3,
                         Tropa *tropa4, Tropa *tropa5, Tropa *tropa6, RenderTexture2D telaCongelada, 
-                        Texture2D praia, Rectangle botaoQuadrado, Rectangle botaoQuadrado2, Rectangle botaoQuadrado3, 
-                        Rectangle botaoQuadrado4, Rectangle botaoQuadrado5, Rectangle botaoQuadrado6, Rectangle botaoPosicionar, 
-                        Texture2D icone, Inimigo *inimigos1, int numInimigos1, Inimigo *inimigos2, int numInimigos2, 
-                        Inimigo *inimigos3, int numInimigos3, Boss *bossTubarao, int largurabarra, 
-                        int largurabarraBoss, bool boss, Rectangle botaoRemover, double *vidaPraia) {
+                        Texture2D praia,  
+                         Inimigo *inimigos1, int numInimigos1, Inimigo *inimigos2, int numInimigos2, 
+                        Inimigo *inimigos3, int numInimigos3, Boss *bossTubarao, bool boss, Rectangle botaoRemover, double *vidaPraia) {
     
     bool botaoclicado = true;
 
     // Salva o estado da tela atual em telaCongelada
-    SalvarTelacongelada(*head, *tail, telaCongelada, praia, botaoQuadrado, botaoQuadrado2, botaoQuadrado3, 
-                        botaoQuadrado4, botaoQuadrado5, botaoQuadrado6, botaoPosicionar, icone, inimigos1, numInimigos1, 
-                        inimigos2, numInimigos2, inimigos3, numInimigos3, bossTubarao, largurabarra, largurabarraBoss, boss, botaoRemover, vidaPraia);
+    SalvarTelacongelada(*head, *tail, telaCongelada, praia, inimigos1, numInimigos1, 
+                        inimigos2, numInimigos2, inimigos3, numInimigos3, bossTubarao, boss, botaoRemover, vidaPraia);
 
     // Loop de seleção de posição para o personagem Reginaldo
     while (botaoclicado && !WindowShouldClose()) {
@@ -805,19 +786,15 @@ void adicionarTropa(Tropa **head, Tropa **tail, Tropa *tropa, Tropa *tropa2, Tro
 }
 
 void removerTropaBotao(Tropa **head, Tropa **tail, RenderTexture2D telaCongelada, Texture2D praia,
-                      Rectangle botaoQuadrado, Rectangle botaoQuadrado2, Rectangle botaoQuadrado3,
-                      Rectangle botaoQuadrado4, Rectangle botaoQuadrado5, Rectangle botaoQuadrado6, 
-                      Rectangle botaoPosicionar, Texture2D icone, Inimigo *inimigos1, int numInimigos1,
+                        Inimigo *inimigos1, int numInimigos1,
                       Inimigo *inimigos2, int numInimigos2, Inimigo *inimigos3, int numInimigos3, 
-                      Boss *bossTubarao, int largurabarra, int largurabarraBoss, bool boss, Rectangle botaoRemover, double *vidaPraia) {
+                      Boss *bossTubarao, bool boss, Rectangle botaoRemover, double *vidaPraia) {
 
     bool botaoclicado = true;
 
     // Salva o estado da tela atual em telaCongelada
-    SalvarTelacongelada(*head, *tail, telaCongelada, praia, botaoQuadrado, botaoQuadrado2, botaoQuadrado3, 
-                        botaoQuadrado4, botaoQuadrado5, botaoQuadrado6, botaoPosicionar, icone, inimigos1, 
-                        numInimigos1, inimigos2, numInimigos2, inimigos3, numInimigos3, bossTubarao, largurabarra, 
-                        largurabarraBoss, boss, botaoRemover, vidaPraia);
+    SalvarTelacongelada(*head, *tail, telaCongelada, praia, inimigos1, 
+                        numInimigos1, inimigos2, numInimigos2, inimigos3, numInimigos3, bossTubarao, boss, botaoRemover, vidaPraia);
 
     // Loop para escolher a tropa que será removida
     while (botaoclicado && !WindowShouldClose()) {
