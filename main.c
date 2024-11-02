@@ -182,8 +182,8 @@ int main(void){
     int numInimigos2 = 0;
     int numInimigos1 = 0;
     
-    InitInimigo(&inimigos1[numInimigos1++], "./textures/aguaViva.png", 500, 750, 10, 1400, 250 , 1.5, true, 1);
-    InitInimigo(&inimigos1[numInimigos1++], "./textures/aguaViva.png", 500, 750, 10, 1500, 250 , 1.5, true, 1);
+    InitInimigo(&inimigos1[numInimigos1++], "./textures/aguaViva.png", 800, 750, 7, 1400, 250 , 1.5, true, 1);
+    InitInimigo(&inimigos1[numInimigos1++], "./textures/aguaViva.png", 900, 750, 7, 1500, 250 , 1.5, true, 1);
     
     InitInimigo(&inimigos2[numInimigos2++], "./textures/Ourico.png", 2500, 750, 2, 1400, 380 , 0.5, true, 2);
     InitInimigo(&inimigos2[numInimigos2++], "./textures/Ourico.png", 2500, 750, 2, 1500, 380 , 0.5, true, 2);
@@ -199,14 +199,14 @@ int main(void){
     "./textures/Tubarao1.png", "./textures/Tubarao2.png",
     "./textures/Tubarao4.png", "./textures/Tubarao8.png", "./textures/Tubarao10.png", 
     "./textures/Tubarao11.png", "./textures/Tubarao12.png", "./textures/Tubarao3.png"}; 
-    InitBoss(&bossTubarao, fotosTubarao, 30000, 15, 1550, screenHeight-300, 0.4, true);
+    InitBoss(&bossTubarao, fotosTubarao, 30000, 30, 1550, screenHeight-300, 0.6, true);
     
 
     InitAudioDevice();
     Music soundpraia = LoadMusicStream("./audio/GarotaIpanema.mp3");
     Music soundBoss = LoadMusicStream("./audio/Jaws.mp3");
-    double vidaPraia = 2000;
-    double vidaPraiaMax = 2000; 
+    double vidaPraia = 10000;
+    double vidaPraiaMax = 10000; 
 
     GameScreen currentScreen = MENU;
     Texture selecao;
@@ -480,6 +480,7 @@ int main(void){
         EndDrawing();
     }
 
+
     for (int i = 0; i < numInimigos1; i++) {
         UnloadTexture(inimigos1[i].foto); 
     }
@@ -664,7 +665,7 @@ void DrawAtaqueReginaldo(Inimigo *inimigos, Tropa *Reginaldo, int *numInimigos, 
             } 
             else if (Reginaldo->posxataque >= alvo->posX - 20){
                 Reginaldo->posxataque = Reginaldo->posx+5;
-                alvo->vida -= 1000;
+                alvo->vida -= 100;
                 if (alvo->vida <= 0) {
                     experiencia += inimigos->xp;
                     inimigos[alvoIndex] = inimigos[*numInimigos - 1];
@@ -683,7 +684,7 @@ void DrawAtaqueReginaldo(Inimigo *inimigos, Tropa *Reginaldo, int *numInimigos, 
         } 
         else if (Reginaldo->posxataque >= chefe->posX - 20){
             Reginaldo->posxataque = Reginaldo->posx+5;
-            BossRecebeDano(chefe, 50);
+            BossRecebeDano(chefe, 100);
         }
         else if (Reginaldo->posxataque > Reginaldo->posx+5){
                 Reginaldo->posxataque = Reginaldo->posx+5;
@@ -1054,7 +1055,7 @@ void DrawAtaqueCaboclo(Inimigo *inimigos, Tropa *Caboclo, int *numInimigos, Boss
             }
             else if (Caboclo->posxataque >= inimigos[i].posX - 20 &&  Caboclo->posxataque <= inimigos[i].posX + 20){
                 DrawTexture(Caboclo->fotoAtaque, Caboclo->posxataque, Caboclo->posyataque, WHITE);
-                inimigos[i].vida -= 150;
+                inimigos[i].vida -= 25;
                 if (inimigos[i].vida <= 0) {
                     experiencia += inimigos->xp;
                     inimigos[i] = inimigos[*numInimigos - 1];
@@ -1077,7 +1078,7 @@ void DrawAtaqueCaboclo(Inimigo *inimigos, Tropa *Caboclo, int *numInimigos, Boss
         else if (Caboclo->posxataque >= chefe->posX - 20 &&  Caboclo->posxataque <= chefe->posX + 5){
                 DrawTexture(Caboclo->fotoAtaque, Caboclo->posxataque, Caboclo->posyataque, WHITE);
                 Caboclo->posxataque += 3;
-                BossRecebeDano(chefe, 150);
+                BossRecebeDano(chefe, 50);
         }
         else if (chefe->posX < 1320) {
                 DrawTexture(Caboclo->fotoAtaque, Caboclo->posxataque, Caboclo->posyataque, WHITE);
@@ -1156,7 +1157,7 @@ void DrawAtaqueLampiao(Inimigo *inimigos, Tropa *Lampiao, int *numInimigos, Boss
             } 
             else if (Lampiao->posxataque >= alvo->posX - 20){
                 Lampiao->posxataque = Lampiao->posx+5;
-                alvo->vida -= 1200;
+                alvo->vida -= 1000;
                 Lampiao->tempoAtaque = 0;
                 if (alvo->vida <= 0) {
                     experiencia += inimigos->xp;
@@ -1177,7 +1178,7 @@ void DrawAtaqueLampiao(Inimigo *inimigos, Tropa *Lampiao, int *numInimigos, Boss
         } 
         else if (Lampiao->posxataque >= chefe->posX - 20){
             Lampiao->posxataque = Lampiao->posx+5;
-            BossRecebeDano(chefe, 1000);
+            BossRecebeDano(chefe, 500);
             Lampiao->tempoAtaque = 0;
         }
         else if (Lampiao->posxataque > Lampiao->posx+5){
@@ -1211,42 +1212,56 @@ void DrawAtaqueLaursa(Inimigo *inimigos, Tropa *LaUrsa, int *numInimigos, Boss *
 }
 
 void DrawAtaqueFrevista(Inimigo *inimigos, Tropa *Frevista, int *numInimigos, Boss *chefe ,bool boss){ 
+    int alvoIndex = -1;
+    double menorDistancia = 10000;
+    Texture ataque;
+    ataque = LoadTexture("./textures/laUrsa-ataque.png");
+    
     if (boss == false){
-        bool inimigoNoAlcance = false;
-
-        if (Frevista->tempoAtaque > 0) {
-                    DrawTexture(Frevista->fotoAtaque, Frevista->posx+100, Frevista->posy - 20, WHITE); 
-        }
-
-        for (int i = 0; i < *numInimigos; i++) {
-            if (inimigos[i].posX <= Frevista->posx + 100) {
-                inimigoNoAlcance = true;
-                if (Frevista->tempoAtaque > 0) {
-                    inimigos[i].posX += 100;
-                }
-                else{
-                    Texture ataque;
-                    ataque = LoadTexture("./textures/laUrsa-ataque.png");
-                    DrawTexture(ataque, Frevista->posx+100, Frevista->posy - 20, WHITE); 
-                    inimigos[i].vida -= 2;
-                }
+        
+         for (int i = 0; i < *numInimigos; i++) {
+            if (inimigos[i].vivo && inimigos[i].posX < menorDistancia) {
+                menorDistancia = inimigos[i].posX;
+                alvoIndex = i;
             }
         }
 
-       if (inimigoNoAlcance) {
-            Frevista->tempoAtaque--; 
-        }
-        else{
-            Frevista->tempoAtaque = 5;
+        if (Frevista->tempoAtaque > 0) {
+                DrawTexture(Frevista->fotoAtaque, Frevista->posx+100, Frevista->posy - 20, WHITE); 
         }
 
-         
+        if (alvoIndex != -1) {
+            Inimigo *alvo = &inimigos[alvoIndex];
+            
+            if (Frevista->tempoAtaque > 0 && alvo->posX <= Frevista->posx + 100) {
+                alvo->posX += 100;
+                Frevista->tempoAtaque--; 
+            }
+            else if (Frevista->tempoAtaque <= 0){
+                for (int i = 0; i < *numInimigos; i++) {
+                    if (inimigos[i].posX <= Frevista->posx+150){
+                        DrawTexture(ataque, Frevista->posx+100, Frevista->posy - 20, WHITE);
+                        inimigos[i].vida -= 3;
+                        if (inimigos[i].vida <= 0) {
+                            experiencia += inimigos->xp;
+                            inimigos[i] = inimigos[*numInimigos - 1];
+                            (*numInimigos)--;
+                        }
+                    } 
+                }
+            }
+
+        }
+        else{
+            Frevista->tempoAtaque=5;
+        }
+   
     }
-    
     else{
+
         if (chefe->posX <= Frevista->posx+100){
-                DrawTexture(Frevista->fotoAtaque, 200, Frevista->posyataque-10, WHITE);
-                BossRecebeDano(chefe, 10);
+                DrawTexture(ataque, 200, Frevista->posyataque-10, WHITE);
+                BossRecebeDano(chefe, 3);
             } 
     }
 }
