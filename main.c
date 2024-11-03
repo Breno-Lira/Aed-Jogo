@@ -58,7 +58,15 @@ typedef struct NodeTropa {
     struct NodeTropa *direita;
 } NodeTropa;
 
-typedef enum GameScreen { MENU, NIVEL ,JOGO, JOGO2 ,FIM} GameScreen;
+typedef struct usuario {
+    char nome[30];
+    int nivel;
+    int score;
+    struct usuario *prox;
+    struct usuario *ant;
+} usuario;
+
+typedef enum GameScreen { MENU, CAPTURA_NOME , NIVEL ,JOGO, JOGO2 ,FIM} GameScreen;
 
 void InitInimigo(Inimigo *inimigo, const char* foto, double vida,int xp,int dano, double posX, double posY ,double velocidade, bool vivo, int lane);
 void InitBoss(Boss *boss, const char* fotos[8], double vida, int dano, double posX, double posY, double velocidade, bool vivo);
@@ -87,6 +95,12 @@ bool verificarDisponibilidadeTropa(NodeTropa *raiz, char nomeTropa[10], int fase
 void DrawAtaqueLampiao(Inimigo *inimigos, Tropa *Lampiao, int *numInimigos, Boss *chefe ,bool boss);
 void DrawAtaqueLaursa(Inimigo *inimigos, Tropa *LaUrsa, int *numInimigos, Boss *chefe ,bool boss);
 void DrawAtaqueFrevista(Inimigo *inimigos, Tropa *Frevista, int *numInimigos, Boss *chefe ,bool boss);
+void CapturarNome(GameScreen *currentScreen, char *nomeJogador);
+void salvarDados(char *nome, int nivel, int score);
+void inserir(usuario **head, char *nome, int nivel, int score);
+void lerDados(usuario **head);
+void organizar(usuario **head);
+void trocar(usuario **head, usuario *ant, usuario *prox);
 
 bool casa1=true;
 bool casa2=true;
@@ -118,6 +132,7 @@ int experienciaMax = 1000;
 bool boss = false;
 bool range;
 int nivelXp=20;
+int scoreTotal=0;
 double larguraxp=0;
 int contLampiao1=0;
 int contLampiao2=0;
@@ -130,7 +145,7 @@ int main(void){
     Tropa *head = NULL;
     Tropa *tail = NULL;
     NodeTropa *arvore = NULL;
-    
+    usuario *head2 = NULL;
 
     Texture praia, ponte;
     praia = LoadTexture("./textures/praiaNova.png");
@@ -208,7 +223,7 @@ int main(void){
     double vidaPraia = 10000;
     double vidaPraiaMax = 10000; 
 
-    GameScreen currentScreen = MENU;
+    GameScreen currentScreen = CAPTURA_NOME;
     Texture selecao;
     int fase = 1;
     Rectangle pause = { 1250, 8, 40, 40 };
@@ -217,6 +232,8 @@ int main(void){
     bool CabocloDisponivel;
     bool LampiaoDisponivel;
     bool LaUrsaDisponivel;
+
+    char nomeJogador[20] = "";
 
     while (!WindowShouldClose() && currentScreen != FIM) {
         BeginDrawing();
@@ -227,6 +244,10 @@ int main(void){
         {
         case MENU:
             Menu(&currentScreen);
+            break;
+
+        case CAPTURA_NOME:
+            CapturarNome(&currentScreen, nomeJogador);
             break;
 
         case NIVEL:
@@ -496,6 +517,11 @@ int main(void){
     UnloadMusicStream(soundBoss);
     CloseWindow();
     CloseAudioDevice();
+    
+
+    salvarDados(nomeJogador, fase, scoreTotal);
+    lerDados(&head2);
+    organizar(&head2);
 
     return 0;
 }
@@ -667,7 +693,8 @@ void DrawAtaqueReginaldo(Inimigo *inimigos, Tropa *Reginaldo, int *numInimigos, 
                 Reginaldo->posxataque = Reginaldo->posx+5;
                 alvo->vida -= 100;
                 if (alvo->vida <= 0) {
-                    experiencia += inimigos->xp;
+                    experiencia += alvo->xp;
+                    scoreTotal+=alvo->xp;
                     inimigos[alvoIndex] = inimigos[*numInimigos - 1];
                     (*numInimigos)--;
                 }
@@ -720,6 +747,7 @@ void Menu(GameScreen *currentScreen){
     if (CheckCollisionPointRec(mousePosition, botaoJogar) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         *currentScreen = NIVEL;  
     } 
+
 }
 
 void inserirTropa(Tropa **head, Tropa **tail, Tropa *tropa ,float posX, float posY, int lane, int posicao){
@@ -1057,7 +1085,8 @@ void DrawAtaqueCaboclo(Inimigo *inimigos, Tropa *Caboclo, int *numInimigos, Boss
                 DrawTexture(Caboclo->fotoAtaque, Caboclo->posxataque, Caboclo->posyataque, WHITE);
                 inimigos[i].vida -= 25;
                 if (inimigos[i].vida <= 0) {
-                    experiencia += inimigos->xp;
+                    experiencia += inimigos[i].xp;
+                    scoreTotal+=inimigos[i].xp;
                     inimigos[i] = inimigos[*numInimigos - 1];
                     (*numInimigos)--;
                 }
@@ -1160,7 +1189,8 @@ void DrawAtaqueLampiao(Inimigo *inimigos, Tropa *Lampiao, int *numInimigos, Boss
                 alvo->vida -= 1000;
                 Lampiao->tempoAtaque = 0;
                 if (alvo->vida <= 0) {
-                    experiencia += inimigos->xp;
+                    experiencia += alvo->xp;
+                    scoreTotal+= alvo->xp;
                     inimigos[alvoIndex] = inimigos[*numInimigos - 1];
                     (*numInimigos)--;
                 }
@@ -1195,7 +1225,8 @@ void DrawAtaqueLaursa(Inimigo *inimigos, Tropa *LaUrsa, int *numInimigos, Boss *
                 DrawTexture(LaUrsa->fotoAtaque, 220, LaUrsa->posyataque-20, WHITE);
                 inimigos[i].vida -= 7;
                 if (inimigos[i].vida <= 0) {
-                    experiencia += inimigos->xp;
+                    experiencia += inimigos[i].xp;
+                    scoreTotal += inimigos[i].xp;
                     inimigos[i] = inimigos[*numInimigos - 1];
                     (*numInimigos)--;
                 }
@@ -1243,7 +1274,8 @@ void DrawAtaqueFrevista(Inimigo *inimigos, Tropa *Frevista, int *numInimigos, Bo
                         DrawTexture(ataque, Frevista->posx+100, Frevista->posy - 20, WHITE);
                         inimigos[i].vida -= 3;
                         if (inimigos[i].vida <= 0) {
-                            experiencia += inimigos->xp;
+                            experiencia += inimigos[i].xp;
+                            scoreTotal += inimigos[i].xp;
                             inimigos[i] = inimigos[*numInimigos - 1];
                             (*numInimigos)--;
                         }
@@ -1264,4 +1296,144 @@ void DrawAtaqueFrevista(Inimigo *inimigos, Tropa *Frevista, int *numInimigos, Bo
                 BossRecebeDano(chefe, 3);
             } 
     }
+}
+
+ void CapturarNome(GameScreen *currentScreen, char *nomeJogador) {
+    DrawText("Digite seu nome:", 250, 200, 20, DARKGRAY);
+    DrawRectangle(250, 240, 300, 40, LIGHTGRAY);
+    DrawText(nomeJogador, 260, 250, 20, DARKGRAY);
+
+    int key = GetCharPressed();
+    int length = strlen(nomeJogador);
+
+    // Adiciona o caractere digitado ao nome do jogador, se o tamanho do nome for menor que 19
+    if (key >= 32 && key <= 125 && length < 29) {
+        nomeJogador[length] = (char)key;
+        nomeJogador[length + 1] = '\0';  // Adiciona o caractere nulo no final
+    }
+
+    // Remove o último caractere se o jogador pressionar BACKSPACE
+    if (IsKeyPressed(KEY_BACKSPACE) && length > 0) {
+        nomeJogador[length - 1] = '\0';
+    }
+
+    // Confirma o nome ao pressionar ENTER e passa para a próxima tela
+    if (IsKeyPressed(KEY_ENTER)) {
+        *currentScreen = MENU; 
+    }
+}
+
+void salvarDados(char *nome, int nivel, int score) {
+    FILE *arquivo = fopen("scoreboard.txt", "a");
+    if (arquivo != NULL) {
+        fprintf(arquivo, "%s %d %d\n", nome, nivel, score);
+        fclose(arquivo);
+    } else {
+        printf("Arquivo nao encontrado!");
+    }
+}
+
+void inserir(usuario **head, char *nome, int nivel, int score) {
+    usuario *novo = (usuario *)malloc(sizeof(usuario));
+    if (novo != NULL) {
+        if (nome[0] != '\0') {
+            strcpy(novo->nome, nome);
+        }
+        novo->nivel = nivel;
+        novo->score = score;
+        novo->prox = NULL;
+
+        if (*head == NULL) {
+            novo->ant = NULL;
+            *head = novo;
+        } else {
+            usuario *temp = *head;
+            while (temp->prox != NULL) {
+                temp = temp->prox;
+            }
+            novo->ant = temp;
+            temp->prox = novo;
+        }
+    } else {
+        printf("Erro ao alocar memória.\n");
+    }
+}
+
+void lerDados(usuario **head) {
+    FILE *arquivo = fopen("scoreboard.txt", "r");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return;
+    }
+
+    char nome[30];
+    int nivel;
+    int score;
+
+    while (fscanf(arquivo, "%s %d %d", nome, &nivel, &score) == 3) {
+        inserir(head, nome, nivel, score);
+    }
+
+    fclose(arquivo);
+}
+
+void organizar(usuario **head) {
+    usuario *temp;
+    int troca = 1, len = 0;
+
+    // Calcular o comprimento da lista
+    temp = *head;
+    while (temp != NULL) {
+        len++;
+        temp = temp->prox;
+    }
+    int n=0;
+
+    // Ordenar usando Bubble Sort
+    while (n < len && troca ==1) {
+        troca = 0;
+        temp = *head; // Reinicia 'temp' no começo da lista para cada passagem
+
+        for (int i=0; i<len-1; i++) {
+            if (temp->score < temp->prox->score) {
+                trocar(head, temp, temp->prox);
+                troca = 1;
+                temp = temp->ant;
+            }
+            temp = temp->prox;
+        }
+    }
+
+    // Abrir arquivo para sobrescrever com os dados organizados
+    FILE *arquivo = fopen("scoreboard.txt", "w");
+    if (arquivo != NULL) {
+        temp = *head;
+        while (temp != NULL) {
+            fprintf(arquivo, "%s %d %d\n", temp->nome, temp->nivel, temp->score);
+            temp = temp->prox;
+        }
+        fclose(arquivo);
+    } else {
+        printf("Erro ao abrir o arquivo para escrita.\n");
+    }
+}
+
+void trocar(usuario **head, usuario *ant, usuario *prox) {
+    // Caso ant seja o head, precisamos atualizar o ponteiro do head
+    if (ant->ant != NULL) {
+        ant->ant->prox = prox;
+    } else {
+        *head = prox; // Atualiza o início da lista se 'ant' for o primeiro elemento
+    }
+
+    if (prox->prox != NULL) {
+        prox->prox->ant = ant;
+    }
+
+    // Troca os ponteiros entre 'ant' e 'prox'
+    ant->prox = prox->prox;
+    prox->ant = ant->ant;
+
+    prox->prox = ant;
+    ant->ant = prox;
 }
