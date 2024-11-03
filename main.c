@@ -143,6 +143,7 @@ int contLampiao1=0;
 int contLampiao2=0;
 int contLampiao3=0;
 double vidaPraiaMax = 10000; 
+int fase = 1;
 
 int main(void){   
     const int screenWidth = 1316;
@@ -180,13 +181,13 @@ int main(void){
     InitTropas(&Lampiao2, "./textures/lampiao2.png" , "./textures/lampiao-ataque.png" , "Lampiao12" , 20, 290, 25, 300, 2, 1);
     InitTropas(&Lampiao3, "./textures/lampiao2.png" , "./textures/lampiao-ataque.png" , "Lampiao12" , 20, 290, 25, 300, 2, 1);
 
-    InitTropas(&LaUrsa, "./textures/laUrsa.png" , "./textures/laUrsa-ataque.png" , "Alaursa34" , 20, 290, 25, 300, 2, 1);
-    InitTropas(&LaUrsa2, "./textures/laUrsa.png" , "./textures/laUrsa-ataque.png" , "Alaursa34" , 20, 290, 25, 300, 2, 1);
-    InitTropas(&LaUrsa3, "./textures/laUrsa.png" , "./textures/laUrsa-ataque.png", "Alaursa34" , 20, 290, 25, 300, 2, 1);
+    InitTropas(&LaUrsa, "./textures/laUrsa2.png" , "./textures/laUrsa-ataque.png" , "Alaursa34" , 20, 290, 25, 300, 2, 1);
+    InitTropas(&LaUrsa2, "./textures/laUrsa2.png" , "./textures/laUrsa-ataque.png" , "Alaursa34" , 20, 290, 25, 300, 2, 1);
+    InitTropas(&LaUrsa3, "./textures/laUrsa2.png" , "./textures/laUrsa-ataque.png", "Alaursa34" , 20, 290, 25, 300, 2, 1);
 
-    InitTropas(&Frevista, "./textures/frevista.png", "./textures/frevista.png" , "Frevista5" , 20, 290, 25, 300, 2, 1);
-    InitTropas(&Frevista2, "./textures/frevista.png" , "./textures/frevista.png" , "Frevista5" , 20, 290, 25, 300, 2, 1);
-    InitTropas(&Frevista3, "./textures/frevista.png" , "./textures/frevista.png" , "Frevista5" , 20, 290, 25, 300, 2, 1);
+    InitTropas(&Frevista, "./textures/frevista2.png", "./textures/frevista.png" , "Frevista5" , 20, 290, 25, 300, 2, 1);
+    InitTropas(&Frevista2, "./textures/frevista2.png" , "./textures/frevista.png" , "Frevista5" , 20, 290, 25, 300, 2, 1);
+    InitTropas(&Frevista3, "./textures/frevista2.png" , "./textures/frevista.png" , "Frevista5" , 20, 290, 25, 300, 2, 1);
     Frevista.tempoAtaque=5;
     Frevista2.tempoAtaque=5;
     Frevista3.tempoAtaque=5;
@@ -279,7 +280,6 @@ int main(void){
 
     GameScreen currentScreen = JOGO2;
     Texture selecao;
-    int fase = 1;
     Rectangle pause = { 1250, 8, 40, 40 };
 
     bool ReginaldoDisponivel;
@@ -289,12 +289,18 @@ int main(void){
     bool FrevistaDisponivel;
     bool GonzagaDisponivel;
 
-    Texture iconeReginaldoPB, iconeCaboclo, iconeCabocloPB, iconeLampiao, iconeLampiaoPB;
+    Texture iconeReginaldoPB, iconeCaboclo, iconeCabocloPB, iconeLampiao, iconeLampiaoPB, 
+    iconeLaursa, iconeLaursaPB, iconeFrevista, iconeFrevistaPB;
+
     iconeReginaldoPB = LoadTexture("./textures/iconeReginaldoPB.png");
     iconeCaboclo = LoadTexture("./textures/iconeCaboclo.png");
     iconeCabocloPB = LoadTexture("./textures/iconeCabocloPB.png");
     iconeLampiao = LoadTexture("./textures/iconeLampiao.png");
     iconeLampiaoPB = LoadTexture("./textures/iconeLampiaoPB.png");
+    iconeLaursa = LoadTexture("./textures/iconeLaursa.png");
+    iconeLampiaoPB = LoadTexture("./textures/iconeLaursaPB.png");
+    iconeFrevista = LoadTexture("./textures/iconeFrevista.png");
+    iconeFrevistaPB = LoadTexture("./textures/iconeFrevistaPB.png");
 
     char nomeJogador[20] = "";
 
@@ -633,7 +639,6 @@ int main(void){
                 DrawTexture(iconeCaboclo, 413, 7, WHITE); 
             }
             else{
-                DrawRectangleRec(botaoPosicionar2, (Color){ 255, 255, 255, 0 });
                 DrawTexture(iconeCabocloPB, 413, 7, WHITE);
             }
             if (LampiaoDisponivel){
@@ -641,11 +646,22 @@ int main(void){
                 DrawTexture(iconeLampiao, 476, 16, WHITE); 
             }
             else{
-                DrawRectangleRec(botaoPosicionar3, (Color){ 255, 255, 255, 0 });
                 DrawTexture(iconeLampiaoPB, 476, 16, WHITE); 
             }
+            if (LaUrsaDisponivel){
+                DrawRectangleRec(botaoPosicionar4, (Color){ 255, 255, 255, 0 });
+                DrawTexture(iconeLaursa, 538, 14, WHITE); 
+            }
+            else{
+                DrawTexture(iconeLaursaPB, 545, 16, WHITE); 
+            }
+            if (FrevistaDisponivel){
+                DrawRectangleRec(botaoPosicionar5, (Color){ 255, 255, 255, 0 });
+            }
+            else{
+                DrawRectangleRec(botaoPosicionar5, (Color){ 255, 255, 255, 0 });
+            }
 
-            DrawRectangleRec(botaoPosicionar4, ORANGE);
             DrawRectangleRec(botaoPosicionar5, YELLOW);
             DrawRectangleRec(botaoPosicionar6, PURPLE);
             DrawRectangleRec(botaoRemover, (Color){ 255, 255, 255, 0 }); 
@@ -1835,7 +1851,7 @@ void DrawAtaqueLaursa(Inimigo *inimigos, Tropa *LaUrsa, int *numInimigos, Boss *
     }
     
     else{
-        if (chefe->posX <= LaUrsa->posx+100){
+        if (chefe->posX <= LaUrsa->posx+400){
                 DrawTexture(LaUrsa->fotoAtaque, 200, LaUrsa->posyataque-10, WHITE);
                 BossRecebeDano(chefe, 7);
             } 
@@ -1891,7 +1907,7 @@ void DrawAtaqueFrevista(Inimigo *inimigos, Tropa *Frevista, int *numInimigos, Bo
     }
     else{
 
-        if (chefe->posX <= Frevista->posx+100){
+        if (chefe->posX <= Frevista->posx+400){
                 DrawTexture(ataque, 200, Frevista->posyataque-10, WHITE);
                 BossRecebeDano(chefe, 3);
             } 
@@ -2074,7 +2090,7 @@ void DrawAtaqueGonzaga(Inimigo *inimigos, Inimigo *inimigos2, Inimigo *inimigos3
         }
     }
     else{
-        if (chefe->posX <= Gonzaga->posx+100){
+        if (chefe->posX <= Gonzaga->posx+400){
                 DrawTexture(Gonzaga->fotoAtaque, 200, Gonzaga->posyataque-10, WHITE);
                 BossRecebeDano(chefe, 8);
             } 
