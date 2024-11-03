@@ -65,7 +65,7 @@ typedef struct usuario {
     struct usuario *ant;
 } usuario;
 
-typedef enum GameScreen { MENU, CAPTURA_NOME , NIVEL ,JOGO, JOGO2 ,FIM} GameScreen;
+typedef enum GameScreen { MENU, CAPTURA_NOME , NIVEL ,JOGO, JOGO2, JOGO3 ,FIM} GameScreen;
 
 void InitInimigo(Inimigo *inimigo, const char* foto, double vida,int xp,int dano, double posX, double posY ,double velocidade, bool vivo, int lane);
 void InitBoss(Boss *boss, const char* fotos[8], double vida, int dano, double posX, double posY, double velocidade, bool vivo);
@@ -141,6 +141,7 @@ double larguraxp=0;
 int contLampiao1=0;
 int contLampiao2=0;
 int contLampiao3=0;
+double vidaPraiaMax = 10000; 
 
 int main(void){   
     const int screenWidth = 1316;
@@ -151,10 +152,10 @@ int main(void){
     NodeTropa *arvore = NULL;
     usuario *head2 = NULL;
 
-    Texture praia, ponte;
+    Texture praia, ponte, forte;
     praia = LoadTexture("./textures/praiaNova.png");
     ponte = LoadTexture("./textures/ponte3.png");
-   
+    forte = LoadTexture("./textures/fortedas5.png");
     
 
     SetTargetFPS(90);
@@ -206,33 +207,70 @@ int main(void){
     int numInimigos2 = 0;
     int numInimigos1 = 0;
     
-    /*InitInimigo(&inimigos1[numInimigos1++], "./textures/aguaViva.png", 800, 750, 7, 1400, 250 , 1.5, true, 1);
+    /*
+    InitInimigo(&inimigos1[numInimigos1++], "./textures/aguaViva.png", 800, 750, 7, 1400, 250 , 1.5, true, 1);
     InitInimigo(&inimigos1[numInimigos1++], "./textures/aguaViva.png", 900, 750, 7, 1500, 250 , 1.5, true, 1);
     
     InitInimigo(&inimigos2[numInimigos2++], "./textures/Ourico.png", 2500, 750, 2, 1400, 380 , 0.5, true, 2);
     InitInimigo(&inimigos2[numInimigos2++], "./textures/Ourico.png", 2500, 750, 2, 1500, 380 , 0.5, true, 2);
-    InitInimigo(&inimigos2[numInimigos2++], "./textures/inimigo.png", 500, 750, 2, 1550, 380 , 0.5, true, 2);
+    InitInimigo(&inimigos2[numInimigos2++], "./textures/peixeleao.png", 500, 750, 2, 1550, 380 , 0.5, true, 2);
 
-    InitInimigo(&inimigos3[numInimigos3++], "./textures/inimigo.png", 800, 800, 4, 1400, 510 , 0.5, true, 3);
-    InitInimigo(&inimigos3[numInimigos3++], "./textures/inimigo.png", 1500, 900, 2, 1500, 510 , 2.5, true, 3);
-    InitInimigo(&inimigos3[numInimigos3++], "./textures/inimigo.png", 500, 1000, 2, 1550, 510 , 1.5, true, 3);
-    InitInimigo(&inimigos3[numInimigos3++], "./textures/inimigo.png", 500, 1500, 2, 1650, 510 , 1.5, true, 3);*/
+    InitInimigo(&inimigos3[numInimigos3++], "./textures/peixeleao.png", 800, 800, 4, 1400, 510 , 0.5, true, 3);
+    InitInimigo(&inimigos3[numInimigos3++], "./textures/peixeleao.png", 1500, 900, 2, 1500, 510 , 2.5, true, 3);
+    InitInimigo(&inimigos3[numInimigos3++], "./textures/peixeleao.png", 500, 1000, 2, 1550, 510 , 1.5, true, 3);
+    InitInimigo(&inimigos3[numInimigos3++], "./textures/peixeleao.png", 500, 1500, 2, 1650, 510 , 1.5, true, 3);*/
 
-    Boss bossTubarao;
+    Inimigo inimigos6[10];
+    Inimigo inimigos5[10];
+    Inimigo inimigos4[10];
+    int numInimigos6 = 0;
+    int numInimigos5 = 0;
+    int numInimigos4 = 0;
+
+    InitInimigo(&inimigos4[numInimigos4++], "./textures/aguaViva.png", 800, 750, 7, 1400, 250 , 1.5, true, 1);
+    InitInimigo(&inimigos4[numInimigos4++], "./textures/aguaViva.png", 900, 750, 7, 1500, 250 , 1.5, true, 1);
+    
+    InitInimigo(&inimigos5[numInimigos5++], "./textures/Ourico.png", 2500, 750, 2, 1400, 380 , 0.5, true, 2);
+    InitInimigo(&inimigos5[numInimigos5++], "./textures/peixeleao.png", 500, 750, 2, 1550, 380 , 0.5, true, 2);
+
+    InitInimigo(&inimigos6[numInimigos6++], "./textures/peixeleao.png", 800, 800, 4, 1400, 510 , 0.5, true, 3);
+    InitInimigo(&inimigos6[numInimigos6++], "./textures/peixeleao.png", 500, 1500, 2, 1650, 510 , 1.5, true, 3);
+
+    Inimigo inimigos9[10];
+    Inimigo inimigos8[10];
+    Inimigo inimigos7[10];
+    int numInimigos9 = 0;
+    int numInimigos8 = 0;
+    int numInimigos7 = 0;
+
+    InitInimigo(&inimigos7[numInimigos7++], "./textures/aguaViva.png", 800, 750, 7, 1400, 250 , 1.5, true, 1);
+    InitInimigo(&inimigos7[numInimigos7++], "./textures/aguaViva.png", 900, 750, 7, 1500, 250 , 1.5, true, 1);
+    
+    InitInimigo(&inimigos8[numInimigos8++], "./textures/Ourico.png", 2500, 750, 2, 1400, 380 , 0.5, true, 2);
+    InitInimigo(&inimigos8[numInimigos8++], "./textures/peixeleao.png", 500, 750, 2, 1550, 380 , 0.5, true, 2);
+
+    InitInimigo(&inimigos9[numInimigos9++], "./textures/peixeleao.png", 800, 800, 4, 1400, 510 , 0.5, true, 3);
+    InitInimigo(&inimigos9[numInimigos9++], "./textures/peixeleao.png", 500, 1500, 2, 1650, 510 , 1.5, true, 3);
+
+
+
+    Boss bossTubarao, bossBoto, bossBoitata;
     const char* fotosTubarao[8] = {
     "./textures/Tubarao1.png", "./textures/Tubarao2.png",
     "./textures/Tubarao4.png", "./textures/Tubarao8.png", "./textures/Tubarao10.png", 
     "./textures/Tubarao11.png", "./textures/Tubarao12.png", "./textures/Tubarao3.png"}; 
-    InitBoss(&bossTubarao, fotosTubarao, 30000, 30, 1550, screenHeight-300, 0.6, true);
+    InitBoss(&bossTubarao, fotosTubarao, 30000, 30, 1550, screenHeight-300, 2.6, true);
     
+    InitBoss(&bossBoto, fotosTubarao, 40000, 40, 1550, screenHeight-300, 2.6, true);
+
+    InitBoss(&bossBoitata, fotosTubarao, 40000, 40, 1550, screenHeight-300, 2.6, true);
 
     InitAudioDevice();
     Music soundpraia = LoadMusicStream("./audio/GarotaIpanema.mp3");
     Music soundBoss = LoadMusicStream("./audio/Jaws.mp3");
     double vidaPraia = 10000;
-    double vidaPraiaMax = 10000; 
 
-    GameScreen currentScreen = CAPTURA_NOME;
+    GameScreen currentScreen = MENU;
     Texture selecao;
     int fase = 1;
     Rectangle pause = { 1250, 8, 40, 40 };
@@ -242,6 +280,7 @@ int main(void){
     bool LampiaoDisponivel;
     bool LaUrsaDisponivel;
     bool FrevistaDisponivel;
+    bool GonzagaDisponivel;
 
     char nomeJogador[20] = "";
 
@@ -288,6 +327,7 @@ int main(void){
             else if (fase == 2){
                 selecao = LoadTexture("./textures/selecao.png");
                 vidaPraia = 10000;
+                nivelXp=2;
                 head = NULL;
                 DrawTexture(selecao, 0, 0, WHITE); 
                 DrawRectangleRec( botaoComecar , (Color){ 255, 255, 255, 0 });
@@ -295,6 +335,24 @@ int main(void){
                
                 if (CheckCollisionPointRec(mousePosition, botaoComecar) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
                         currentScreen = JOGO2;
+                        break;
+                }
+                if (CheckCollisionPointRec(mousePosition, botaoVoltar) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+                        currentScreen = MENU;
+                        break;
+                }
+            }
+            else if (fase == 3){
+                selecao = LoadTexture("./textures/selecao.png");
+                vidaPraia = 10000;
+                nivelXp=3;
+                head = NULL;
+                DrawTexture(selecao, 0, 0, WHITE); 
+                DrawRectangleRec( botaoComecar , (Color){ 255, 255, 255, 0 });
+                DrawRectangleRec( botaoVoltar , (Color){ 255, 255, 255, 0 });
+               
+                if (CheckCollisionPointRec(mousePosition, botaoComecar) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+                        currentScreen = JOGO3;
                         break;
                 }
                 if (CheckCollisionPointRec(mousePosition, botaoVoltar) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
@@ -528,7 +586,8 @@ int main(void){
             imprimirTropaCompleta(head, tail, inimigos1, inimigos2, inimigos3, &numInimigos1, &numInimigos2, &numInimigos3, &bossTubarao, boss);
 
             break;
-            // FASE 2 AQUI --------------------------------
+
+            //-------------------------------------- FASE 2 AQUI -----------------------------------------------------------------
             case JOGO2:
 
             if (boss){
@@ -588,8 +647,8 @@ int main(void){
                 RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
                 bool pausa = true;
 
-                SalvarTelacongelada(head, tail, telaCongelada, praia, inimigos1, numInimigos1, 
-                    inimigos2, numInimigos2, inimigos3, numInimigos3, &bossTubarao,  boss, botaoRemover, &vidaPraia);
+                SalvarTelacongelada(head, tail, telaCongelada, ponte, inimigos4, numInimigos4, 
+                    inimigos5, numInimigos5, inimigos6, numInimigos6, &bossBoto,  boss, botaoRemover, &vidaPraia);
 
                 while (pausa && !WindowShouldClose()) {
                     BeginDrawing();
@@ -610,8 +669,8 @@ int main(void){
             if (vidaPraia <= 0) {
                 Rectangle botaosair = { 270, 250, 100, 100 };
                 RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
-                SalvarTelacongelada(head, tail, telaCongelada, praia, inimigos1, numInimigos1, 
-                            inimigos2, numInimigos2, inimigos3, numInimigos3, &bossTubarao,  boss, botaoRemover, &vidaPraia);
+                SalvarTelacongelada(head, tail, telaCongelada, ponte, inimigos4, numInimigos4, 
+                            inimigos5, numInimigos5, inimigos6, numInimigos6, &bossBoto,  boss, botaoRemover, &vidaPraia);
 
                             
                 while(1){
@@ -631,102 +690,102 @@ int main(void){
             
 
             //Inicio selecao personagem
-            if (CheckCollisionPointRec(mousePosition, botaoPosicionar) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossTubarao.vivo && ReginaldoDisponivel) { 
+            if (CheckCollisionPointRec(mousePosition, botaoPosicionar) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossBoto.vivo && ReginaldoDisponivel) { 
             
                 RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
                 range = true;
 
                 adicionarTropa(&head, &tail, &Reginaldo, &Reginaldo2, &Reginaldo3,
                             &Reginaldo4, &Reginaldo5, &Reginaldo6, telaCongelada, 
-                            praia,  inimigos1, numInimigos1, inimigos2, numInimigos2, 
-                            inimigos3, numInimigos3, &bossTubarao,  boss, botaoRemover, &vidaPraia);
+                            ponte,  inimigos4, numInimigos4, inimigos5, numInimigos5, 
+                            inimigos6, numInimigos6, &bossBoto,  boss, botaoRemover, &vidaPraia);
             }
-            else if(CheckCollisionPointRec(mousePosition, botaoPosicionar2) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossTubarao.vivo && CabocloDisponivel){
+            else if(CheckCollisionPointRec(mousePosition, botaoPosicionar2) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossBoto.vivo && CabocloDisponivel){
                 
                 RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
                 range = true;
 
                  adicionarTropa(&head, &tail, &Caboclo, &Caboclo2, &Caboclo3,
                             &Reginaldo4, &Reginaldo5, &Reginaldo6, telaCongelada, 
-                            praia,  inimigos1, numInimigos1, inimigos2, numInimigos2, 
-                            inimigos3, numInimigos3, &bossTubarao,  boss, botaoRemover, &vidaPraia);
+                            ponte,  inimigos4, numInimigos4, inimigos5, numInimigos5, 
+                            inimigos6, numInimigos6, &bossBoto,  boss, botaoRemover, &vidaPraia);
             }
-            else if(CheckCollisionPointRec(mousePosition, botaoPosicionar3) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossTubarao.vivo && LampiaoDisponivel){
+            else if(CheckCollisionPointRec(mousePosition, botaoPosicionar3) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossBoto.vivo && LampiaoDisponivel){
                 
                 RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
                 range = true;
 
                  adicionarTropa(&head, &tail, &Lampiao, &Lampiao2, &Lampiao3,
                             &Reginaldo4, &Reginaldo5, &Reginaldo6, telaCongelada, 
-                            praia,  inimigos1, numInimigos1, inimigos2, numInimigos2, 
-                            inimigos3, numInimigos3, &bossTubarao,  boss, botaoRemover, &vidaPraia);
+                            ponte,  inimigos4, numInimigos4, inimigos5, numInimigos5, 
+                            inimigos6, numInimigos6, &bossBoto,  boss, botaoRemover, &vidaPraia);
             }
-            else if(CheckCollisionPointRec(mousePosition, botaoPosicionar4) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossTubarao.vivo  && LaUrsaDisponivel){
+            else if(CheckCollisionPointRec(mousePosition, botaoPosicionar4) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossBoto.vivo  && LaUrsaDisponivel){
                 
                 RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
                 range = false;
 
                  adicionarTropa(&head, &tail, &LaUrsa, &LaUrsa2, &LaUrsa3,
                             &LaUrsa, &LaUrsa2, &LaUrsa3, telaCongelada, 
-                            praia,  inimigos1, numInimigos1, inimigos2, numInimigos2, 
-                            inimigos3, numInimigos3, &bossTubarao,  boss, botaoRemover, &vidaPraia);
+                            ponte,  inimigos4, numInimigos4, inimigos5, numInimigos5, 
+                            inimigos6, numInimigos6, &bossBoto,  boss, botaoRemover, &vidaPraia);
 
             }
-            else if(CheckCollisionPointRec(mousePosition, botaoPosicionar5) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossTubarao.vivo){
+            else if(CheckCollisionPointRec(mousePosition, botaoPosicionar5) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossBoto.vivo){
                 
                 RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
                 range = false;
 
                  adicionarTropa(&head, &tail, &Frevista, &Frevista2, &Frevista3,
                             &Frevista, &Frevista2, &Frevista3, telaCongelada, 
-                            praia,  inimigos1, numInimigos1, inimigos2, numInimigos2, 
-                            inimigos3, numInimigos3, &bossTubarao,  boss, botaoRemover, &vidaPraia);
+                            ponte,  inimigos4, numInimigos4, inimigos5, numInimigos5, 
+                            inimigos6, numInimigos6, &bossBoto,  boss, botaoRemover, &vidaPraia);
 
             }
-            else if(CheckCollisionPointRec(mousePosition, botaoPosicionar6) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossTubarao.vivo){
+            else if(CheckCollisionPointRec(mousePosition, botaoPosicionar6) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossBoto.vivo){
                 
                 RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
                 range = false;
 
                  adicionarTropa(&head, &tail, &Gonzaga1, &Gonzaga2, &Gonzaga3,
                             &Gonzaga1, &Gonzaga2, &Gonzaga3, telaCongelada, 
-                            praia,  inimigos1, numInimigos1, inimigos2, numInimigos2, 
-                            inimigos3, numInimigos3, &bossTubarao,  boss, botaoRemover, &vidaPraia);
+                            ponte,  inimigos4, numInimigos4, inimigos5, numInimigos5, 
+                            inimigos6, numInimigos6, &bossBoto,  boss, botaoRemover, &vidaPraia);
 
             }
-            else if(CheckCollisionPointRec(mousePosition, botaoRemover) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossTubarao.vivo){
+            else if(CheckCollisionPointRec(mousePosition, botaoRemover) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossBoto.vivo){
                 
                 RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
 
                 removerTropaBotao(&head, &tail, telaCongelada, praia,
-                        inimigos1, numInimigos1,
-                        inimigos2, numInimigos2, inimigos3, numInimigos3, 
-                        &bossTubarao,  boss, botaoRemover, &vidaPraia);
+                        inimigos4, numInimigos4,
+                        inimigos5, numInimigos5, inimigos6, numInimigos6, 
+                        &bossBoto,  boss, botaoRemover, &vidaPraia);
 
                 
             }
             //Fim selecao de personagem 
     
 
-            for (int i = 0; i < numInimigos1; i++) {
-                DrawInimigo(&inimigos1[i],  &vidaPraia);
+            for (int i = 0; i < numInimigos4; i++) {
+                DrawInimigo(&inimigos4[i], &vidaPraia);
             }
             
-            for (int i = 0; i < numInimigos2; i++) {
-                DrawInimigo(&inimigos2[i],  &vidaPraia);
+            for (int i = 0; i < numInimigos5; i++) {
+                DrawInimigo(&inimigos5[i], &vidaPraia);
             }
 
-            for (int i = 0; i < numInimigos3; i++) {
-                DrawInimigo(&inimigos3[i],  &vidaPraia);
+            for (int i = 0; i < numInimigos6; i++) {
+                DrawInimigo(&inimigos6[i], &vidaPraia);
             }
 
 
-            if (numInimigos1+numInimigos2+numInimigos3<=0){
+            if (numInimigos4+numInimigos5+numInimigos6<=0){
                 boss = true;
-                DrawBoss(&bossTubarao,  &vidaPraia);
+                DrawBoss(&bossBoto,  &vidaPraia);
                 PlayMusicStream(soundBoss);
 
-                if (bossTubarao.vivo == false){
+                if (bossBoto.vivo == false){
                     Rectangle botaoWin = { 650, 400, 100, 100 };
                     fase=3;
                     boss = false;
@@ -742,9 +801,230 @@ int main(void){
                 }
             }
 
-            imprimirTropaCompleta(head, tail, inimigos1, inimigos2, inimigos3, &numInimigos1, &numInimigos2, &numInimigos3, &bossTubarao, boss);
+            imprimirTropaCompleta(head, tail, inimigos4, inimigos5, inimigos6, &numInimigos4, &numInimigos5, &numInimigos6, &bossBoto, boss);
 
             break;
+
+            //-------------------------------------- FASE 3 AQUI -----------------------------------------------------------------
+            case JOGO3:
+
+
+            if (boss){
+                UpdateMusicStream(soundBoss);  
+            } 
+            DrawTexture(forte, 0, 0, WHITE); 
+
+            ReginaldoDisponivel = verificarDisponibilidadeTropa(arvore, "Reginaldo", fase, nivelXp);
+            CabocloDisponivel = verificarDisponibilidadeTropa(arvore, "CabocloLa", fase, nivelXp);
+            LampiaoDisponivel = verificarDisponibilidadeTropa(arvore, "Lampiao12", fase, nivelXp);
+            LaUrsaDisponivel = verificarDisponibilidadeTropa(arvore, "Alaursa34", fase, nivelXp);
+            FrevistaDisponivel = verificarDisponibilidadeTropa(arvore, "Frevista5", fase, nivelXp);
+            GonzagaDisponivel = verificarDisponibilidadeTropa(arvore, "Frevista5", fase, nivelXp);
+
+            if(!boss){
+                UpdateMusicStream(soundpraia); 
+                PlayMusicStream(soundpraia);
+            }
+
+            if (!ReginaldoDisponivel){
+                DrawRectangle(348, 14, 40, 40 , RED);
+            }
+            else{
+                DrawRectangleRec(botaoPosicionar, (Color){ 255, 255, 255, 0 }); 
+            }
+            if (CabocloDisponivel){
+                DrawRectangleRec(botaoPosicionar2, GREEN); 
+            }
+            else{
+                DrawRectangleRec(botaoPosicionar2, RED);
+            }
+            DrawRectangleRec(botaoPosicionar3, BLUE);
+            DrawRectangleRec(botaoPosicionar4, ORANGE);
+            DrawRectangleRec(botaoPosicionar5, YELLOW);
+            DrawRectangleRec(botaoPosicionar6, PURPLE);
+            DrawRectangleRec(botaoRemover, (Color){ 255, 255, 255, 0 }); 
+
+            larguraxp = (double)experiencia / experienciaMax * largurabarraxp;
+
+            
+            if (experiencia >= experienciaMax) {
+                    experiencia = experiencia % experienciaMax; 
+                    nivelXp++; 
+            }
+
+            DrawRectangle(382, 69, (int)larguraxp, 5, BLUE);
+
+            sprintf(nivelTexto, "Nível: %d", nivelXp);
+            DrawText(nivelTexto, 500, 80, 20, BLACK); 
+            
+            porcentagemVida = (vidaPraia / vidaPraiaMax) * 100;
+
+            snprintf(textoVida, sizeof(textoVida), "%.0f%%", porcentagemVida);
+            DrawText(textoVida, 220, 18 , 30 , RED);
+
+            DrawRectangleRec(pause, (Color){ 255, 255, 255, 0 });
+
+            if (CheckCollisionPointRec(mousePosition, pause) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossBoitata.vivo){
+                RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
+                bool pausa = true;
+
+                SalvarTelacongelada(head, tail, telaCongelada, forte, inimigos7, numInimigos7, 
+                    inimigos8, numInimigos8, inimigos9, numInimigos9, &bossBoitata,  boss, botaoRemover, &vidaPraia);
+
+                while (pausa && !WindowShouldClose()) {
+                    BeginDrawing();
+                    DrawTextureRec(telaCongelada.texture, (Rectangle){ 0, 0, (float)telaCongelada.texture.width, (float)-telaCongelada.texture.height }, (Vector2){ 0, 0 }, WHITE);
+                    DrawText("JOGO PAUSADO", 550, 300, 30, BLACK);
+                    EndDrawing(); 
+                    Vector2 mousePosition = GetMousePosition();
+
+                    if (CheckCollisionPointRec(mousePosition, pause) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                        pausa = false;
+                    }
+                    
+                }
+
+            }
+
+            //"Tela de derrota"
+            if (vidaPraia <= 0) {
+                Rectangle botaosair = { 270, 250, 100, 100 };
+                RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
+                SalvarTelacongelada(head, tail, telaCongelada, forte, inimigos7, numInimigos7, 
+                            inimigos8, numInimigos8, inimigos9, numInimigos9, &bossBoitata,  boss, botaoRemover, &vidaPraia);
+
+                            
+                while(1){
+                    BeginDrawing();
+                    Vector2 mousePosition = GetMousePosition();
+                    DrawTextureRec(telaCongelada.texture, (Rectangle){ 0, 0, (float)telaCongelada.texture.width, (float)-telaCongelada.texture.height }, (Vector2){ 0, 0 }, WHITE);
+                    DrawText("Você foi derrotado!", 230, 200, 40, RED);
+                    DrawRectangleRec(botaosair, RED);
+                    if (CheckCollisionPointRec(mousePosition, botaosair) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+                        currentScreen = FIM;
+                        break;
+                    }
+                    EndDrawing();
+                }
+            }
+            //Fim da tela de derrota
+            
+
+            //Inicio selecao personagem
+            if (CheckCollisionPointRec(mousePosition, botaoPosicionar) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossBoitata.vivo && ReginaldoDisponivel) { 
+            
+                RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
+                range = true;
+
+                adicionarTropa(&head, &tail, &Reginaldo, &Reginaldo2, &Reginaldo3,
+                            &Reginaldo4, &Reginaldo5, &Reginaldo6, telaCongelada, 
+                            forte,  inimigos7, numInimigos7, inimigos8, numInimigos8, 
+                            inimigos9, numInimigos9, &bossBoitata,  boss, botaoRemover, &vidaPraia);
+            }
+            else if(CheckCollisionPointRec(mousePosition, botaoPosicionar2) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossBoitata.vivo && CabocloDisponivel){
+                
+                RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
+                range = true;
+
+                 adicionarTropa(&head, &tail, &Caboclo, &Caboclo2, &Caboclo3,
+                            &Reginaldo4, &Reginaldo5, &Reginaldo6, telaCongelada, 
+                            forte,  inimigos7, numInimigos7, inimigos8, numInimigos8, 
+                            inimigos9, numInimigos9, &bossBoitata,  boss, botaoRemover, &vidaPraia);
+            }
+            else if(CheckCollisionPointRec(mousePosition, botaoPosicionar3) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossBoitata.vivo && LampiaoDisponivel){
+                
+                RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
+                range = true;
+
+                 adicionarTropa(&head, &tail, &Lampiao, &Lampiao2, &Lampiao3,
+                            &Reginaldo4, &Reginaldo5, &Reginaldo6, telaCongelada, 
+                            forte,  inimigos7, numInimigos7, inimigos8, numInimigos8, 
+                            inimigos9, numInimigos9, &bossBoitata,  boss, botaoRemover, &vidaPraia);
+            }
+            else if(CheckCollisionPointRec(mousePosition, botaoPosicionar4) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossBoitata.vivo  && LaUrsaDisponivel){
+                
+                RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
+                range = false;
+
+                 adicionarTropa(&head, &tail, &LaUrsa, &LaUrsa2, &LaUrsa3,
+                            &LaUrsa, &LaUrsa2, &LaUrsa3, telaCongelada, 
+                            forte,  inimigos7, numInimigos7, inimigos8, numInimigos8, 
+                            inimigos9, numInimigos9, &bossBoitata,  boss, botaoRemover, &vidaPraia);
+
+            }
+            else if(CheckCollisionPointRec(mousePosition, botaoPosicionar5) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossBoitata.vivo && FrevistaDisponivel){
+                
+                RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
+                range = false;
+
+                 adicionarTropa(&head, &tail, &Frevista, &Frevista2, &Frevista3,
+                            &Frevista, &Frevista2, &Frevista3, telaCongelada, 
+                            forte,  inimigos7, numInimigos7, inimigos2, numInimigos2, 
+                            inimigos3, numInimigos3, &bossBoitata,  boss, botaoRemover, &vidaPraia);
+
+            }
+            else if(CheckCollisionPointRec(mousePosition, botaoPosicionar6) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossBoitata.vivo && GonzagaDisponivel){
+                
+                RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
+                range = false;
+
+                 adicionarTropa(&head, &tail, &Gonzaga1, &Gonzaga2, &Gonzaga3,
+                            &Gonzaga1, &Gonzaga2, &Gonzaga3, telaCongelada, 
+                            forte,  inimigos7, numInimigos7, inimigos8, numInimigos8, 
+                            inimigos9, numInimigos9, &bossBoitata,  boss, botaoRemover, &vidaPraia);
+
+            }
+            else if(CheckCollisionPointRec(mousePosition, botaoRemover) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossBoitata.vivo){
+                
+                RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
+
+                removerTropaBotao(&head, &tail, telaCongelada, forte,
+                        inimigos7, numInimigos7,
+                        inimigos8, numInimigos8, inimigos9, numInimigos9, 
+                        &bossBoto,  boss, botaoRemover, &vidaPraia);
+
+                
+            }
+            //Fim selecao de personagem 
+    
+
+            for (int i = 0; i < numInimigos7; i++) {
+                DrawInimigo(&inimigos7[i], &vidaPraia);
+            }
+            
+            for (int i = 0; i < numInimigos8; i++) {
+                DrawInimigo(&inimigos8[i], &vidaPraia);
+            }
+
+            for (int i = 0; i < numInimigos9; i++) {
+                DrawInimigo(&inimigos9[i], &vidaPraia);
+            }
+
+
+            if (numInimigos7+numInimigos8+numInimigos9<=0){
+                boss = true;
+                DrawBoss(&bossBoitata,  &vidaPraia);
+                PlayMusicStream(soundBoss);
+
+                if (bossBoitata.vivo == false){
+                    Rectangle botaoWin = { 650, 400, 100, 100 };
+                    fase=3;
+                    boss = false;
+                    Vector2 mousePosition = GetMousePosition();
+                    DrawRectangle(620, 290, 200, 50, BROWN);
+                    DrawRectangleRec(botaoWin, BROWN);
+                    DrawText("YOU WIN!", 650, 300, 20, BLACK);
+                    DrawText("Continuar!", 650, 400, 20, BLACK);
+                    if (CheckCollisionPointRec(mousePosition, botaoWin) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                        currentScreen = NIVEL;
+                        break;
+                    } 
+                }
+            }
+
+            imprimirTropaCompleta(head, tail, inimigos7, inimigos8, inimigos9, &numInimigos7, &numInimigos8, &numInimigos9, &bossBoitata, boss);
+
+                break;
 
 
             case FIM:
@@ -765,6 +1045,28 @@ int main(void){
 
     for (int i = 0; i < numInimigos3; i++) {
         UnloadTexture(inimigos3[i].foto); 
+    }
+    for (int i = 0; i < numInimigos4; i++) {
+        UnloadTexture(inimigos4[i].foto); 
+    }
+
+    for (int i = 0; i < numInimigos5; i++) {
+        UnloadTexture(inimigos5[i].foto); 
+    }
+
+    for (int i = 0; i < numInimigos6; i++) {
+        UnloadTexture(inimigos6[i].foto); 
+    }
+    for (int i = 0; i < numInimigos7; i++) {
+        UnloadTexture(inimigos7[i].foto); 
+    }
+
+    for (int i = 0; i < numInimigos8; i++) {
+        UnloadTexture(inimigos8[i].foto); 
+    }
+
+    for (int i = 0; i < numInimigos9; i++) {
+        UnloadTexture(inimigos9[i].foto); 
     }
 
     UnloadMusicStream(soundBoss);
@@ -990,7 +1292,7 @@ void Menu(GameScreen *currentScreen){
 
      // Desenha os botões do menu (exemplo)
     Texture menu;
-    menu = LoadTexture("./textures/menu.png");
+    menu = LoadTexture("./textures/telaMenu.png");
     DrawTexture(menu,0,0,WHITE);
     Rectangle botaoJogar = {500, 300, 200, 50};
     DrawRectangleRec(botaoJogar, GREEN);
@@ -1121,7 +1423,11 @@ void SalvarTelacongelada(Tropa *head, Tropa *tail, RenderTexture2D telaCongelada
             DrawRectangleRec(botaoPosicionar, (Color){ 255, 255, 255, 0 });
             DrawRectangleRec(botaoRemover, (Color){ 255, 255, 255, 0 });
             imprimirTropaCompleta(head, tail , inimigos1, inimigos2, inimigos3,&numInimigos1, &numInimigos2, &numInimigos3, bossTubarao, boss);
-
+            double vida = *vidaPraia;
+            double porcentagemVida = (vida / vidaPraiaMax) * 100;
+            char textoVida[15];
+            snprintf(textoVida, sizeof(textoVida), "%.0f%%", porcentagemVida);
+            DrawText(textoVida, 220, 18 , 30 , RED);
             
             for (int i = 0; i < numInimigos1; i++) {
                 DrawInimigo(&inimigos1[i], vidaPraia);
