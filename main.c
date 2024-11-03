@@ -104,6 +104,7 @@ void DrawAtaqueGonzaga(Inimigo *inimigos, Inimigo *inimigos2, Inimigo *inimigos3
  int *numInimigos2, int *numInimigos3, Boss *chefe ,bool boss);
 
 bool AtacarInimigosNaLane(Inimigo *inimigos, int *numInimigos, Tropa *Gonzaga, int danoPorAtaque);
+void DrawBossBoto(Boss *boss, double *vidaPraia);
 
 bool casa1=true;
 bool casa2=true;
@@ -135,7 +136,7 @@ int experiencia = 0;
 int experienciaMax = 1000;
 bool boss = false;
 bool range;
-int nivelXp=20;
+int nivelXp=4;
 int scoreTotal=0;
 double larguraxp=0;
 int contLampiao1=0;
@@ -171,13 +172,13 @@ int main(void){
     InitTropas(&Reginaldo5, "./textures/Torre-Reginaldo.png" , "./textures/Reginaldo-ataque.png" , "Reginaldo" , 20, 390 , 25 , 400, 1, 1);
     InitTropas(&Reginaldo6, "./textures/Torre-Reginaldo.png" , "./textures/Reginaldo-ataque.png" , "Reginaldo" , 20, 520, 25 , 530, 1, 1);
 
-    InitTropas(&Caboclo, "./textures/Caboclo.png" , "./textures/Caboclo-ataque.png" , "CabocloLa" , 20, 290, 25, 300, 2, 1);
-    InitTropas(&Caboclo2, "./textures/Caboclo.png" , "./textures/Caboclo-ataque.png" , "CabocloLa" , 20, 290, 25, 300, 2, 1);
-    InitTropas(&Caboclo3, "./textures/Caboclo.png" , "./textures/Caboclo-ataque.png" , "CabocloLa" , 20, 290, 25, 300, 2, 1);
+    InitTropas(&Caboclo, "./textures/Caboclo2.png" , "./textures/Caboclo-ataque.png" , "CabocloLa" , 20, 290, 25, 300, 2, 1);
+    InitTropas(&Caboclo2, "./textures/Caboclo2.png" , "./textures/Caboclo-ataque.png" , "CabocloLa" , 20, 290, 25, 300, 2, 1);
+    InitTropas(&Caboclo3, "./textures/Caboclo2.png" , "./textures/Caboclo-ataque.png" , "CabocloLa" , 20, 290, 25, 300, 2, 1);
 
-    InitTropas(&Lampiao, "./textures/Lampiao.png" , "./textures/Lampiao.png" , "Lampiao12" , 20, 290, 25, 300, 2, 1);
-    InitTropas(&Lampiao2, "./textures/Lampiao.png" , "./textures/Lampiao.png" , "Lampiao12" , 20, 290, 25, 300, 2, 1);
-    InitTropas(&Lampiao3, "./textures/Lampiao.png" , "./textures/Lampiao.png" , "Lampiao12" , 20, 290, 25, 300, 2, 1);
+    InitTropas(&Lampiao, "./textures/lampiao2.png" , "./textures/lampiao-ataque.png" , "Lampiao12" , 20, 290, 25, 300, 2, 1);
+    InitTropas(&Lampiao2, "./textures/lampiao2.png" , "./textures/lampiao-ataque.png" , "Lampiao12" , 20, 290, 25, 300, 2, 1);
+    InitTropas(&Lampiao3, "./textures/lampiao2.png" , "./textures/lampiao-ataque.png" , "Lampiao12" , 20, 290, 25, 300, 2, 1);
 
     InitTropas(&LaUrsa, "./textures/laUrsa.png" , "./textures/laUrsa-ataque.png" , "Alaursa34" , 20, 290, 25, 300, 2, 1);
     InitTropas(&LaUrsa2, "./textures/laUrsa.png" , "./textures/laUrsa-ataque.png" , "Alaursa34" , 20, 290, 25, 300, 2, 1);
@@ -227,14 +228,14 @@ int main(void){
     int numInimigos5 = 0;
     int numInimigos4 = 0;
 
-    InitInimigo(&inimigos4[numInimigos4++], "./textures/aguaViva.png", 800, 750, 7, 1400, 250 , 1.5, true, 1);
-    InitInimigo(&inimigos4[numInimigos4++], "./textures/aguaViva.png", 900, 750, 7, 1500, 250 , 1.5, true, 1);
+    /*InitInimigo(&inimigos4[numInimigos4++], "./textures/piranha.png", 800, 750, 7, 1400, 250 , 1.5, true, 1);
+    InitInimigo(&inimigos4[numInimigos4++], "./textures/piranha.png", 900, 750, 7, 1500, 250 , 1.5, true, 1);
     
-    InitInimigo(&inimigos5[numInimigos5++], "./textures/Ourico.png", 2500, 750, 2, 1400, 380 , 0.5, true, 2);
-    InitInimigo(&inimigos5[numInimigos5++], "./textures/peixeleao.png", 500, 750, 2, 1550, 380 , 0.5, true, 2);
+    InitInimigo(&inimigos5[numInimigos5++], "./textures/jacare.png", 2500, 750, 2, 1400, 380 , 0.5, true, 2);
+    InitInimigo(&inimigos5[numInimigos5++], "./textures/jacare.png", 500, 750, 2, 1550, 380 , 0.5, true, 2);
 
-    InitInimigo(&inimigos6[numInimigos6++], "./textures/peixeleao.png", 800, 800, 4, 1400, 510 , 0.5, true, 3);
-    InitInimigo(&inimigos6[numInimigos6++], "./textures/peixeleao.png", 500, 1500, 2, 1650, 510 , 1.5, true, 3);
+    InitInimigo(&inimigos6[numInimigos6++], "./textures/caranguejo.png", 800, 800, 4, 1400, 510 , 0.5, true, 3);
+    InitInimigo(&inimigos6[numInimigos6++], "./textures/caranguejo.png", 500, 1500, 2, 1650, 510 , 1.5, true, 3);*/
 
     Inimigo inimigos9[10];
     Inimigo inimigos8[10];
@@ -259,18 +260,24 @@ int main(void){
     "./textures/Tubarao1.png", "./textures/Tubarao2.png",
     "./textures/Tubarao4.png", "./textures/Tubarao8.png", "./textures/Tubarao10.png", 
     "./textures/Tubarao11.png", "./textures/Tubarao12.png", "./textures/Tubarao3.png"}; 
+
+    const char* fotosBoto[8] = {
+    "./textures/Boto1.png", "./textures/Boto1.png",
+    "./textures/Boto2.png", "./textures/Boto2.png", "./textures/Boto3.png", 
+    "./textures/Boto3.png", "./textures/Boto4.png", "./textures/Boto4.png"}; 
+    
     InitBoss(&bossTubarao, fotosTubarao, 30000, 30, 1550, screenHeight-300, 2.6, true);
     
-    InitBoss(&bossBoto, fotosTubarao, 40000, 40, 1550, screenHeight-300, 2.6, true);
+    InitBoss(&bossBoto, fotosBoto, 40000, 15, 1550, screenHeight-300, 1.6, true);
 
-    InitBoss(&bossBoitata, fotosTubarao, 40000, 40, 1550, screenHeight-300, 2.6, true);
+    InitBoss(&bossBoitata, fotosTubarao, 40000, 20, 1550, screenHeight-300, 2.6, true);
 
     InitAudioDevice();
     Music soundpraia = LoadMusicStream("./audio/GarotaIpanema.mp3");
     Music soundBoss = LoadMusicStream("./audio/Jaws.mp3");
     double vidaPraia = 10000;
 
-    GameScreen currentScreen = MENU;
+    GameScreen currentScreen = JOGO2;
     Texture selecao;
     int fase = 1;
     Rectangle pause = { 1250, 8, 40, 40 };
@@ -281,6 +288,13 @@ int main(void){
     bool LaUrsaDisponivel;
     bool FrevistaDisponivel;
     bool GonzagaDisponivel;
+
+    Texture iconeReginaldoPB, iconeCaboclo, iconeCabocloPB, iconeLampiao, iconeLampiaoPB;
+    iconeReginaldoPB = LoadTexture("./textures/iconeReginaldoPB.png");
+    iconeCaboclo = LoadTexture("./textures/iconeCaboclo.png");
+    iconeCabocloPB = LoadTexture("./textures/iconeCabocloPB.png");
+    iconeLampiao = LoadTexture("./textures/iconeLampiao.png");
+    iconeLampiaoPB = LoadTexture("./textures/iconeLampiaoPB.png");
 
     char nomeJogador[20] = "";
 
@@ -384,10 +398,12 @@ int main(void){
             }
 
             if (!ReginaldoDisponivel){
-                DrawRectangle(348, 14, 40, 40 , RED);
+                //DrawRectangle(348, 14, 40, 40 , RED);
+                DrawTexture(iconeReginaldoPB, 348, 14, WHITE);
             }
             else{
                 DrawRectangleRec(botaoPosicionar, (Color){ 255, 255, 255, 0 }); 
+
             }
             if (CabocloDisponivel){
                 DrawRectangleRec(botaoPosicionar2, GREEN); 
@@ -606,18 +622,29 @@ int main(void){
             }
 
             if (!ReginaldoDisponivel){
-                DrawRectangle(348, 14, 40, 40 , RED);
+                //DrawRectangle(348, 14, 40, 40 , RED);
+                DrawTexture(iconeReginaldoPB, 350, 15, WHITE);
             }
             else{
                 DrawRectangleRec(botaoPosicionar, (Color){ 255, 255, 255, 0 }); 
             }
             if (CabocloDisponivel){
-                DrawRectangleRec(botaoPosicionar2, GREEN); 
+                DrawRectangleRec(botaoPosicionar2, (Color){ 255, 255, 255, 0 });
+                DrawTexture(iconeCaboclo, 413, 7, WHITE); 
             }
             else{
-                DrawRectangleRec(botaoPosicionar2, RED);
+                DrawRectangleRec(botaoPosicionar2, (Color){ 255, 255, 255, 0 });
+                DrawTexture(iconeCabocloPB, 413, 7, WHITE);
             }
-            DrawRectangleRec(botaoPosicionar3, BLUE);
+            if (LampiaoDisponivel){
+                DrawRectangleRec(botaoPosicionar3, (Color){ 255, 255, 255, 0 });
+                DrawTexture(iconeLampiao, 476, 16, WHITE); 
+            }
+            else{
+                DrawRectangleRec(botaoPosicionar3, (Color){ 255, 255, 255, 0 });
+                DrawTexture(iconeLampiaoPB, 476, 16, WHITE); 
+            }
+
             DrawRectangleRec(botaoPosicionar4, ORANGE);
             DrawRectangleRec(botaoPosicionar5, YELLOW);
             DrawRectangleRec(botaoPosicionar6, PURPLE);
@@ -757,7 +784,7 @@ int main(void){
                 
                 RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
 
-                removerTropaBotao(&head, &tail, telaCongelada, praia,
+                removerTropaBotao(&head, &tail, telaCongelada, ponte,
                         inimigos4, numInimigos4,
                         inimigos5, numInimigos5, inimigos6, numInimigos6, 
                         &bossBoto,  boss, botaoRemover, &vidaPraia);
@@ -782,7 +809,7 @@ int main(void){
 
             if (numInimigos4+numInimigos5+numInimigos6<=0){
                 boss = true;
-                DrawBoss(&bossBoto,  &vidaPraia);
+                DrawBossBoto(&bossBoto,  &vidaPraia);
                 PlayMusicStream(soundBoss);
 
                 if (bossBoto.vivo == false){
@@ -1159,7 +1186,7 @@ void DrawInimigo(Inimigo *inimigo, double *vidaPraia){
 void DrawBoss(Boss *boss, double *vidaPraia) {
     if (boss->vida > 0) {
 
-        if (boss->posX >= 140) {
+        if (boss->posX >= 160) {
             boss->posX -= boss->velocidade;
 
             int imagemIndex = (boss->frameDano > 0) ? 1 : 0;  
@@ -2069,4 +2096,71 @@ bool AtacarInimigosNaLane(Inimigo *inimigos, int *numInimigos, Tropa *Gonzaga, i
         }
     }
     return atacou;
+}
+
+void DrawBossBoto(Boss *boss, double *vidaPraia) {
+    if (boss->vida > 0) {
+
+        if (boss->posX >= 450) {
+            boss->posX -= boss->velocidade;
+
+            int imagemIndex = (boss->frameDano > 0) ? 1 : 0;  
+            DrawTexture(boss->foto[imagemIndex], boss->posX, boss->posY-80, WHITE);
+
+            if (boss->frameDano > 0) {
+                boss->frameDano--;
+            }
+
+        }
+        else{
+
+            // Ativação da sequência de ataque
+            const int ataqueFrames[] = {2, 2, 4, 4, 7, 7};
+
+            // Desenha o frame atual da sequência de ataque
+            int indice = ataqueFrames[boss->indiceAtaque];
+            if (indice == 0){
+                DrawTexture(boss->foto[indice], boss->posX, boss->posY - 80, WHITE);
+            }
+            else if (indice == 2){
+                DrawTexture(boss->foto[indice], boss->posX-40, boss->posY - 80, WHITE);
+            }
+            else if (indice == 4){
+                DrawTexture(boss->foto[indice], boss->posX-210, boss->posY - 80, WHITE);
+            }
+            else if (indice == 7){
+                DrawTexture(boss->foto[indice], boss->posX-250, boss->posY - 180, WHITE);
+                *vidaPraia-=boss->dano;
+            }
+            else{
+                DrawTexture(boss->foto[indice], boss->posX, boss->posY - 80, WHITE);
+            }
+            
+            
+
+            if (boss->frameAtaque >= 70) { 
+                boss->indiceAtaque = (boss->indiceAtaque + 1) % 6; 
+                boss->frameAtaque = 0; 
+            } else {
+                boss->frameAtaque++;
+            }
+
+        }
+        
+        int barraPosX = (860 - largurabarra) / 2;
+        int barraPosY = 120;
+        int larguraAtual = (boss->vida * largurabarraBoss) / boss->vidaMax;
+
+        Color corBarra = RED;
+        DrawText("BOTO COR DE ROSA", barraPosX + 70, 95, 25, BLACK);
+        DrawRectangle(barraPosX, barraPosY, larguraAtual, 30, corBarra);
+        DrawRectangleLines(barraPosX, barraPosY, largurabarraBoss, 30, BLACK);
+    } 
+    else {
+        boss->vivo = false;
+        boss->posX = 20000;
+        for (int i = 0; i < 7; i++) {
+            UnloadTexture(boss->foto[i]);
+        }
+    }
 }
