@@ -136,7 +136,7 @@ int experiencia = 0;
 int experienciaMax = 1000;
 bool boss = false;
 bool range;
-int nivelXp=4;
+int nivelXp=20;
 int scoreTotal=0;
 double larguraxp=0;
 int contLampiao1=0;
@@ -144,6 +144,9 @@ int contLampiao2=0;
 int contLampiao3=0;
 double vidaPraiaMax = 10000; 
 int fase = 1;
+
+Texture iconeReginaldoPB, iconeCaboclo, iconeCabocloPB, iconeLampiao, iconeLampiaoPB, 
+    iconeLaursa, iconeLaursaPB, iconeFrevista, iconeFrevistaPB;
 
 int main(void){   
     const int screenWidth = 1316;
@@ -210,12 +213,12 @@ int main(void){
     int numInimigos1 = 0;
     
     
-    InitInimigo(&inimigos1[numInimigos1++], "./textures/aguaViva.png", 800, 750, 7, 1400, 250 , 1.5, true, 1);
+    /*InitInimigo(&inimigos1[numInimigos1++], "./textures/aguaViva.png", 800, 750, 7, 1400, 250 , 1.5, true, 1);
     InitInimigo(&inimigos1[numInimigos1++], "./textures/aguaViva.png", 900, 750, 7, 1500, 250 , 1.5, true, 1);
     
     InitInimigo(&inimigos2[numInimigos2++], "./textures/Ourico.png", 2500, 750, 2, 1400, 380 , 0.5, true, 2);
     InitInimigo(&inimigos2[numInimigos2++], "./textures/Ourico.png", 2500, 750, 2, 1500, 380 , 0.5, true, 2);
-    InitInimigo(&inimigos2[numInimigos2++], "./textures/peixeleao.png", 500, 750, 2, 1550, 380 , 0.5, true, 2);
+    InitInimigo(&inimigos2[numInimigos2++], "./textures/peixeleao.png", 500, 750, 2, 1550, 380 , 0.5, true, 2);*/
 
     InitInimigo(&inimigos3[numInimigos3++], "./textures/peixeleao.png", 800, 800, 4, 1400, 510 , 0.5, true, 3);
     InitInimigo(&inimigos3[numInimigos3++], "./textures/peixeleao.png", 1500, 900, 2, 1500, 510 , 2.5, true, 3);
@@ -229,11 +232,11 @@ int main(void){
     int numInimigos5 = 0;
     int numInimigos4 = 0;
 
-    InitInimigo(&inimigos4[numInimigos4++], "./textures/piranha.png", 800, 750, 7, 1400, 250 , 1.5, true, 1);
+    /*InitInimigo(&inimigos4[numInimigos4++], "./textures/piranha.png", 800, 750, 7, 1400, 250 , 1.5, true, 1);
     InitInimigo(&inimigos4[numInimigos4++], "./textures/piranha.png", 900, 750, 7, 1500, 250 , 1.5, true, 1);
     
     InitInimigo(&inimigos5[numInimigos5++], "./textures/jacare.png", 2500, 750, 2, 1400, 380 , 0.5, true, 2);
-    InitInimigo(&inimigos5[numInimigos5++], "./textures/jacare.png", 500, 750, 2, 1550, 380 , 0.5, true, 2);
+    InitInimigo(&inimigos5[numInimigos5++], "./textures/jacare.png", 500, 750, 2, 1550, 380 , 0.5, true, 2);*/
 
     InitInimigo(&inimigos6[numInimigos6++], "./textures/caranguejo.png", 800, 800, 4, 1400, 510 , 0.5, true, 3);
     InitInimigo(&inimigos6[numInimigos6++], "./textures/caranguejo.png", 500, 1500, 2, 1650, 510 , 1.5, true, 3);
@@ -267,7 +270,7 @@ int main(void){
     "./textures/Boto2.png", "./textures/Boto2.png", "./textures/Boto3.png", 
     "./textures/Boto3.png", "./textures/Boto4.png", "./textures/Boto4.png"}; 
     
-    InitBoss(&bossTubarao, fotosTubarao, 30000, 30, 1550, screenHeight-300, 2.6, true);
+    InitBoss(&bossTubarao, fotosTubarao, 30000, 50, 1550, screenHeight-300, 2.6, true);
     
     InitBoss(&bossBoto, fotosBoto, 40000, 15, 1550, screenHeight-300, 1.6, true);
 
@@ -276,9 +279,12 @@ int main(void){
     InitAudioDevice();
     Music soundpraia = LoadMusicStream("./audio/GarotaIpanema.mp3");
     Music soundBoss = LoadMusicStream("./audio/Jaws.mp3");
-    double vidaPraia = 10000;
+    Music soundMenu =  LoadMusicStream("./audio/hino-pernambuco.mp3");
+    Music soundPonte = LoadMusicStream("./audio/Ponte.mp3");
+    Music soundBoto = LoadMusicStream("./audio/Boto.mp3");
+    double vidaPraia = 8000;
 
-    GameScreen currentScreen = JOGO2;
+    GameScreen currentScreen = CAPTURA_NOME;
     Texture selecao;
     Rectangle pause = { 1250, 8, 40, 40 };
 
@@ -289,8 +295,6 @@ int main(void){
     bool FrevistaDisponivel;
     bool GonzagaDisponivel;
 
-    Texture iconeReginaldoPB, iconeCaboclo, iconeCabocloPB, iconeLampiao, iconeLampiaoPB, 
-    iconeLaursa, iconeLaursaPB, iconeFrevista, iconeFrevistaPB;
 
     iconeReginaldoPB = LoadTexture("./textures/iconeReginaldoPB.png");
 
@@ -316,14 +320,26 @@ int main(void){
         switch (currentScreen)
         {
         case MENU:
+            if (currentScreen == MENU || currentScreen == RANKING || currentScreen == CAPTURA_NOME || currentScreen == NIVEL){
+                UpdateMusicStream(soundMenu); 
+                PlayMusicStream(soundMenu);
+            }
             Menu(&currentScreen);
             break;
 
         case CAPTURA_NOME:
+            if (currentScreen == MENU || currentScreen == RANKING || currentScreen == CAPTURA_NOME || currentScreen == NIVEL){
+                UpdateMusicStream(soundMenu); 
+                PlayMusicStream(soundMenu);
+            }
             CapturarNome(&currentScreen, nomeJogador);
             break;
 
         case NIVEL:
+            if (currentScreen == MENU || currentScreen == RANKING || currentScreen == CAPTURA_NOME || currentScreen == NIVEL){
+                UpdateMusicStream(soundMenu); 
+                PlayMusicStream(soundMenu);
+            }
              casa1=true;
              casa2=true;
              casa3=true;
@@ -351,7 +367,7 @@ int main(void){
             else if (fase == 2){
                 selecao = LoadTexture("./textures/selecao.png");
                 vidaPraia = 10000;
-                nivelXp=2;
+                nivelXp=20;
                 head = NULL;
                 DrawTexture(selecao, 0, 0, WHITE); 
                 DrawRectangleRec( botaoComecar , (Color){ 255, 255, 255, 0 });
@@ -640,7 +656,7 @@ int main(void){
             case JOGO2:
 
             if (boss){
-                UpdateMusicStream(soundBoss);  
+                UpdateMusicStream(soundBoto);  
             } 
             DrawTexture(ponte, 0, 0, WHITE); 
 
@@ -651,8 +667,8 @@ int main(void){
             FrevistaDisponivel = verificarDisponibilidadeTropa(arvore, "Frevista5", fase, nivelXp);
 
             if(!boss){
-                UpdateMusicStream(soundpraia); 
-                PlayMusicStream(soundpraia);
+                UpdateMusicStream(soundPonte); 
+                PlayMusicStream(soundPonte);
             }
 
             if (!ReginaldoDisponivel){
@@ -860,7 +876,7 @@ int main(void){
             if (numInimigos4+numInimigos5+numInimigos6<=0){
                 boss = true;
                 DrawBossBoto(&bossBoto,  &vidaPraia);
-                PlayMusicStream(soundBoss);
+                PlayMusicStream(soundBoto);
 
                 if (bossBoto.vivo == false){
                     Rectangle botaoWin = { 650, 400, 100, 100 };
@@ -887,7 +903,7 @@ int main(void){
 
 
             if (boss){
-                UpdateMusicStream(soundBoss);  
+                UpdateMusicStream(soundBoto);  
             } 
             DrawTexture(forte, 0, 0, WHITE); 
 
@@ -899,8 +915,8 @@ int main(void){
             GonzagaDisponivel = verificarDisponibilidadeTropa(arvore, "Frevista5", fase, nivelXp);
 
             if(!boss){
-                UpdateMusicStream(soundpraia); 
-                PlayMusicStream(soundpraia);
+                UpdateMusicStream(soundPonte); 
+                PlayMusicStream(soundPonte);
             }
 
             if (!ReginaldoDisponivel){
@@ -1081,7 +1097,7 @@ int main(void){
             if (numInimigos7+numInimigos8+numInimigos9<=0){
                 boss = true;
                 DrawBoss(&bossBoitata,  &vidaPraia);
-                PlayMusicStream(soundBoss);
+                PlayMusicStream(soundBoto);
 
                 if (bossBoitata.vivo == false){
                     Rectangle botaoWin = { 650, 400, 100, 100 };
@@ -1104,6 +1120,10 @@ int main(void){
                 break;
 
             case RANKING:
+                if (currentScreen == MENU || currentScreen == RANKING || currentScreen == CAPTURA_NOME || currentScreen == NIVEL){
+                    UpdateMusicStream(soundMenu); 
+                    PlayMusicStream(soundMenu);
+                }
                 Texture ranking;
                 ranking = LoadTexture("./textures/telaRanking.png");
                 DrawTexture(ranking, 0,0, WHITE);
@@ -1390,24 +1410,25 @@ void BossRecebeDano(Boss *boss, int dano) {
 
 void Menu(GameScreen *currentScreen){
 
-    //Texture menu;
-    //menu = LoadTexture("./textures/praia.png");
-    /*
-    Rectangle botaojogar = {100, 150, 200, 50};
-    Rectangle botaoranking = {100, 150, 200, 50};
-    Rectangle botaoexit = {100, 150, 200, 50};  */
-
-     // Desenha os botões do menu (exemplo)
     Texture menu;
     menu = LoadTexture("./textures/telaMenu.png");
     DrawTexture(menu,0,0,WHITE);
-    Rectangle botaoJogar = {500, 300, 200, 50};
-    DrawRectangleRec(botaoJogar, GREEN);
-    DrawText("JOGAR", 520, 310, 30, DARKGRAY);
+    Rectangle botaoJogar = {564, 350, 180, 47};
+    Rectangle botaoRank = {564, 430, 180, 47};
+    Rectangle botaoSair = {564, 518, 180, 47};
+    DrawRectangleRec(botaoJogar, (Color){ 255, 255, 255, 0 });
+    DrawRectangleRec(botaoRank, (Color){ 255, 255, 255, 0 });
+    DrawRectangleRec(botaoSair, (Color){ 255, 255, 255, 0 });
     Vector2 mousePosition = GetMousePosition();
 
     if (CheckCollisionPointRec(mousePosition, botaoJogar) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         *currentScreen = NIVEL;  
+    } 
+    if (CheckCollisionPointRec(mousePosition, botaoRank) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        *currentScreen = RANKING;  
+    } 
+    if (CheckCollisionPointRec(mousePosition, botaoSair) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        *currentScreen = FIM;  
     } 
 
 }
@@ -1535,6 +1556,14 @@ void SalvarTelacongelada(Tropa *head, Tropa *tail, RenderTexture2D telaCongelada
             char textoVida[15];
             snprintf(textoVida, sizeof(textoVida), "%.0f%%", porcentagemVida);
             DrawText(textoVida, 220, 18 , 30 , RED);
+
+            
+            DrawTexture(iconeReginaldoPB, 350, 15, WHITE);
+            DrawTexture(iconeCabocloPB, 413, 7, WHITE);
+            DrawTexture(iconeLampiaoPB, 476, 16, WHITE); 
+            DrawTexture(iconeLaursaPB, 540, 16, WHITE); 
+            DrawTexture(iconeFrevistaPB, 605, 14, WHITE); 
+        
             
             for (int i = 0; i < numInimigos1; i++) {
                 DrawInimigo(&inimigos1[i], vidaPraia);
@@ -1546,11 +1575,17 @@ void SalvarTelacongelada(Tropa *head, Tropa *tail, RenderTexture2D telaCongelada
                 DrawInimigo(&inimigos3[i], vidaPraia);
             }
 
-
-            if (numInimigos1+numInimigos2+numInimigos3<=0){
-                boss = true;
-                DrawBoss(bossTubarao, vidaPraia);
-                //PlayMusicStream(soundBoss);
+            if (fase==1){
+                if (numInimigos1+numInimigos2+numInimigos3<=0){
+                    boss = true;
+                    DrawBoss(bossTubarao, vidaPraia);
+                }
+            }
+            else if (fase==2){
+                if (numInimigos1+numInimigos2+numInimigos3<=0){
+                    boss = true;
+                    DrawBossBoto(bossTubarao, vidaPraia);
+                }
             }
             EndDrawing();
             EndTextureMode();
@@ -1979,15 +2014,17 @@ void DrawAtaqueFrevista(Inimigo *inimigos, Tropa *Frevista, int *numInimigos, Bo
 }
 
  void CapturarNome(GameScreen *currentScreen, char *nomeJogador) {
-    DrawText("Digite seu nome:", 250, 200, 20, DARKGRAY);
-    DrawRectangle(250, 240, 300, 40, LIGHTGRAY);
-    DrawText(nomeJogador, 260, 250, 20, DARKGRAY);
+    Texture telaNome;
+    telaNome = LoadTexture("./textures/telaNome.png");
+    DrawTexture(telaNome, 0, 0, WHITE);
+    DrawText("Digite seu nome:", 450, 400, 30, BLACK);
+    DrawText(nomeJogador, 450, 440, 30, BLACK);
 
     int key = GetCharPressed();
     int length = strlen(nomeJogador);
 
     // Adiciona o caractere digitado ao nome do jogador, se o tamanho do nome for menor que 19
-    if (key >= 32 && key <= 125 && length < 29) {
+    if (key >= 33 && key <= 125 && length < 20) {
         nomeJogador[length] = (char)key;
         nomeJogador[length + 1] = '\0';  // Adiciona o caractere nulo no final
     }

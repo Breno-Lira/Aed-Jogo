@@ -1,5 +1,7 @@
 opa 110 7950
 opa 110 7950
+poa 3 6500
+elatrop 2 6500
 primeiro 3 5300
 tuda 1 4900
 tuda 1 4900
@@ -16,3 +18,8 @@ aaaaa 1 0
 aahhahhaa 1 0
 opa 1 0
 laaa 1 0
+tudo 1 0
+acadaddvsvndov 1 0
+opa 1 0
+opaaaaaa 1 0
+lop 1 0
