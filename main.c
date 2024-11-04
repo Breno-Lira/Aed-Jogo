@@ -65,7 +65,7 @@ typedef struct usuario {
     struct usuario *ant;
 } usuario;
 
-typedef enum GameScreen { MENU, CAPTURA_NOME , NIVEL ,JOGO, JOGO2, JOGO3 ,FIM} GameScreen;
+typedef enum GameScreen { MENU, CAPTURA_NOME , RANKING ,NIVEL ,JOGO, JOGO2, JOGO3 ,FIM} GameScreen;
 
 void InitInimigo(Inimigo *inimigo, const char* foto, double vida,int xp,int dano, double posX, double posY ,double velocidade, bool vivo, int lane);
 void InitBoss(Boss *boss, const char* fotos[8], double vida, int dano, double posX, double posY, double velocidade, bool vivo);
@@ -181,9 +181,9 @@ int main(void){
     InitTropas(&Lampiao2, "./textures/lampiao2.png" , "./textures/lampiao-ataque.png" , "Lampiao12" , 20, 290, 25, 300, 2, 1);
     InitTropas(&Lampiao3, "./textures/lampiao2.png" , "./textures/lampiao-ataque.png" , "Lampiao12" , 20, 290, 25, 300, 2, 1);
 
-    InitTropas(&LaUrsa, "./textures/laUrsa2.png" , "./textures/laUrsa-ataque.png" , "Alaursa34" , 20, 290, 25, 300, 2, 1);
-    InitTropas(&LaUrsa2, "./textures/laUrsa2.png" , "./textures/laUrsa-ataque.png" , "Alaursa34" , 20, 290, 25, 300, 2, 1);
-    InitTropas(&LaUrsa3, "./textures/laUrsa2.png" , "./textures/laUrsa-ataque.png", "Alaursa34" , 20, 290, 25, 300, 2, 1);
+    InitTropas(&LaUrsa, "./textures/laUrsa3.png" , "./textures/laUrsa-ataque.png" , "Alaursa34" , 20, 290, 25, 300, 2, 1);
+    InitTropas(&LaUrsa2, "./textures/laUrsa3.png" , "./textures/laUrsa-ataque.png" , "Alaursa34" , 20, 290, 25, 300, 2, 1);
+    InitTropas(&LaUrsa3, "./textures/laUrsa3.png" , "./textures/laUrsa-ataque.png", "Alaursa34" , 20, 290, 25, 300, 2, 1);
 
     InitTropas(&Frevista, "./textures/frevista2.png", "./textures/frevista.png" , "Frevista5" , 20, 290, 25, 300, 2, 1);
     InitTropas(&Frevista2, "./textures/frevista2.png" , "./textures/frevista.png" , "Frevista5" , 20, 290, 25, 300, 2, 1);
@@ -278,7 +278,7 @@ int main(void){
     Music soundBoss = LoadMusicStream("./audio/Jaws.mp3");
     double vidaPraia = 10000;
 
-    GameScreen currentScreen = JOGO2;
+    GameScreen currentScreen = CAPTURA_NOME;
     Texture selecao;
     Rectangle pause = { 1250, 8, 40, 40 };
 
@@ -293,12 +293,16 @@ int main(void){
     iconeLaursa, iconeLaursaPB, iconeFrevista, iconeFrevistaPB;
 
     iconeReginaldoPB = LoadTexture("./textures/iconeReginaldoPB.png");
+
     iconeCaboclo = LoadTexture("./textures/iconeCaboclo.png");
     iconeCabocloPB = LoadTexture("./textures/iconeCabocloPB.png");
+
     iconeLampiao = LoadTexture("./textures/iconeLampiao.png");
     iconeLampiaoPB = LoadTexture("./textures/iconeLampiaoPB.png");
+
     iconeLaursa = LoadTexture("./textures/iconeLaursa.png");
-    iconeLampiaoPB = LoadTexture("./textures/iconeLaursaPB.png");
+    iconeLaursaPB = LoadTexture("./textures/iconeLaursaPB.png");
+
     iconeFrevista = LoadTexture("./textures/iconeFrevista.png");
     iconeFrevistaPB = LoadTexture("./textures/iconeFrevistaPB.png");
 
@@ -405,22 +409,45 @@ int main(void){
 
             if (!ReginaldoDisponivel){
                 //DrawRectangle(348, 14, 40, 40 , RED);
-                DrawTexture(iconeReginaldoPB, 348, 14, WHITE);
+                DrawTexture(iconeReginaldoPB, 350, 15, WHITE);
             }
             else{
                 DrawRectangleRec(botaoPosicionar, (Color){ 255, 255, 255, 0 }); 
-
             }
+
             if (CabocloDisponivel){
-                DrawRectangleRec(botaoPosicionar2, GREEN); 
+                DrawRectangleRec(botaoPosicionar2, (Color){ 255, 255, 255, 0 });
+                DrawTexture(iconeCaboclo, 413, 7, WHITE); 
             }
             else{
-                DrawRectangleRec(botaoPosicionar2, RED);
+                DrawTexture(iconeCabocloPB, 413, 7, WHITE);
             }
-            DrawRectangleRec(botaoPosicionar3, BLUE);
-            DrawRectangleRec(botaoPosicionar4, ORANGE);
-            DrawRectangleRec(botaoPosicionar5, YELLOW);
-            DrawRectangleRec(botaoPosicionar6, PURPLE);
+
+            if (LampiaoDisponivel){
+                DrawRectangleRec(botaoPosicionar3, (Color){ 255, 255, 255, 0 });
+                DrawTexture(iconeLampiao, 476, 16, WHITE); 
+            }
+            else{
+                DrawTexture(iconeLampiaoPB, 476, 16, WHITE); 
+            }
+
+            if (LaUrsaDisponivel){
+                DrawRectangleRec(botaoPosicionar4, (Color){ 255, 255, 255, 0 });
+                DrawTexture(iconeLaursa, 540, 14, WHITE); 
+            }
+            else{
+                DrawTexture(iconeLaursaPB, 540, 16, WHITE); 
+            }
+
+            if (FrevistaDisponivel){
+                DrawRectangleRec(botaoPosicionar5, (Color){ 255, 255, 255, 0 });
+                DrawTexture(iconeFrevista, 605, 14, WHITE); 
+            }
+            else{
+                DrawRectangleRec(botaoPosicionar5, (Color){ 255, 255, 255, 0 });
+                DrawTexture(iconeFrevistaPB, 605, 14, WHITE); 
+            }
+            
             DrawRectangleRec(botaoRemover, (Color){ 255, 255, 255, 0 }); 
 
             larguraxp = (double)experiencia / experienciaMax * largurabarraxp;
@@ -621,6 +648,7 @@ int main(void){
             CabocloDisponivel = verificarDisponibilidadeTropa(arvore, "CabocloLa", fase, nivelXp);
             LampiaoDisponivel = verificarDisponibilidadeTropa(arvore, "Lampiao12", fase, nivelXp);
             LaUrsaDisponivel = verificarDisponibilidadeTropa(arvore, "Alaursa34", fase, nivelXp);
+            FrevistaDisponivel = verificarDisponibilidadeTropa(arvore, "Frevista5", fase, nivelXp);
 
             if(!boss){
                 UpdateMusicStream(soundpraia); 
@@ -634,6 +662,7 @@ int main(void){
             else{
                 DrawRectangleRec(botaoPosicionar, (Color){ 255, 255, 255, 0 }); 
             }
+
             if (CabocloDisponivel){
                 DrawRectangleRec(botaoPosicionar2, (Color){ 255, 255, 255, 0 });
                 DrawTexture(iconeCaboclo, 413, 7, WHITE); 
@@ -641,6 +670,7 @@ int main(void){
             else{
                 DrawTexture(iconeCabocloPB, 413, 7, WHITE);
             }
+
             if (LampiaoDisponivel){
                 DrawRectangleRec(botaoPosicionar3, (Color){ 255, 255, 255, 0 });
                 DrawTexture(iconeLampiao, 476, 16, WHITE); 
@@ -648,22 +678,26 @@ int main(void){
             else{
                 DrawTexture(iconeLampiaoPB, 476, 16, WHITE); 
             }
+
             if (LaUrsaDisponivel){
                 DrawRectangleRec(botaoPosicionar4, (Color){ 255, 255, 255, 0 });
-                DrawTexture(iconeLaursa, 538, 14, WHITE); 
+                DrawTexture(iconeLaursa, 540, 14, WHITE); 
             }
             else{
-                DrawTexture(iconeLaursaPB, 545, 16, WHITE); 
-            }
-            if (FrevistaDisponivel){
-                DrawRectangleRec(botaoPosicionar5, (Color){ 255, 255, 255, 0 });
-            }
-            else{
-                DrawRectangleRec(botaoPosicionar5, (Color){ 255, 255, 255, 0 });
+                DrawTexture(iconeLaursaPB, 540, 16, WHITE); 
             }
 
-            DrawRectangleRec(botaoPosicionar5, YELLOW);
+            if (FrevistaDisponivel){
+                DrawRectangleRec(botaoPosicionar5, (Color){ 255, 255, 255, 0 });
+                DrawTexture(iconeFrevista, 605, 14, WHITE); 
+            }
+            else{
+                DrawRectangleRec(botaoPosicionar5, (Color){ 255, 255, 255, 0 });
+                DrawTexture(iconeFrevistaPB, 605, 14, WHITE); 
+            }
+            
             DrawRectangleRec(botaoPosicionar6, PURPLE);
+
             DrawRectangleRec(botaoRemover, (Color){ 255, 255, 255, 0 }); 
 
             larguraxp = (double)experiencia / experienciaMax * largurabarraxp;
@@ -1069,6 +1103,36 @@ int main(void){
 
                 break;
 
+            case RANKING:
+                Texture ranking;
+                ranking = LoadTexture("./textures/telaRanking.png");
+                DrawTexture(ranking, 0,0, WHITE);
+                Rectangle btnVolar = {50, 29, 90, 50};
+                DrawRectangleRec(btnVolar, (Color){ 255, 255, 255, 0 });
+                Vector2 mousePosition = GetMousePosition();
+
+                usuario *temp = NULL;
+                lerDados(&temp);
+                
+                int posX = 530;     
+                int posY = 160;     
+                int spacing = 30;
+
+                for (int i = 0; i < 10 && temp != NULL; i++) {
+
+                    DrawText(TextFormat("%d. %s | score: %d", i + 1, temp->nome, temp->score), posX, posY + i * spacing, 20, BLACK);
+                    temp = temp->prox;
+
+
+                }
+                
+
+                if (CheckCollisionPointRec(mousePosition, btnVolar) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+                        currentScreen = MENU;
+                        break;
+                }
+
+                break;
 
             case FIM:
             break;
