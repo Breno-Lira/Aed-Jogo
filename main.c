@@ -185,9 +185,9 @@ int main(void){
     InitTropas(&LaUrsa2, "./textures/laUrsa3.png" , "./textures/laUrsa-ataque.png" , "Alaursa34" , 20, 290, 25, 300, 2, 1);
     InitTropas(&LaUrsa3, "./textures/laUrsa3.png" , "./textures/laUrsa-ataque.png", "Alaursa34" , 20, 290, 25, 300, 2, 1);
 
-    InitTropas(&Frevista, "./textures/frevista2.png", "./textures/frevista.png" , "Frevista5" , 20, 290, 25, 300, 2, 1);
-    InitTropas(&Frevista2, "./textures/frevista2.png" , "./textures/frevista.png" , "Frevista5" , 20, 290, 25, 300, 2, 1);
-    InitTropas(&Frevista3, "./textures/frevista2.png" , "./textures/frevista.png" , "Frevista5" , 20, 290, 25, 300, 2, 1);
+    InitTropas(&Frevista, "./textures/frevista2.png", "./textures/sombrinha.png" , "Frevista5" , 20, 290, 25, 300, 2, 1);
+    InitTropas(&Frevista2, "./textures/frevista2.png" , "./textures/sombrinha.png" , "Frevista5" , 20, 290, 25, 300, 2, 1);
+    InitTropas(&Frevista3, "./textures/frevista2.png" , "./textures/sombrinha.png" , "Frevista5" , 20, 290, 25, 300, 2, 1);
     Frevista.tempoAtaque=5;
     Frevista2.tempoAtaque=5;
     Frevista3.tempoAtaque=5;
@@ -209,7 +209,7 @@ int main(void){
     int numInimigos2 = 0;
     int numInimigos1 = 0;
     
-    /*
+    
     InitInimigo(&inimigos1[numInimigos1++], "./textures/aguaViva.png", 800, 750, 7, 1400, 250 , 1.5, true, 1);
     InitInimigo(&inimigos1[numInimigos1++], "./textures/aguaViva.png", 900, 750, 7, 1500, 250 , 1.5, true, 1);
     
@@ -220,7 +220,7 @@ int main(void){
     InitInimigo(&inimigos3[numInimigos3++], "./textures/peixeleao.png", 800, 800, 4, 1400, 510 , 0.5, true, 3);
     InitInimigo(&inimigos3[numInimigos3++], "./textures/peixeleao.png", 1500, 900, 2, 1500, 510 , 2.5, true, 3);
     InitInimigo(&inimigos3[numInimigos3++], "./textures/peixeleao.png", 500, 1000, 2, 1550, 510 , 1.5, true, 3);
-    InitInimigo(&inimigos3[numInimigos3++], "./textures/peixeleao.png", 500, 1500, 2, 1650, 510 , 1.5, true, 3);*/
+    InitInimigo(&inimigos3[numInimigos3++], "./textures/peixeleao.png", 500, 1500, 2, 1650, 510 , 1.5, true, 3);
 
     Inimigo inimigos6[10];
     Inimigo inimigos5[10];
@@ -229,14 +229,14 @@ int main(void){
     int numInimigos5 = 0;
     int numInimigos4 = 0;
 
-    /*InitInimigo(&inimigos4[numInimigos4++], "./textures/piranha.png", 800, 750, 7, 1400, 250 , 1.5, true, 1);
+    InitInimigo(&inimigos4[numInimigos4++], "./textures/piranha.png", 800, 750, 7, 1400, 250 , 1.5, true, 1);
     InitInimigo(&inimigos4[numInimigos4++], "./textures/piranha.png", 900, 750, 7, 1500, 250 , 1.5, true, 1);
     
     InitInimigo(&inimigos5[numInimigos5++], "./textures/jacare.png", 2500, 750, 2, 1400, 380 , 0.5, true, 2);
     InitInimigo(&inimigos5[numInimigos5++], "./textures/jacare.png", 500, 750, 2, 1550, 380 , 0.5, true, 2);
 
     InitInimigo(&inimigos6[numInimigos6++], "./textures/caranguejo.png", 800, 800, 4, 1400, 510 , 0.5, true, 3);
-    InitInimigo(&inimigos6[numInimigos6++], "./textures/caranguejo.png", 500, 1500, 2, 1650, 510 , 1.5, true, 3);*/
+    InitInimigo(&inimigos6[numInimigos6++], "./textures/caranguejo.png", 500, 1500, 2, 1650, 510 , 1.5, true, 3);
 
     Inimigo inimigos9[10];
     Inimigo inimigos8[10];
@@ -278,7 +278,7 @@ int main(void){
     Music soundBoss = LoadMusicStream("./audio/Jaws.mp3");
     double vidaPraia = 10000;
 
-    GameScreen currentScreen = CAPTURA_NOME;
+    GameScreen currentScreen = JOGO2;
     Texture selecao;
     Rectangle pause = { 1250, 8, 40, 40 };
 
@@ -708,7 +708,7 @@ int main(void){
                     nivelXp++; 
             }
 
-            DrawRectangle(382, 69, (int)larguraxp, 5, BLUE);
+            DrawRectangle(386, 73, (int)larguraxp, 5, BLUE);
 
             sprintf(nivelTexto, "Nível: %d", nivelXp);
             DrawText(nivelTexto, 500, 80, 20, BLACK); 
@@ -1938,7 +1938,7 @@ void DrawAtaqueFrevista(Inimigo *inimigos, Tropa *Frevista, int *numInimigos, Bo
         }
 
         if (Frevista->tempoAtaque > 0) {
-                DrawTexture(Frevista->fotoAtaque, Frevista->posx+100, Frevista->posy - 20, WHITE); 
+                DrawTexture(Frevista->fotoAtaque, Frevista->posx+100, Frevista->posy+10, WHITE); 
         }
 
         if (alvoIndex != -1) {

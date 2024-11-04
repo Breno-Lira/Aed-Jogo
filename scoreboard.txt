@@ -3,10 +3,16 @@ opa 110 7950
 primeiro 3 5300
 tuda 1 4900
 tuda 1 4900
+bbbbbbbb 1 4900
 paulinhodois 1 3400
 paulinhodois 1 3400
+aahha 1 1000
 paulinho 1 750
 paulinho 1 750
 paulinho 1 750
 opa 3 0
 opa 3 0
+aaaaa 1 0
+aahhahhaa 1 0
+opa 1 0
+laaa 1 0
