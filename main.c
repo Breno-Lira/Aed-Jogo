@@ -115,13 +115,13 @@ bool casa4=true;
 bool casa5=true;
 bool casa6=true;
 
-Rectangle botaoPosicionar = { 348, 14, 40, 40 }; 
-Rectangle botaoPosicionar2 = { 412, 14, 40, 40 }; 
-Rectangle botaoPosicionar3 = { 476, 14, 40, 40 }; 
-Rectangle botaoPosicionar4 = { 545, 14, 40, 40 }; 
-Rectangle botaoPosicionar5 = { 612, 14, 40, 40 }; 
-Rectangle botaoPosicionar6 = { 674, 14, 40, 40 }; 
-Rectangle botaoPosicionar7 = { 734, 14, 40, 40 }; 
+Rectangle botaoPosicionar = { 345, 14, 40, 40 }; 
+Rectangle botaoPosicionar2 = { 404, 14, 40, 40 }; 
+Rectangle botaoPosicionar3 = { 460, 14, 40, 40 }; 
+Rectangle botaoPosicionar4 = { 518, 14, 40, 40 }; 
+Rectangle botaoPosicionar5 = { 578, 14, 40, 40 }; 
+Rectangle botaoPosicionar6 = { 638, 14, 40, 40 }; 
+Rectangle botaoPosicionar7 = { 694, 14, 40, 40 }; 
 Rectangle botaoRemover = { 917, 11, 50, 50 }; 
 
 Rectangle botaoQuadrado = { 20, 260, 64, 64 }; 
@@ -139,17 +139,17 @@ int experiencia = 0;
 int experienciaMax = 1000;
 bool boss = false;
 bool range;
-int nivelXp=20;
+int nivelXp=10;
 int scoreTotal=0;
 double larguraxp=0;
 int contLampiao1=0;
 int contLampiao2=0;
 int contLampiao3=0;
 double vidaPraiaMax = 8000; 
-int fase = 1;
+int fase = 2;
 
-Texture iconeReginaldoPB, iconeCaboclo, iconeCabocloPB, iconeLampiao, iconeLampiaoPB, 
-    iconeLaursa, iconeLaursaPB, iconeFrevista, iconeFrevistaPB, iconeCadeado;
+Texture iconeReginaldo, iconeReginaldoPB, iconeCaboclo, iconeCabocloPB, iconeLampiao, iconeLampiaoPB, 
+    iconeLaursa, iconeLaursaPB, iconeFrevista, iconeFrevistaPB, iconeCadeado, iconeGonzaga, iconeGonzagaPB;
 
 int main(void){   
     const int screenWidth = 1316;
@@ -194,13 +194,13 @@ int main(void){
     InitTropas(&Frevista, "./textures/frevista2.png", "./textures/sombrinha.png" , "Frevista5" , 20, 290, 25, 300, 2, 1);
     InitTropas(&Frevista2, "./textures/frevista2.png" , "./textures/sombrinha.png" , "Frevista5" , 20, 290, 25, 300, 2, 1);
     InitTropas(&Frevista3, "./textures/frevista2.png" , "./textures/sombrinha.png" , "Frevista5" , 20, 290, 25, 300, 2, 1);
-    Frevista.tempoAtaque=5;
-    Frevista2.tempoAtaque=5;
-    Frevista3.tempoAtaque=5;
+    Frevista.tempoAtaque=8;
+    Frevista2.tempoAtaque=8;
+    Frevista3.tempoAtaque=8;
 
-    InitTropas(&Gonzaga1, "./textures/ganzaga.png", "./textures/ganzaga.png" , "L.Gonzaga" , 20, 290, 25, 300, 2, 1);
-    InitTropas(&Gonzaga2, "./textures/ganzaga.png" , "./textures/ganzaga.png" , "L.Gonzaga" , 20, 290, 25, 300, 2, 1);
-    InitTropas(&Gonzaga3, "./textures/ganzaga.png" , "./textures/ganzaga.png" , "L.Gonzaga" , 20, 290, 25, 300, 2, 1);
+    InitTropas(&Gonzaga1, "./textures/gonzaga.png", "./textures/Gonzaga-ataque.png" , "L.Gonzaga" , 20, 290, 25, 300, 2, 1);
+    InitTropas(&Gonzaga2, "./textures/gonzaga.png" , "./textures/Gonzaga-ataque.png" , "L.Gonzaga" , 20, 290, 25, 300, 2, 1);
+    InitTropas(&Gonzaga3, "./textures/gonzaga.png" , "./textures/Gonzaga-ataque.png" , "L.Gonzaga" , 20, 290, 25, 300, 2, 1);
 
     InitTropas(&Clarice, "./textures/clarice.png", "./textures/ganzaga.png" , "ClariceLi" , 20, 290, 25, 300, 2, 1);
     InitTropas(&Clarice2, "./textures/clarice.png" , "./textures/ganzaga.png" , "ClariceLi" , 20, 290, 25, 300, 2, 1);
@@ -211,6 +211,7 @@ int main(void){
     inserirTropaArvore(&arvore, &Lampiao);
     inserirTropaArvore(&arvore, &LaUrsa);
     inserirTropaArvore(&arvore, &Frevista);
+    inserirTropaArvore(&arvore, &Gonzaga1);
     inserirTropaArvore(&arvore, &Clarice);
 
     Inimigo inimigos3[10];
@@ -292,7 +293,7 @@ int main(void){
     Music soundBoto = LoadMusicStream("./audio/Boto.mp3");
     double vidaPraia = 8000;
 
-    GameScreen currentScreen = JOGO;
+    GameScreen currentScreen = JOGO2;
     Texture selecao;
     Rectangle pause = { 1250, 8, 40, 40 };
 
@@ -303,7 +304,7 @@ int main(void){
     bool FrevistaDisponivel;
     bool GonzagaDisponivel;
 
-
+    iconeReginaldo = LoadTexture("./textures/iconeReginaldo.png");
     iconeReginaldoPB = LoadTexture("./textures/iconeReginaldoPB.png");
 
     iconeCaboclo = LoadTexture("./textures/iconeCaboclo.png");
@@ -317,6 +318,9 @@ int main(void){
 
     iconeFrevista = LoadTexture("./textures/iconeFrevista.png");
     iconeFrevistaPB = LoadTexture("./textures/iconeFrevistaPB.png");
+
+    iconeGonzaga = LoadTexture("./textures/iconeGonzaga.png");
+    iconeGonzagaPB = LoadTexture("./textures/iconeGonzagaPB.png");
 
     iconeCadeado = LoadTexture("./textures/iconeCadeado.png");
 
@@ -427,6 +431,7 @@ int main(void){
             LampiaoDisponivel = verificarDisponibilidadeTropa(arvore, "Lampiao12", fase, nivelXp);
             LaUrsaDisponivel = verificarDisponibilidadeTropa(arvore, "Alaursa34", fase, nivelXp);
             FrevistaDisponivel = verificarDisponibilidadeTropa(arvore, "Frevista5", fase, nivelXp);
+            GonzagaDisponivel = verificarDisponibilidadeTropa(arvore, "L.Gonzaga", fase, nivelXp);
 
 
             if(!boss){
@@ -434,53 +439,62 @@ int main(void){
                 PlayMusicStream(soundpraia);
             }
 
-            if (!ReginaldoDisponivel){
-                //DrawRectangle(348, 14, 40, 40 , RED);
-                DrawTexture(iconeReginaldoPB, 350, 15, WHITE);
+            if (ReginaldoDisponivel){
+                DrawRectangleRec(botaoPosicionar , (Color){ 255, 255, 255, 0 });
+                DrawTexture(iconeReginaldo, 338, 9, WHITE);
             }
             else{
-                DrawRectangleRec(botaoPosicionar, (Color){ 255, 255, 255, 0 }); 
+                DrawTexture(iconeReginaldoPB, 338, 9, WHITE);
+                
             }
 
             if (CabocloDisponivel){
                 DrawRectangleRec(botaoPosicionar2, (Color){ 255, 255, 255, 0 });
-                DrawTexture(iconeCaboclo, 413, 7, WHITE); 
+                DrawTexture(iconeCaboclo, 401, 4, WHITE); 
             }
             else{
-                DrawTexture(iconeCabocloPB, 413, 7, WHITE);
+                DrawTexture(iconeCabocloPB, 401, 4, WHITE);
             }
 
             if (LampiaoDisponivel){
                 DrawRectangleRec(botaoPosicionar3, (Color){ 255, 255, 255, 0 });
-                DrawTexture(iconeLampiao, 476, 16, WHITE); 
+                DrawTexture(iconeLampiao, 460, 14, WHITE); 
             }
             else{
-                DrawTexture(iconeLampiaoPB, 476, 16, WHITE); 
+                DrawTexture(iconeLampiaoPB, 460, 14, WHITE); 
             }
 
             if (LaUrsaDisponivel){
                 DrawRectangleRec(botaoPosicionar4, (Color){ 255, 255, 255, 0 });
-                DrawTexture(iconeLaursa, 540, 14, WHITE); 
+                DrawTexture(iconeLaursa, 515, 12, WHITE); 
             }
             else{
-                DrawTexture(iconeLaursaPB, 540, 16, WHITE); 
+                DrawTexture(iconeLaursaPB, 512, 12, WHITE); 
             }
 
             if (FrevistaDisponivel){
                 DrawRectangleRec(botaoPosicionar5, (Color){ 255, 255, 255, 0 });
-                DrawTexture(iconeFrevista, 605, 14, WHITE); 
+                DrawTexture(iconeFrevista, 581, 12, WHITE); 
             }
             else{
-                DrawRectangleRec(botaoPosicionar5, (Color){ 255, 255, 255, 0 });
-                DrawTexture(iconeFrevistaPB, 605, 14, WHITE); 
+                DrawTexture(iconeFrevistaPB, 581, 12, WHITE); 
             }
 
-            DrawRectangleRec(botaoPosicionar6, PURPLE);
+            if (GonzagaDisponivel){
+                DrawRectangleRec(botaoPosicionar6, (Color){ 255, 255, 255, 0 });
+                DrawTexture(iconeGonzaga, 625, 11, WHITE); 
+            }
+            else{
+                DrawTexture(iconeGonzagaPB, 625, 11, WHITE); 
+            }
+
+
             DrawRectangleRec(botaoPosicionar7, BLACK);
 
-            DrawTexture(iconeCadeado, 413, 10, WHITE);
-            DrawTexture(iconeCadeado, 605, 10, WHITE);
-            DrawTexture(iconeCadeado, 674, 10, WHITE);
+            DrawTexture(iconeCadeado, 463, 10, WHITE);
+            DrawTexture(iconeCadeado, 577, 10, WHITE);
+            DrawTexture(iconeCadeado, 635, 10, WHITE);
+            DrawTexture(iconeCadeado, 695, 10, WHITE);
             
             DrawRectangleRec(botaoRemover, (Color){ 255, 255, 255, 0 }); 
 
@@ -585,7 +599,7 @@ int main(void){
                             praia,  inimigos1, numInimigos1, inimigos2, numInimigos2, 
                             inimigos3, numInimigos3, &bossTubarao,  boss, botaoRemover, &vidaPraia);
             }
-            else if(CheckCollisionPointRec(mousePosition, botaoPosicionar4) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossTubarao.vivo  && FrevistaDisponivel){
+            else if(CheckCollisionPointRec(mousePosition, botaoPosicionar4) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossTubarao.vivo  && LaUrsaDisponivel){
                 
                 RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
                 range = false;
@@ -596,7 +610,7 @@ int main(void){
                             inimigos3, numInimigos3, &bossTubarao,  boss, botaoRemover, &vidaPraia);
 
             }
-            else if(CheckCollisionPointRec(mousePosition, botaoPosicionar5) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossTubarao.vivo){
+            else if(CheckCollisionPointRec(mousePosition, botaoPosicionar5) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossTubarao.vivo && FrevistaDisponivel){
                 
                 RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
                 range = false;
@@ -607,7 +621,7 @@ int main(void){
                             inimigos3, numInimigos3, &bossTubarao,  boss, botaoRemover, &vidaPraia);
 
             }
-            else if(CheckCollisionPointRec(mousePosition, botaoPosicionar6) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossTubarao.vivo){
+            else if(CheckCollisionPointRec(mousePosition, botaoPosicionar6) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossTubarao.vivo && GonzagaDisponivel){
                 
                 RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
                 range = false;
@@ -701,48 +715,58 @@ int main(void){
                 PlayMusicStream(soundPonte);
             }
 
-            if (!ReginaldoDisponivel){
-                //DrawRectangle(348, 14, 40, 40 , RED);
-                DrawTexture(iconeReginaldoPB, 350, 15, WHITE);
+            if (ReginaldoDisponivel){
+                DrawRectangleRec(botaoPosicionar , (Color){ 255, 255, 255, 0 });
+                DrawTexture(iconeReginaldo, 338, 9, WHITE);
             }
             else{
-                DrawRectangleRec(botaoPosicionar, (Color){ 255, 255, 255, 0 }); 
+                DrawTexture(iconeReginaldoPB, 338, 9, WHITE);
+                
             }
 
             if (CabocloDisponivel){
                 DrawRectangleRec(botaoPosicionar2, (Color){ 255, 255, 255, 0 });
-                DrawTexture(iconeCaboclo, 413, 7, WHITE); 
+                DrawTexture(iconeCaboclo, 401, 4, WHITE); 
             }
             else{
-                DrawTexture(iconeCabocloPB, 413, 7, WHITE);
+                DrawTexture(iconeCabocloPB, 401, 4, WHITE);
             }
 
             if (LampiaoDisponivel){
                 DrawRectangleRec(botaoPosicionar3, (Color){ 255, 255, 255, 0 });
-                DrawTexture(iconeLampiao, 476, 16, WHITE); 
+                DrawTexture(iconeLampiao, 460, 14, WHITE); 
             }
             else{
-                DrawTexture(iconeLampiaoPB, 476, 16, WHITE); 
+                DrawTexture(iconeLampiaoPB, 460, 14, WHITE); 
             }
 
             if (LaUrsaDisponivel){
                 DrawRectangleRec(botaoPosicionar4, (Color){ 255, 255, 255, 0 });
-                DrawTexture(iconeLaursa, 540, 14, WHITE); 
+                DrawTexture(iconeLaursa, 515, 12, WHITE); 
             }
             else{
-                DrawTexture(iconeLaursaPB, 540, 16, WHITE); 
+                DrawTexture(iconeLaursaPB, 512, 12, WHITE); 
             }
 
             if (FrevistaDisponivel){
                 DrawRectangleRec(botaoPosicionar5, (Color){ 255, 255, 255, 0 });
-                DrawTexture(iconeFrevista, 605, 14, WHITE); 
+                DrawTexture(iconeFrevista, 581, 12, WHITE); 
             }
             else{
-                DrawRectangleRec(botaoPosicionar5, (Color){ 255, 255, 255, 0 });
-                DrawTexture(iconeFrevistaPB, 605, 14, WHITE); 
+                DrawTexture(iconeFrevistaPB, 581, 12, WHITE); 
             }
-            
-            DrawRectangleRec(botaoPosicionar6, PURPLE);
+
+            if (GonzagaDisponivel){
+                DrawRectangleRec(botaoPosicionar6, (Color){ 255, 255, 255, 0 });
+                DrawTexture(iconeGonzaga, 625, 11, WHITE); 
+            }
+            else{
+                DrawTexture(iconeGonzagaPB, 625, 11, WHITE); 
+            }
+
+            DrawRectangleRec(botaoPosicionar7, BLACK);
+
+            DrawTexture(iconeCadeado, 635, 10, WHITE);
 
             DrawRectangleRec(botaoRemover, (Color){ 255, 255, 255, 0 }); 
 
@@ -965,6 +989,9 @@ int main(void){
             DrawRectangleRec(botaoPosicionar4, ORANGE);
             DrawRectangleRec(botaoPosicionar5, YELLOW);
             DrawRectangleRec(botaoPosicionar6, PURPLE);
+
+
+            
             DrawRectangleRec(botaoRemover, (Color){ 255, 255, 255, 0 }); 
 
             larguraxp = (double)experiencia / experienciaMax * largurabarraxp;
@@ -1599,11 +1626,24 @@ void SalvarTelacongelada(Tropa *head, Tropa *tail, RenderTexture2D telaCongelada
             DrawText(textoVida, 220, 18 , 30 , RED);
 
             
-            DrawTexture(iconeReginaldoPB, 350, 15, WHITE);
-            DrawTexture(iconeCabocloPB, 413, 7, WHITE);
-            DrawTexture(iconeLampiaoPB, 476, 16, WHITE); 
-            DrawTexture(iconeLaursaPB, 540, 16, WHITE); 
-            DrawTexture(iconeFrevistaPB, 605, 14, WHITE); 
+            DrawTexture(iconeReginaldoPB, 338, 9, WHITE);
+            DrawTexture(iconeCabocloPB, 401, 4, WHITE);
+            DrawTexture(iconeLampiaoPB, 460, 14, WHITE);
+            DrawTexture(iconeLaursaPB, 512, 12, WHITE);
+            DrawTexture(iconeFrevistaPB, 581, 12, WHITE);  
+            DrawTexture(iconeGonzagaPB, 625, 11, WHITE); 
+ 
+            
+
+            if (fase==1){
+                DrawTexture(iconeCadeado, 463, 10, WHITE);
+                DrawTexture(iconeCadeado, 577, 10, WHITE);
+                DrawTexture(iconeCadeado, 635, 10, WHITE);
+                DrawTexture(iconeCadeado, 695, 10, WHITE);
+            }
+            else if (fase==2){
+                DrawTexture(iconeCadeado, 635, 10, WHITE);
+            }
         
             
             for (int i = 0; i < numInimigos1; i++) {
@@ -2041,7 +2081,7 @@ void DrawAtaqueFrevista(Inimigo *inimigos, Tropa *Frevista, int *numInimigos, Bo
 
         }
         else{
-            Frevista->tempoAtaque=5;
+            Frevista->tempoAtaque=8;
         }
    
     }
@@ -2206,7 +2246,7 @@ void DrawAtaqueGonzaga(Inimigo *inimigos, Inimigo *inimigos2, Inimigo *inimigos3
             ataqueNaLane2 = AtacarInimigosNaLane(inimigos2, numInimigos2, Gonzaga, 3);
 
             if (ataqueNaLane1 || ataqueNaLane2){ 
-                DrawTexture(Gonzaga->fotoAtaque, 220, Gonzaga->posyataque - 20, WHITE);
+                DrawTexture(Gonzaga->fotoAtaque, 220, Gonzaga->posyataque - 10, WHITE);
                 DrawTexture(Gonzaga->fotoAtaque, 220, Gonzaga->posyataque + 100, WHITE);
             }  
         } 
@@ -2216,7 +2256,7 @@ void DrawAtaqueGonzaga(Inimigo *inimigos, Inimigo *inimigos2, Inimigo *inimigos3
             ataqueNaLane3 = AtacarInimigosNaLane(inimigos3, numInimigos3, Gonzaga, 2);
 
             if (ataqueNaLane1 || ataqueNaLane2 || ataqueNaLane3){ 
-                DrawTexture(Gonzaga->fotoAtaque, 220, Gonzaga->posyataque - 20, WHITE);
+                DrawTexture(Gonzaga->fotoAtaque, 220, Gonzaga->posyataque - 10, WHITE);
                 DrawTexture(Gonzaga->fotoAtaque, 220, Gonzaga->posyataque - 150, WHITE);
                 DrawTexture(Gonzaga->fotoAtaque, 220, Gonzaga->posyataque + 90, WHITE);
             }  
@@ -2226,7 +2266,7 @@ void DrawAtaqueGonzaga(Inimigo *inimigos, Inimigo *inimigos2, Inimigo *inimigos3
             ataqueNaLane3 = AtacarInimigosNaLane(inimigos3, numInimigos3, Gonzaga, 5);
 
             if (ataqueNaLane2 || ataqueNaLane3){ 
-                DrawTexture(Gonzaga->fotoAtaque, 220, Gonzaga->posyataque - 20, WHITE);
+                DrawTexture(Gonzaga->fotoAtaque, 220, Gonzaga->posyataque - 10, WHITE);
                 DrawTexture(Gonzaga->fotoAtaque, 220, Gonzaga->posyataque - 100, WHITE);
             } 
         }
@@ -2348,14 +2388,10 @@ void DrawAtaqueClarice(Inimigo *inimigos, Tropa *Clarice, int *numInimigos, Boss
                 else if (Clarice->posxataque >= alvo->posX - 20){
                     Clarice->posxataque = Clarice->posx+5;
                     alvo->vida -= 120;
-                    if (alvo->velocidade > 0){
+                    if (alvo->velocidade > 0.5){
                         alvo->velocidadeOriginal = alvo->velocidade;
-                        alvo->velocidade = 0;
+                        alvo->velocidade = 0.5;
                     }
-                    else{
-                        alvo->velocidade = alvo->velocidadeOriginal;
-                    }
-                    Clarice->tempoAtaque = 0;
                     if (alvo->vida <= 0) {
                         experiencia += alvo->xp;
                         scoreTotal+= alvo->xp;
@@ -2369,7 +2405,7 @@ void DrawAtaqueClarice(Inimigo *inimigos, Tropa *Clarice, int *numInimigos, Boss
                 }
             }
         }
-        else if (boss == true && Clarice->tempoAtaque >= 20) {
+        else if (boss == true && Clarice->tempoAtaque >= 50) {
             if (Clarice->posxataque < chefe->posX - 20 && chefe->posX < 1300) {
                 DrawTexture(Clarice->fotoAtaque, Clarice->posxataque, Clarice->posyataque, WHITE);
                 Clarice->posxataque += 3;
@@ -2377,7 +2413,7 @@ void DrawAtaqueClarice(Inimigo *inimigos, Tropa *Clarice, int *numInimigos, Boss
             else if (Clarice->posxataque >= chefe->posX - 20){
                 Clarice->posxataque = Clarice->posx+5;
                 BossRecebeDano(chefe, 120);
-                chefe->velocidade = 0.3;
+                chefe->velocidade = 0.4;
                 Clarice->tempoAtaque = 0;
             }
             else if (Clarice->posxataque > Clarice->posx+5){
