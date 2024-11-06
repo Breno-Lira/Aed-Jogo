@@ -388,7 +388,7 @@ int main(void){
     Music soundBoitata = LoadMusicStream("./audio/Boitata.mp3");
     double vidaPraia = 8000;
 
-    GameScreen currentScreen = NIVEL;
+    GameScreen currentScreen = MENU;
     Texture selecao;
     Rectangle pause = { 1250, 8, 40, 40 };
 
@@ -1314,7 +1314,7 @@ int main(void){
               else if(CheckCollisionPointRec(mousePosition, botaoPosicionar7) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && bossTubarao.vivo && ClariceDisponivel){
                 
                 RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
-                range = false;
+                range = true;
 
                  adicionarTropa(&head, &tail, &Clarice, &Clarice2, &Clarice3,
                             &Clarice, &Clarice2, &Clarice3, telaCongelada, 
@@ -1986,37 +1986,37 @@ void adicionarTropa(Tropa **head, Tropa **tail, Tropa *tropa, Tropa *tropa2, Tro
         Vector2 mousePosition = GetMousePosition();
 
         // Verifica em qual quadrado o usuário clicou para posicionar a tropa
-        if (CheckCollisionPointRec(mousePosition, botaoQuadrado) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && casa1==true /*&& range == true*/) {
+        if (CheckCollisionPointRec(mousePosition, botaoQuadrado) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && casa1==true && range == true) {
             inserirTropa(head, tail, tropa, botaoQuadrado.x, botaoQuadrado.y, 1, 1);
             botaoclicado = false;
             casa1=false;
             nivelXp-=tropa->custo;
         }
-        else if (CheckCollisionPointRec(mousePosition, botaoQuadrado2) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && casa2==true /*&& range == true*/) {
+        else if (CheckCollisionPointRec(mousePosition, botaoQuadrado2) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && casa2==true && range == true) {
             inserirTropa(head, tail, tropa2, botaoQuadrado2.x, botaoQuadrado2.y, 2, 2);
             botaoclicado = false;
             casa2=false;
             nivelXp-=tropa2->custo;
         }
-        else if (CheckCollisionPointRec(mousePosition, botaoQuadrado3) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && casa3==true /*&& range == true*/) {
+        else if (CheckCollisionPointRec(mousePosition, botaoQuadrado3) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && casa3==true && range == true) {
             inserirTropa(head, tail, tropa3, botaoQuadrado3.x, botaoQuadrado3.y - 20, 3, 3);
             botaoclicado = false;
             casa3=false;
             nivelXp-=tropa3->custo;
         }
-        else if (CheckCollisionPointRec(mousePosition, botaoQuadrado4) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && casa4==true /*&& range == false*/) {
+        else if (CheckCollisionPointRec(mousePosition, botaoQuadrado4) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && casa4==true && range == false) {
             inserirTropa(head, tail, tropa4, botaoQuadrado4.x, botaoQuadrado4.y, 1, 4);
             botaoclicado = false;
             casa4=false;
             nivelXp-=tropa4->custo;
         }
-        else if (CheckCollisionPointRec(mousePosition, botaoQuadrado5) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && casa5==true /*&& range == false*/) {
+        else if (CheckCollisionPointRec(mousePosition, botaoQuadrado5) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && casa5==true && range == false) {
             inserirTropa(head, tail, tropa5, botaoQuadrado5.x, botaoQuadrado5.y-15, 2, 5);
             botaoclicado = false;
             casa5=false;
             nivelXp-=tropa5->custo;
         }
-        else if (CheckCollisionPointRec(mousePosition, botaoQuadrado6) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && casa6==true /*&& range == false*/) {
+        else if (CheckCollisionPointRec(mousePosition, botaoQuadrado6) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && casa6==true && range == false) {
             inserirTropa(head, tail, tropa6, botaoQuadrado6.x, botaoQuadrado6.y - 20, 3, 6);
             botaoclicado = false;
             casa6=false;
@@ -2211,7 +2211,6 @@ void DrawAtaqueLampiao(Inimigo *inimigos, Tropa *Lampiao, int *numInimigos, Boss
             }
             else{
                 Lampiao->posxataque = Lampiao->posx+5;
-                Lampiao->tempoAtaque = 0;
             }
         }
     }
@@ -2647,7 +2646,6 @@ void DrawAtaqueClarice(Inimigo *inimigos, Tropa *Clarice, int *numInimigos, Boss
                     }
                     else{
                         Clarice->posxataque = Clarice->posx+5;
-                        Clarice->tempoAtaque = 0;
                     }
                 }
             }
