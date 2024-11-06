@@ -388,7 +388,7 @@ int main(void){
     Music soundBoitata = LoadMusicStream("./audio/Boitata.mp3");
     double vidaPraia = 8000;
 
-    GameScreen currentScreen = MENU;
+    GameScreen currentScreen = CAPTURA_NOME;
     Texture selecao;
     Rectangle pause = { 1250, 8, 40, 40 };
 
@@ -1327,10 +1327,9 @@ int main(void){
                 
                 RenderTexture2D telaCongelada = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
 
-                removerTropaBotao(&head, &tail, telaCongelada, forte,
-                        inimigos7, numInimigos7,
+                removerTropaBotao(&head, &tail, telaCongelada, forte, inimigos7, numInimigos7,
                         inimigos8, numInimigos8, inimigos9, numInimigos9, 
-                        &bossBoto,  boss, botaoRemover, &vidaPraia);
+                        &bossBoitata,  boss, botaoRemover, &vidaPraia);
 
                 
             }
@@ -1951,31 +1950,31 @@ void adicionarTropa(Tropa **head, Tropa **tail, Tropa *tropa, Tropa *tropa2, Tro
             b5 = LoadTexture("./textures/areaEspada.png");
             b6 = LoadTexture("./textures/areaEspada.png");                
 
-    // Loop de seleção de posição para o personagem Reginaldo
+    
     while (botaoclicado && !WindowShouldClose()) {
         BeginDrawing();
         DrawTextureRec(telaCongelada.texture, (Rectangle){ 0, 0, (float)telaCongelada.texture.width, (float)-telaCongelada.texture.height }, (Vector2){ 0, 0 }, WHITE);
-        if (casa1==true /*&& range == true*/){
+        if (casa1==true && range == true){
             DrawRectangleRec(botaoQuadrado, (Color){ 255, 255, 255, 0 });
             DrawTexture(b1, 20, 260, WHITE);
         }
-        if (casa2==true /*&& range == true*/){
+        if (casa2==true && range == true){
             DrawRectangleRec(botaoQuadrado2, (Color){ 255, 255, 255, 0 });
             DrawTexture(b2, 20, 390, WHITE);
         }
-        if (casa3==true /*&& range == true*/){
+        if (casa3==true && range == true){
             DrawRectangleRec(botaoQuadrado3, (Color){ 255, 255, 255, 0 });
             DrawTexture(b3, 20, 520, WHITE);
         }
-        if (casa4==true /*&& range == false*/){
+        if (casa4==true && range == false){
             DrawRectangleRec(botaoQuadrado4, (Color){ 255, 255, 255, 0 });
             DrawTexture(b4, 100, 300, WHITE);
         }
-        if (casa5==true /*&& range == false*/){
+        if (casa5==true && range == false){
             DrawRectangleRec(botaoQuadrado5, (Color){ 255, 255, 255, 0 });
             DrawTexture(b5, 100, 430, WHITE);
         }
-        if (casa6==true /*&& range == false*/){
+        if (casa6==true && range == false){
             DrawRectangleRec(botaoQuadrado6, (Color){ 255, 255, 255, 0 });
             DrawTexture(b6, 100, 540, WHITE);
         }
@@ -1985,7 +1984,7 @@ void adicionarTropa(Tropa **head, Tropa **tail, Tropa *tropa, Tropa *tropa2, Tro
 
         Vector2 mousePosition = GetMousePosition();
 
-        // Verifica em qual quadrado o usuário clicou para posicionar a tropa
+        
         if (CheckCollisionPointRec(mousePosition, botaoQuadrado) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && casa1==true && range == true) {
             inserirTropa(head, tail, tropa, botaoQuadrado.x, botaoQuadrado.y, 1, 1);
             botaoclicado = false;
@@ -2023,11 +2022,11 @@ void adicionarTropa(Tropa **head, Tropa **tail, Tropa *tropa, Tropa *tropa2, Tro
             nivelXp-=tropa6->custo;
         }
         else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            botaoclicado = false;  // Sai do loop se clicar fora dos botões
+            botaoclicado = false;  
         }
     }
 
-    UnloadRenderTexture(telaCongelada);  // Libera a memória da textura congelada
+    UnloadRenderTexture(telaCongelada);  
 }
 
 void removerTropaBotao(Tropa **head, Tropa **tail, RenderTexture2D telaCongelada, Texture2D mapa,
@@ -2082,11 +2081,11 @@ void removerTropaBotao(Tropa **head, Tropa **tail, RenderTexture2D telaCongelada
             casa6=true;
         }
         else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            botaoclicado = false;  // Sai do loop se clicar fora dos botões
+            botaoclicado = false;  
         }
     }
 
-    UnloadRenderTexture(telaCongelada);  // Libera a memória da textura congelada
+    UnloadRenderTexture(telaCongelada);  
 }
 
 void DrawAtaqueCaboclo(Inimigo *inimigos, Tropa *Caboclo, int *numInimigos, Boss *chefe ,bool boss) {
@@ -2633,9 +2632,9 @@ void DrawAtaqueClarice(Inimigo *inimigos, Tropa *Clarice, int *numInimigos, Boss
                         Clarice->posxataque = Clarice->posx+5;
                         alvo->vida -= 350;
                         Clarice->tempoAtaque = 0;
-                        if (alvo->velocidade > 0.5){
+                        if (alvo->velocidade >= 0.5){
                             alvo->velocidadeOriginal = alvo->velocidade;
-                            alvo->velocidade = 0.4;
+                            alvo->velocidade = 0.3;
                         }
                         if (alvo->vida <= 0) {
                             experiencia += alvo->xp;
@@ -2658,8 +2657,8 @@ void DrawAtaqueClarice(Inimigo *inimigos, Tropa *Clarice, int *numInimigos, Boss
                 } 
                 else if (Clarice->posxataque >= chefe->posX - 20){
                     Clarice->posxataque = Clarice->posx+5;
-                    BossRecebeDano(chefe, 250);
-                    chefe->velocidade = 0.2;
+                    BossRecebeDano(chefe, 350);
+                    chefe->velocidade = 0.3;
                     Clarice->tempoAtaque = 0;
                 }
                 else if (Clarice->posxataque > Clarice->posx+5){
