@@ -1,6 +1,0 @@
-- Interface para seleção de personagem que sera colocado em campo
-- Sistema de nivel para desbloquear personagens
-- Sistema de limitador e quantidade e personaens em campo
-- Insersão de efeitos sonoros e trilha sonora
-- Criação de fases de 1 a 3 aumentando o nivel de dificuldade
-- Desenvolver aleatoriedade e variação nos inimigos

@@ -12,6 +12,11 @@ aahha 1 1000
 paulinho 1 750
 paulinho 1 750
 paulinho 1 750
+podfa 1 700
+posfs 1 510
+opa 1 200
+pove 1 110
+sdfgfd 1 100
 opa 3 0
 opa 3 0
 aaaaa 1 0
@@ -25,3 +30,5 @@ opaaaaaa 1 0
 lop 1 0
 opa 1 0
 plp 1 0
+opa 1 0
+polki 1 0

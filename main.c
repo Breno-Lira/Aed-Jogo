@@ -140,7 +140,7 @@ int experiencia = 0;
 int experienciaMax = 1000;
 bool boss = false;
 bool range;
-int nivelXp=10;
+int nivelXp=1;
 int scoreTotal=0;
 double larguraxp=0;
 int contLampiao1=0;
@@ -185,28 +185,28 @@ int main(void){
     InitTropas(&Caboclo2, "./textures/Caboclo2.png" , "./textures/Caboclo-ataque.png" , "CabocloLa" , 20, 290, 25, 300, 2, 1);
     InitTropas(&Caboclo3, "./textures/Caboclo2.png" , "./textures/Caboclo-ataque.png" , "CabocloLa" , 20, 290, 25, 300, 2, 1);
 
-    InitTropas(&Lampiao, "./textures/lampiao2.png" , "./textures/lampiao-ataque.png" , "Lampiao12" , 20, 290, 25, 300, 2, 1);
+    InitTropas(&Lampiao, "./textures/lampiao2.png" , "./textures/lampiao-ataque.png" , "Lampiao12" , 20, 290, 25, 300, 2, 2);
     InitTropas(&Lampiao2, "./textures/lampiao2.png" , "./textures/lampiao-ataque.png" , "Lampiao12" , 20, 290, 25, 300, 2, 1);
     InitTropas(&Lampiao3, "./textures/lampiao2.png" , "./textures/lampiao-ataque.png" , "Lampiao12" , 20, 290, 25, 300, 2, 1);
 
-    InitTropas(&LaUrsa, "./textures/laUrsa3.png" , "./textures/laUrsa-ataque.png" , "Alaursa34" , 20, 290, 25, 300, 2, 1);
+    InitTropas(&LaUrsa, "./textures/laUrsa3.png" , "./textures/laUrsa-ataque.png" , "Alaursa34" , 20, 290, 25, 300, 3, 1);
     InitTropas(&LaUrsa2, "./textures/laUrsa3.png" , "./textures/laUrsa-ataque.png" , "Alaursa34" , 20, 290, 25, 300, 2, 1);
     InitTropas(&LaUrsa3, "./textures/laUrsa3.png" , "./textures/laUrsa-ataque.png", "Alaursa34" , 20, 290, 25, 300, 2, 1);
 
-    InitTropas(&Frevista, "./textures/frevista2.png", "./textures/sombrinha.png" , "Frevista5" , 20, 290, 25, 300, 2, 1);
-    InitTropas(&Frevista2, "./textures/frevista2.png" , "./textures/sombrinha.png" , "Frevista5" , 20, 290, 25, 300, 2, 1);
-    InitTropas(&Frevista3, "./textures/frevista2.png" , "./textures/sombrinha.png" , "Frevista5" , 20, 290, 25, 300, 2, 1);
+    InitTropas(&Frevista, "./textures/frevista2.png", "./textures/sombrinha.png" , "Frevista5" , 20, 290, 25, 300, 1, 2);
+    InitTropas(&Frevista2, "./textures/frevista2.png" , "./textures/sombrinha.png" , "Frevista5" , 20, 290, 25, 300, 1, 1);
+    InitTropas(&Frevista3, "./textures/frevista2.png" , "./textures/sombrinha.png" , "Frevista5" , 20, 290, 25, 300, 1, 1);
     Frevista.tempoAtaque=8;
     Frevista2.tempoAtaque=8;
     Frevista3.tempoAtaque=8;
 
-    InitTropas(&Gonzaga1, "./textures/gonzaga.png", "./textures/Gonzaga-ataque.png" , "L.Gonzaga" , 20, 290, 25, 300, 2, 1);
-    InitTropas(&Gonzaga2, "./textures/gonzaga.png" , "./textures/Gonzaga-ataque.png" , "L.Gonzaga" , 20, 290, 25, 300, 2, 1);
-    InitTropas(&Gonzaga3, "./textures/gonzaga.png" , "./textures/Gonzaga-ataque.png" , "L.Gonzaga" , 20, 290, 25, 300, 2, 1);
+    InitTropas(&Gonzaga1, "./textures/gonzaga.png", "./textures/Gonzaga-ataque.png" , "L.Gonzaga" , 20, 290, 25, 300, 4, 3);
+    InitTropas(&Gonzaga2, "./textures/gonzaga.png" , "./textures/Gonzaga-ataque.png" , "L.Gonzaga" , 20, 290, 25, 300, 4, 3);
+    InitTropas(&Gonzaga3, "./textures/gonzaga.png" , "./textures/Gonzaga-ataque.png" , "L.Gonzaga" , 20, 290, 25, 300, 4, 3);
 
-    InitTropas(&Clarice, "./textures/clarice.png", "./textures/Clarice-ataque.png" , "ClariceLi" , 20, 290, 25, 300, 2, 1);
-    InitTropas(&Clarice2, "./textures/clarice.png" , "./textures/Clarice-ataque.png" , "ClariceLi" , 20, 290, 25, 300, 2, 1);
-    InitTropas(&Clarice3, "./textures/clarice.png" , "./textures/Clarice-ataque.png" , "ClariceLi" , 20, 290, 25, 300, 2, 1);
+    InitTropas(&Clarice, "./textures/clarice.png", "./textures/Clarice-ataque.png" , "ClariceLi" , 20, 290, 25, 300, 2, 2);
+    InitTropas(&Clarice2, "./textures/clarice.png" , "./textures/Clarice-ataque.png" , "ClariceLi" , 20, 290, 25, 300, 2, 2);
+    InitTropas(&Clarice3, "./textures/clarice.png" , "./textures/Clarice-ataque.png" , "ClariceLi" , 20, 290, 25, 300, 2, 2);
 
     inserirTropaArvore(&arvore, &Reginaldo);
     inserirTropaArvore(&arvore, &Caboclo);
@@ -216,57 +216,144 @@ int main(void){
     inserirTropaArvore(&arvore, &Gonzaga1);
     inserirTropaArvore(&arvore, &Clarice);
 
-    Inimigo inimigos3[10];
+    Inimigo inimigos3[8];
     Inimigo inimigos2[10];
-    Inimigo inimigos1[10];
+    Inimigo inimigos1[8];
     int numInimigos3 = 0;
     int numInimigos2 = 0;
     int numInimigos1 = 0;
     
-    
-    /*InitInimigo(&inimigos1[numInimigos1++], "./textures/aguaViva.png", 800, 750, 7, 1400, 250 , 1.5, true, 1);
-    InitInimigo(&inimigos1[numInimigos1++], "./textures/aguaViva.png", 900, 750, 7, 1500, 250 , 1.5, true, 1);
-    
-    InitInimigo(&inimigos2[numInimigos2++], "./textures/Ourico.png", 2500, 750, 2, 1400, 380 , 0.5, true, 2);
-    InitInimigo(&inimigos2[numInimigos2++], "./textures/Ourico.png", 2500, 750, 2, 1500, 380 , 0.5, true, 2);
-    InitInimigo(&inimigos2[numInimigos2++], "./textures/peixeleao.png", 500, 750, 2, 1550, 380 , 0.5, true, 2);
 
-    InitInimigo(&inimigos3[numInimigos3++], "./textures/peixeleao.png", 800, 800, 4, 1400, 510 , 0.5, true, 3);
-    InitInimigo(&inimigos3[numInimigos3++], "./textures/peixeleao.png", 1500, 900, 2, 1500, 510 , 2.5, true, 3);
-    InitInimigo(&inimigos3[numInimigos3++], "./textures/peixeleao.png", 500, 1000, 2, 1550, 510 , 1.5, true, 3);
-    InitInimigo(&inimigos3[numInimigos3++], "./textures/peixeleao.png", 500, 1500, 2, 1650, 510 , 1.5, true, 3);*/
+    
+    InitInimigo(&inimigos1[numInimigos1++], "./textures/Ourico.png", 2500, 750, 1, 5800, 250 , 0.5, true, 1);
+    InitInimigo(&inimigos1[numInimigos1++], "./textures/aguaViva.png", 750, 350, 5, 7950, 250 , 0.9, true, 1);
+    InitInimigo(&inimigos1[numInimigos1++], "./textures/peixeleao.png", 1200, 500, 3, 8350, 250 , 0.6, true, 1);
+    InitInimigo(&inimigos1[numInimigos1++], "./textures/Ourico.png", 2500, 700, 1, 4550, 250 , 0.5, true, 1);
+    InitInimigo(&inimigos1[numInimigos1++], "./textures/peixeleao.png", 1200, 500, 3, 6650, 250 , 0.6, true, 1);
+    InitInimigo(&inimigos1[numInimigos1++], "./textures/peixeleao.png", 1200, 500, 3, 5900, 250 , 0.6, true, 1);
+    InitInimigo(&inimigos1[numInimigos1++], "./textures/aguaViva.png", 750, 350, 5, 9400, 250 , 0.9, true, 1);
+    InitInimigo(&inimigos1[numInimigos1++], "./textures/aguaViva.png", 750, 350, 5, 6700, 250 , 0.9, true, 1);
+
+
+    InitInimigo(&inimigos2[numInimigos2++], "./textures/Ourico.png", 2500, 750, 1, 1400, 380 , 0.5, true, 2);
+    InitInimigo(&inimigos2[numInimigos2++], "./textures/peixeleao.png", 1200, 500, 3, 2050, 380 , 0.6, true, 2);
+    InitInimigo(&inimigos2[numInimigos2++], "./textures/peixeleao.png", 1200, 500, 3, 2950, 380 , 0.6, true, 2);
+    InitInimigo(&inimigos2[numInimigos2++], "./textures/peixeleao.png", 1200, 500, 3, 3700, 380 , 0.6, true, 2);
+    InitInimigo(&inimigos2[numInimigos2++], "./textures/aguaViva.png", 750, 350, 5, 5740, 380 , 0.9, true, 2);
+    InitInimigo(&inimigos2[numInimigos2++], "./textures/peixeleao.png", 1200, 500, 3, 2700, 380 , 0.6, true, 2);
+    InitInimigo(&inimigos2[numInimigos2++], "./textures/aguaViva.png", 750, 350, 5, 8000, 380 , 0.9, true, 2);
+    InitInimigo(&inimigos2[numInimigos2++], "./textures/Ourico.png", 2500, 750, 1, 3900, 380 , 0.5, true, 2);
+    InitInimigo(&inimigos2[numInimigos2++], "./textures/aguaViva.png", 750, 350, 5, 4900, 380 , 0.9, true, 2);
+    InitInimigo(&inimigos2[numInimigos2++], "./textures/peixeleao.png", 1200, 500, 3, 3990, 380 , 0.6, true, 2);
+    InitInimigo(&inimigos2[numInimigos2++], "./textures/peixeleao.png", 1200, 500, 3, 4150, 380 , 0.6, true, 2);
+    InitInimigo(&inimigos2[numInimigos2++], "./textures/aguaViva.png", 750, 350, 5, 4700, 380 , 0.9, true, 2);
+
+    
+    InitInimigo(&inimigos3[numInimigos3++], "./textures/Ourico.png", 2500, 750, 2, 4600, 510 , 0.5, true, 3);
+    InitInimigo(&inimigos3[numInimigos3++], "./textures/peixeleao.png", 1200, 500, 3, 8500, 510 , 0.6, true, 3);
+    InitInimigo(&inimigos3[numInimigos3++], "./textures/peixeleao.png", 1200, 500, 3, 7400, 510 , 0.6, true, 3);
+    InitInimigo(&inimigos3[numInimigos3++], "./textures/Ourico.png", 2500, 750, 2, 6150, 510 , 0.5, true, 3);
+    InitInimigo(&inimigos3[numInimigos3++], "./textures/peixeleao.png", 500, 500, 3, 7950, 510 , 0.6, true, 3);
+    InitInimigo(&inimigos3[numInimigos3++], "./textures/peixeleao.png", 500, 500, 3, 5750, 510 , 0.6, true, 3);
+    InitInimigo(&inimigos3[numInimigos3++], "./textures/aguaViva.png", 800, 350, 7, 10200, 510 , 0.9, true, 3);
+    InitInimigo(&inimigos3[numInimigos3++], "./textures/aguaViva.png", 900, 350, 7, 3900, 510 , 0.9, true, 3);
+
+
 
     Inimigo inimigos6[10];
-    Inimigo inimigos5[10];
+    Inimigo inimigos5[12];
     Inimigo inimigos4[10];
     int numInimigos6 = 0;
     int numInimigos5 = 0;
     int numInimigos4 = 0;
 
-    /*InitInimigo(&inimigos4[numInimigos4++], "./textures/piranha.png", 800, 750, 7, 1400, 250 , 1.5, true, 1);
-    InitInimigo(&inimigos4[numInimigos4++], "./textures/piranha.png", 900, 750, 7, 1500, 250 , 1.5, true, 1);
     
-    InitInimigo(&inimigos5[numInimigos5++], "./textures/jacare.png", 2500, 750, 2, 1400, 380 , 0.5, true, 2);
-    InitInimigo(&inimigos5[numInimigos5++], "./textures/jacare.png", 500, 750, 2, 1550, 380 , 0.5, true, 2);
+    InitInimigo(&inimigos4[numInimigos4++], "./textures/caranguejo.png", 3000, 800, 2, 1400, 250 , 0.4, true, 1);
+    InitInimigo(&inimigos4[numInimigos4++], "./textures/jacare.png", 1800, 600, 4, 1550, 250 , 0.6, true, 1);
+    InitInimigo(&inimigos4[numInimigos4++], "./textures/jacare.png", 1800, 600, 4, 1650, 250 , 0.6, true, 1);
+    InitInimigo(&inimigos4[numInimigos4++], "./textures/piranha.png", 600, 450, 6, 4500, 250 , 1.1, true, 1);
+    InitInimigo(&inimigos4[numInimigos4++], "./textures/jacare.png", 1800, 600, 4, 2400, 250 , 0.6, true, 1);
+    InitInimigo(&inimigos4[numInimigos4++], "./textures/piranha.png", 600, 450, 6, 5500, 250 , 1.1, true, 1);
+    InitInimigo(&inimigos4[numInimigos4++], "./textures/caranguejo.png", 3000, 800, 2, 2900, 250 , 0.4, true, 1);
+    InitInimigo(&inimigos4[numInimigos4++], "./textures/jacare.png", 1800, 600, 4, 6550, 250 , 0.7, true, 1);
+    InitInimigo(&inimigos4[numInimigos4++], "./textures/caranguejo.png", 3000, 800, 2, 4400, 250 , 0.4, true, 1);
+    InitInimigo(&inimigos4[numInimigos4++], "./textures/piranha.png", 600, 450, 6, 8400, 250 , 1.1, true, 1);
+    
 
-    InitInimigo(&inimigos6[numInimigos6++], "./textures/caranguejo.png", 800, 800, 4, 1400, 510 , 0.5, true, 3);
-    InitInimigo(&inimigos6[numInimigos6++], "./textures/caranguejo.png", 500, 1500, 2, 1650, 510 , 1.5, true, 3);*/
+    InitInimigo(&inimigos5[numInimigos5++], "./textures/caranguejo.png", 3000, 800, 2, 3300, 380 , 0.4, true, 2);
+    InitInimigo(&inimigos5[numInimigos5++], "./textures/jacare.png", 1800, 600, 4, 2400, 380 , 0.7, true, 2);
+    InitInimigo(&inimigos5[numInimigos5++], "./textures/jacare.png", 1800, 600, 4, 2950, 380 , 0.7, true, 2);
+    InitInimigo(&inimigos5[numInimigos5++], "./textures/piranha.png", 600, 450, 6, 5400, 380 , 1.1, true, 2);
+    InitInimigo(&inimigos5[numInimigos5++], "./textures/piranha.png", 600, 450, 6, 10500, 380 , 1.1, true, 2);
+    InitInimigo(&inimigos5[numInimigos5++], "./textures/caranguejo.png", 3000, 800, 2, 4300, 380 , 0.4, true, 2);
+    InitInimigo(&inimigos5[numInimigos5++], "./textures/jacare.png", 1800, 600, 4, 3500, 380 , 0.7, true, 2);
+    InitInimigo(&inimigos5[numInimigos5++], "./textures/jacare.png", 1800, 600, 4, 3950, 380 , 0.7, true, 2);
+    InitInimigo(&inimigos5[numInimigos5++], "./textures/piranha.png", 600, 450, 6, 9400, 380 , 1.1, true, 2);
+    InitInimigo(&inimigos5[numInimigos5++], "./textures/piranha.png", 600, 450, 6, 6500, 380 , 1.1, true, 2);
+    InitInimigo(&inimigos5[numInimigos5++], "./textures/caranguejo.png", 3000, 800, 2, 5300, 380 , 0.4, true, 2);
+    InitInimigo(&inimigos5[numInimigos5++], "./textures/jacare.png", 1600, 600, 4, 3250, 380 , 0.7, true, 2);
 
-    Inimigo inimigos9[10];
-    Inimigo inimigos8[10];
-    Inimigo inimigos7[10];
+
+    InitInimigo(&inimigos6[numInimigos6++], "./textures/piranha.png", 600, 450, 6, 9500, 510 , 1.1, true, 3);
+    InitInimigo(&inimigos6[numInimigos6++], "./textures/piranha.png", 600, 450, 6, 9000, 510 , 1.1, true, 3);
+    InitInimigo(&inimigos6[numInimigos6++], "./textures/jacare.png", 1800, 600, 4, 4550, 510 , 0.7, true, 3);
+    InitInimigo(&inimigos6[numInimigos6++], "./textures/caranguejo.png", 3000, 800, 2, 3500, 510 , 0.4, true, 3);
+    InitInimigo(&inimigos6[numInimigos6++], "./textures/caranguejo.png", 3000, 800, 2, 4000, 510 , 0.4, true, 3);
+    InitInimigo(&inimigos6[numInimigos6++], "./textures/jacare.png", 1800, 600, 4, 5550, 510 , 0.7, true, 3);
+    InitInimigo(&inimigos6[numInimigos6++], "./textures/caranguejo.png", 3000, 800, 2, 4900, 510 , 0.4, true, 3);
+    InitInimigo(&inimigos6[numInimigos6++], "./textures/caranguejo.png", 3000, 800, 2, 5200, 510 , 0.4, true, 3);
+    InitInimigo(&inimigos6[numInimigos6++], "./textures/jacare.png", 1800, 600, 4, 4550, 510 , 0.7, true, 3);
+    InitInimigo(&inimigos6[numInimigos6++], "./textures/piranha.png", 600, 450, 6, 8400, 510 , 1.1, true, 3);
+
+    Inimigo inimigos9[12];
+    Inimigo inimigos8[14];
+    Inimigo inimigos7[12];
     int numInimigos9 = 0;
     int numInimigos8 = 0;
     int numInimigos7 = 0;
 
-    /*InitInimigo(&inimigos7[numInimigos7++], "./textures/cobra.png", 800, 750, 7, 1400, 250 , 1.5, true, 1);
-    InitInimigo(&inimigos7[numInimigos7++], "./textures/cobra.png", 900, 750, 7, 1500, 250 , 1.5, true, 1);
+    InitInimigo(&inimigos7[numInimigos7++], "./textures/cobra.png", 2000, 700, 4, 4000, 250 , 0.6, true, 1);
+    InitInimigo(&inimigos7[numInimigos7++], "./textures/cobra.png", 2000, 700, 4, 5000, 250 , 0.6, true, 1);
+    InitInimigo(&inimigos7[numInimigos7++], "./textures/mula1.png", 3500, 900, 1, 4250, 250 , 0.8, true, 1);
+    InitInimigo(&inimigos7[numInimigos7++], "./textures/saci2.png", 1500, 600, 2, 16000, 250 , 1.3, true, 1);
+    InitInimigo(&inimigos7[numInimigos7++], "./textures/mula1.png", 3500, 900, 2, 5500, 250 , 0.8, true, 1);
+    InitInimigo(&inimigos7[numInimigos7++], "./textures/saci2.png", 1500, 600, 2, 12100, 250 , 1.3, true, 1);
+    InitInimigo(&inimigos7[numInimigos7++], "./textures/cobra.png", 2000, 700, 4, 6000, 250 , 0.6, true, 1);
+    InitInimigo(&inimigos7[numInimigos7++], "./textures/mula1.png", 3500, 900, 1, 9000, 250 , 0.8, true, 1);
+    InitInimigo(&inimigos7[numInimigos7++], "./textures/mula1.png", 3500, 900, 1, 8000, 250 , 0.8, true, 1);
+    InitInimigo(&inimigos7[numInimigos7++], "./textures/saci2.png", 1500, 600, 2, 8350, 250 , 1.3, true, 1);
+    InitInimigo(&inimigos7[numInimigos7++], "./textures/mula1.png", 3500, 900, 1, 14000, 250 , 0.8, true, 1);
+    InitInimigo(&inimigos7[numInimigos7++], "./textures/saci2.png", 1500, 600, 2, 12150, 250 , 1.3, true, 1);
     
-    InitInimigo(&inimigos8[numInimigos8++], "./textures/mula1.png", 2500, 750, 2, 1400, 380 , 0.5, true, 2);
-    InitInimigo(&inimigos8[numInimigos8++], "./textures/mula1.png", 500, 750, 2, 1550, 380 , 0.5, true, 2);
+    
+    InitInimigo(&inimigos8[numInimigos8++], "./textures/mula1.png", 3500, 900, 1, 5000, 380 , 0.8, true, 2);
+    InitInimigo(&inimigos8[numInimigos8++], "./textures/mula1.png", 3500, 900, 1, 9300, 380 , 0.8, true, 2);
+    InitInimigo(&inimigos8[numInimigos8++], "./textures/cobra.png", 2000, 700, 4, 4000, 380 , 0.6, true, 2);
+    InitInimigo(&inimigos8[numInimigos8++], "./textures/saci2.png", 1500, 600, 2, 6000, 380 , 1.3, true, 2);
+    InitInimigo(&inimigos8[numInimigos8++], "./textures/cobra.png", 2000, 700, 4, 5000, 380 , 0.6, true, 2);
+    InitInimigo(&inimigos8[numInimigos8++], "./textures/saci2.png", 1500, 600, 2, 15000, 380 , 1.3, true, 2);
+    InitInimigo(&inimigos8[numInimigos8++], "./textures/mula1.png", 3500, 900, 1, 8000, 380 , 0.8, true, 2);
+    InitInimigo(&inimigos8[numInimigos8++], "./textures/saci2.png", 1500, 600, 2, 7000, 380 , 1.3, true, 2);
+    InitInimigo(&inimigos8[numInimigos8++], "./textures/cobra.png", 2000, 700, 4, 7500, 380 , 0.6, true, 2);
+    InitInimigo(&inimigos8[numInimigos8++], "./textures/mula1.png", 3500, 700, 1, 10300, 380 , 0.8, true, 2);
+    InitInimigo(&inimigos8[numInimigos8++], "./textures/cobra.png", 2000, 700, 4, 3500, 380 , 0.6, true, 2);
+    InitInimigo(&inimigos8[numInimigos8++], "./textures/saci2.png", 1500, 600, 2, 4200, 380 , 1.3, true, 2);
+    InitInimigo(&inimigos8[numInimigos8++], "./textures/cobra.png", 2000, 700, 4, 3500, 380 , 0.6, true, 2);
+    InitInimigo(&inimigos8[numInimigos8++], "./textures/saci2.png", 1500, 600, 2, 9900, 380 , 1.3, true, 2);
+    
 
-    InitInimigo(&inimigos9[numInimigos9++], "./textures/saci2.png", 800, 800, 4, 1400, 510 , 2.0, true, 3);
-    InitInimigo(&inimigos9[numInimigos9++], "./textures/saci2.png", 500, 1500, 2, 1650, 510 , 2.0, true, 3);*/
+    InitInimigo(&inimigos9[numInimigos9++], "./textures/saci2.png", 1500, 600, 2, 2560, 510 , 1.3, true, 3);
+    InitInimigo(&inimigos9[numInimigos9++], "./textures/saci2.png", 1500, 700, 2, 4650, 510 , 1.3, true, 3);
+    InitInimigo(&inimigos9[numInimigos9++], "./textures/cobra.png", 2000, 700, 4, 7520, 510 , 0.6, true, 3);
+    InitInimigo(&inimigos9[numInimigos9++], "./textures/mula1.png", 3500, 900, 1, 1550, 510 , 0.8, true, 3);
+    InitInimigo(&inimigos9[numInimigos9++], "./textures/cobra.png", 2000, 700, 4, 3500, 510 , 0.6, true, 3);
+    InitInimigo(&inimigos9[numInimigos9++], "./textures/mula1.png", 3500, 900, 1, 4600, 510 , 0.8, true, 3);
+    InitInimigo(&inimigos9[numInimigos9++], "./textures/saci2.png", 1500, 600, 2, 9400, 510 , 1.3, true, 3);
+    InitInimigo(&inimigos9[numInimigos9++], "./textures/saci2.png", 1500, 600, 2, 7650, 510 , 1.3, true, 3);
+    InitInimigo(&inimigos9[numInimigos9++], "./textures/cobra.png", 2000, 700, 4, 3300, 510 , 0.6, true, 3);
+    InitInimigo(&inimigos9[numInimigos9++], "./textures/mula1.png", 3500, 900, 1, 7400, 510 , 0.8, true, 3);
+    InitInimigo(&inimigos9[numInimigos9++], "./textures/cobra.png", 2000, 700, 4, 6600, 510 , 0.6, true, 3);
+    InitInimigo(&inimigos9[numInimigos9++], "./textures/cobra.png", 2000, 700, 4, 2300, 510 , 0.6, true, 3);
 
 
 
@@ -286,11 +373,11 @@ int main(void){
     "./textures/boitata2.png", "./textures/boitata2.png", "./textures/boitata2.png", 
     "./textures/boitata3.png", "./textures/boitata3.png", "./textures/boitata3.png"}; 
     
-    InitBoss(&bossTubarao, fotosTubarao, 30000, 450, 1550, screenHeight-300, 2.6, true);
+    InitBoss(&bossTubarao, fotosTubarao, 30000, 40, 1550, screenHeight-300, 0.5, true);
     
-    InitBoss(&bossBoto, fotosBoto, 40000, 150, 1550, screenHeight-300, 4.6, true);
+    InitBoss(&bossBoto, fotosBoto, 45000, 12, 1550, screenHeight-300, 0.4, true);
 
-    InitBoss(&bossBoitata, fotosBoitata, 50000, 200, 1550, screenHeight-300, 10.6, true);
+    InitBoss(&bossBoitata, fotosBoitata, 65000, 17, 1550, screenHeight-300, 0.4, true);
 
     InitAudioDevice();
     Music soundpraia = LoadMusicStream("./audio/GarotaIpanema.mp3");
@@ -298,9 +385,10 @@ int main(void){
     Music soundMenu =  LoadMusicStream("./audio/hino-pernambuco.mp3");
     Music soundPonte = LoadMusicStream("./audio/Ponte.mp3");
     Music soundBoto = LoadMusicStream("./audio/Boto.mp3");
+    Music soundBoitata = LoadMusicStream("./audio/Boitata.mp3");
     double vidaPraia = 8000;
 
-    GameScreen currentScreen = CAPTURA_NOME;
+    GameScreen currentScreen = NIVEL;
     Texture selecao;
     Rectangle pause = { 1250, 8, 40, 40 };
 
@@ -391,8 +479,9 @@ int main(void){
             }
             else if (fase == 2){
                 selecao = LoadTexture("./textures/selecao2.png");
-                vidaPraia = 8000;
-                nivelXp=20;
+                vidaPraia = 10000;
+                vidaPraiaMax = 10000;
+                nivelXp=2;
                 head = NULL;
                 DrawTexture(selecao, 0, 0, WHITE); 
                 DrawRectangleRec( botaoComecar , (Color){ 255, 255, 255, 0 });
@@ -409,7 +498,8 @@ int main(void){
             }
             else if (fase == 3){
                 selecao = LoadTexture("./textures/selecao3.png");
-                vidaPraia = 8000;
+                vidaPraia = 12000;
+                vidaPraiaMax = 12000;
                 nivelXp=3;
                 head = NULL;
                 DrawTexture(selecao, 0, 0, WHITE); 
@@ -679,7 +769,7 @@ int main(void){
             
             //Fim selecao de personagem 
     
-
+           
             for (int i = 0; i < numInimigos1; i++) {
                 DrawInimigo(&inimigos1[i],  &vidaPraia);
             }
@@ -691,6 +781,7 @@ int main(void){
             for (int i = 0; i < numInimigos3; i++) {
                 DrawInimigo(&inimigos3[i],  &vidaPraia);
             }
+            
 
 
             if (numInimigos1+numInimigos2+numInimigos3<=0){
@@ -1006,7 +1097,7 @@ int main(void){
 
 
             if (boss){
-                UpdateMusicStream(soundBoto);  
+                UpdateMusicStream(soundBoitata);  
             } 
             DrawTexture(forte, 0, 0, WHITE); 
 
@@ -1015,7 +1106,7 @@ int main(void){
             LampiaoDisponivel = verificarDisponibilidadeTropa(arvore, "Lampiao12", fase, nivelXp);
             LaUrsaDisponivel = verificarDisponibilidadeTropa(arvore, "Alaursa34", fase, nivelXp);
             FrevistaDisponivel = verificarDisponibilidadeTropa(arvore, "Frevista5", fase, nivelXp);
-            GonzagaDisponivel = verificarDisponibilidadeTropa(arvore, "Frevista5", fase, nivelXp);
+            GonzagaDisponivel = verificarDisponibilidadeTropa(arvore, "L.Gonzaga", fase, nivelXp);
             ClariceDisponivel = verificarDisponibilidadeTropa(arvore, "ClariceLi", fase, nivelXp);
 
             if(!boss){
@@ -1262,7 +1353,7 @@ int main(void){
             if (numInimigos7+numInimigos8+numInimigos9<=0){
                 boss = true;
                 DrawBossBoitata(&bossBoitata,  &vidaPraia);
-                PlayMusicStream(soundBoto);
+                PlayMusicStream(soundBoitata);
 
                 if (bossBoitata.vivo == false){
                     Rectangle btnExit = { 1100, 510, 200, 50 };
@@ -1540,7 +1631,7 @@ void DrawAtaqueReginaldo(Inimigo *inimigos, Tropa *Reginaldo, int *numInimigos, 
             } 
             else if (Reginaldo->posxataque >= alvo->posX - 20){
                 Reginaldo->posxataque = Reginaldo->posx+5;
-                alvo->vida -= 125;
+                alvo->vida -= 175;
                 if (alvo->vida <= 0) {
                     experiencia += alvo->xp;
                     scoreTotal+=alvo->xp;
@@ -1560,7 +1651,7 @@ void DrawAtaqueReginaldo(Inimigo *inimigos, Tropa *Reginaldo, int *numInimigos, 
         } 
         else if (Reginaldo->posxataque >= chefe->posX - 20){
             Reginaldo->posxataque = Reginaldo->posx+5;
-            BossRecebeDano(chefe, 100000);
+            BossRecebeDano(chefe, 175);
         }
         else if (Reginaldo->posxataque > Reginaldo->posx+5){
                 Reginaldo->posxataque = Reginaldo->posx+5;
@@ -2006,7 +2097,7 @@ void DrawAtaqueCaboclo(Inimigo *inimigos, Tropa *Caboclo, int *numInimigos, Boss
             }
             else if (Caboclo->posxataque >= inimigos[i].posX - 20 &&  Caboclo->posxataque <= inimigos[i].posX + 20){
                 DrawTexture(Caboclo->fotoAtaque, Caboclo->posxataque, Caboclo->posyataque, WHITE);
-                inimigos[i].vida -= 25;
+                inimigos[i].vida -= 45;
                 if (inimigos[i].vida <= 0) {
                     experiencia += inimigos[i].xp;
                     scoreTotal+=inimigos[i].xp;
@@ -2030,7 +2121,7 @@ void DrawAtaqueCaboclo(Inimigo *inimigos, Tropa *Caboclo, int *numInimigos, Boss
         else if (Caboclo->posxataque >= chefe->posX - 20 &&  Caboclo->posxataque <= chefe->posX + 5){
                 DrawTexture(Caboclo->fotoAtaque, Caboclo->posxataque, Caboclo->posyataque, WHITE);
                 Caboclo->posxataque += 3;
-                BossRecebeDano(chefe, 50);
+                BossRecebeDano(chefe, 70);
         }
         else if (chefe->posX < 1320) {
                 DrawTexture(Caboclo->fotoAtaque, Caboclo->posxataque, Caboclo->posyataque, WHITE);
@@ -2158,10 +2249,19 @@ void DrawAtaqueLaursa(Inimigo *inimigos, Tropa *LaUrsa, int *numInimigos, Boss *
     }
     
     else{
-        if (chefe->posX <= LaUrsa->posx+400){
+        if (fase==1){
+            if (chefe->posX <= LaUrsa->posx+150){
                 DrawTexture(LaUrsa->fotoAtaque, 200, LaUrsa->posyataque-10, WHITE);
                 BossRecebeDano(chefe, 7);
             } 
+        }
+        else{
+            if (chefe->posX <= LaUrsa->posx+400){
+                DrawTexture(LaUrsa->fotoAtaque, 200, LaUrsa->posyataque-10, WHITE);
+                BossRecebeDano(chefe, 7);
+            } 
+        }
+        
     }
 }
 
@@ -2201,7 +2301,9 @@ void DrawAtaqueFrevista(Inimigo *inimigos, Tropa *Frevista, int *numInimigos, Bo
                             scoreTotal += inimigos[i].xp;
                             inimigos[i] = inimigos[*numInimigos - 1];
                             (*numInimigos)--;
+                            Frevista->tempoAtaque=8;
                         }
+                        
                     } 
                 }
             }
@@ -2213,11 +2315,18 @@ void DrawAtaqueFrevista(Inimigo *inimigos, Tropa *Frevista, int *numInimigos, Bo
    
     }
     else{
-
-        if (chefe->posX <= Frevista->posx+400){
-                DrawTexture(ataque, 200, Frevista->posyataque-10, WHITE);
-                BossRecebeDano(chefe, 3);
-            } 
+        if (fase==1){
+            if (chefe->posX <= Frevista->posx+100){
+                    DrawTexture(ataque, 200, Frevista->posyataque-10, WHITE);
+                    BossRecebeDano(chefe, 3);
+            }
+        }
+        else{
+            if (chefe->posX <= Frevista->posx+400){
+                    DrawTexture(ataque, 200, Frevista->posyataque-10, WHITE);
+                    BossRecebeDano(chefe, 3);
+            }
+        } 
     }
 }
 
@@ -2399,10 +2508,18 @@ void DrawAtaqueGonzaga(Inimigo *inimigos, Inimigo *inimigos2, Inimigo *inimigos3
         }
     }
     else{
-        if (chefe->posX <= Gonzaga->posx+400){
-                DrawTexture(Gonzaga->fotoAtaque, 200, Gonzaga->posyataque-10, WHITE);
-                BossRecebeDano(chefe, 8);
+        if (fase==1){
+            if (chefe->posX <= Gonzaga->posx+100){
+                    DrawTexture(Gonzaga->fotoAtaque, 200, Gonzaga->posyataque-10, WHITE);
+                    BossRecebeDano(chefe, 8);
             } 
+        }
+        else{
+            if (chefe->posX <= Gonzaga->posx+400){
+                    DrawTexture(Gonzaga->fotoAtaque, 200, Gonzaga->posyataque-10, WHITE);
+                    BossRecebeDano(chefe, 8);
+            } 
+        }
     }
 }
 
@@ -2497,7 +2614,7 @@ void DrawAtaqueClarice(Inimigo *inimigos, Tropa *Clarice, int *numInimigos, Boss
         Clarice->tempoAtaque++;
 
         if (boss == false){
-            if (Clarice->tempoAtaque >= 250){
+            if (Clarice->tempoAtaque >= 200){
                 for (int i = 0; i < *numInimigos; i++) {
                     if (inimigos[i].vivo && inimigos[i].posX < menorDistancia) {
                         menorDistancia = inimigos[i].posX;
@@ -2511,15 +2628,15 @@ void DrawAtaqueClarice(Inimigo *inimigos, Tropa *Clarice, int *numInimigos, Boss
 
                     if (Clarice->posxataque < alvo->posX - 20 && alvo->posX < 1350) {
                         DrawTexture(Clarice->fotoAtaque, Clarice->posxataque, Clarice->posyataque, WHITE);
-                        Clarice->posxataque += 3;
+                        Clarice->posxataque += 4;
                     } 
                     else if (Clarice->posxataque >= alvo->posX - 20){
                         Clarice->posxataque = Clarice->posx+5;
-                        alvo->vida -= 120;
+                        alvo->vida -= 350;
                         Clarice->tempoAtaque = 0;
                         if (alvo->velocidade > 0.5){
                             alvo->velocidadeOriginal = alvo->velocidade;
-                            alvo->velocidade = 0.5;
+                            alvo->velocidade = 0.4;
                         }
                         if (alvo->vida <= 0) {
                             experiencia += alvo->xp;
@@ -2543,8 +2660,8 @@ void DrawAtaqueClarice(Inimigo *inimigos, Tropa *Clarice, int *numInimigos, Boss
                 } 
                 else if (Clarice->posxataque >= chefe->posX - 20){
                     Clarice->posxataque = Clarice->posx+5;
-                    BossRecebeDano(chefe, 120);
-                    chefe->velocidade = 0.4;
+                    BossRecebeDano(chefe, 250);
+                    chefe->velocidade = 0.2;
                     Clarice->tempoAtaque = 0;
                 }
                 else if (Clarice->posxataque > Clarice->posx+5){
@@ -2616,3 +2733,4 @@ void DrawBossBoitata(Boss *boss, double *vidaPraia){
         }
     }
 }
+    
