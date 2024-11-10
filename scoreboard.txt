@@ -1,7 +1,9 @@
+pode1 3 61800
 opa 110 7950
 opa 110 7950
 poa 3 6500
 elatrop 2 6500
+testeanfod 2 6350
 primeiro 3 5300
 tuda 1 4900
 tuda 1 4900
@@ -32,3 +34,7 @@ opa 1 0
 plp 1 0
 opa 1 0
 polki 1 0
+pode 1 0
+pode 2 0
+opa 2 0
+poo 2 0

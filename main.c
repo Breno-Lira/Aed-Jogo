@@ -188,6 +188,9 @@ int main(void){
     InitTropas(&Lampiao, "./textures/lampiao2.png" , "./textures/lampiao-ataque.png" , "Lampiao12" , 20, 290, 25, 300, 2, 2);
     InitTropas(&Lampiao2, "./textures/lampiao2.png" , "./textures/lampiao-ataque.png" , "Lampiao12" , 20, 290, 25, 300, 2, 1);
     InitTropas(&Lampiao3, "./textures/lampiao2.png" , "./textures/lampiao-ataque.png" , "Lampiao12" , 20, 290, 25, 300, 2, 1);
+    Lampiao.tempoAtaque = 0;
+    Lampiao2.tempoAtaque = 0;
+    Lampiao3.tempoAtaque = 0;
 
     InitTropas(&LaUrsa, "./textures/laUrsa3.png" , "./textures/laUrsa-ataque.png" , "Alaursa34" , 20, 290, 25, 300, 3, 1);
     InitTropas(&LaUrsa2, "./textures/laUrsa3.png" , "./textures/laUrsa-ataque.png" , "Alaursa34" , 20, 290, 25, 300, 2, 1);
@@ -207,6 +210,9 @@ int main(void){
     InitTropas(&Clarice, "./textures/clarice.png", "./textures/Clarice-ataque.png" , "ClariceLi" , 20, 290, 25, 300, 2, 2);
     InitTropas(&Clarice2, "./textures/clarice.png" , "./textures/Clarice-ataque.png" , "ClariceLi" , 20, 290, 25, 300, 2, 2);
     InitTropas(&Clarice3, "./textures/clarice.png" , "./textures/Clarice-ataque.png" , "ClariceLi" , 20, 290, 25, 300, 2, 2);
+    Clarice.tempoAtaque=0;
+    Clarice2.tempoAtaque=0;
+    Clarice3.tempoAtaque=0;
 
     inserirTropaArvore(&arvore, &Reginaldo);
     inserirTropaArvore(&arvore, &Caboclo);
@@ -910,6 +916,10 @@ int main(void){
 
             snprintf(textoVida, sizeof(textoVida), "%.0f%%", porcentagemVida);
             DrawText(textoVida, 220, 18 , 30 , RED);
+
+            /*char tempoAtaque[20];
+            snprintf(tempoAtaque, sizeof(tempoAtaque), "Tempo: %d", Lampiao.tempoAtaque);
+            DrawText(tempoAtaque, 220, 24 , 30 , RED);*/
 
             DrawRectangleRec(pause, (Color){ 255, 255, 255, 0 });
 
@@ -2213,19 +2223,22 @@ void DrawAtaqueLampiao(Inimigo *inimigos, Tropa *Lampiao, int *numInimigos, Boss
             }
         }
     }
-    else if (boss == true && Lampiao->tempoAtaque >= 300) {
-         if (Lampiao->posxataque < chefe->posX - 20 && chefe->posX < 1300) {
-            DrawTexture(Lampiao->fotoAtaque, Lampiao->posxataque, Lampiao->posyataque, WHITE);
-            Lampiao->posxataque += 3;
-        } 
-        else if (Lampiao->posxataque >= chefe->posX - 20){
-            Lampiao->posxataque = Lampiao->posx+5;
-            BossRecebeDano(chefe, 1000);
-            Lampiao->tempoAtaque = 0;
-        }
-        else if (Lampiao->posxataque > Lampiao->posx+5){
+    else {
+        if (Lampiao->tempoAtaque >= 300){
+            if (Lampiao->posxataque < chefe->posX - 20 && chefe->posX < 1300) {
+                DrawTexture(Lampiao->fotoAtaque, Lampiao->posxataque, Lampiao->posyataque, WHITE);
+                Lampiao->posxataque += 3;
+            } 
+            else if (Lampiao->posxataque >= chefe->posX - 20){
                 Lampiao->posxataque = Lampiao->posx+5;
+                BossRecebeDano(chefe, 1000);
                 Lampiao->tempoAtaque = 0;
+            }
+            else if (Lampiao->posxataque > Lampiao->posx+5){
+                    DrawTexture(Lampiao->fotoAtaque, Lampiao->posxataque, Lampiao->posyataque, WHITE);
+                    Lampiao->posxataque = Lampiao->posx+5;
+                    Lampiao->tempoAtaque = 0;
+            }
         }
     }
 }
