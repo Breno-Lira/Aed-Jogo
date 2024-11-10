@@ -1,3 +1,5 @@
+![image](https://github.com/user-attachments/assets/de542cb7-1d5b-4de3-a784-6401d4734a92)
+
 # Recife Guardians
 
 **Recife Guardians** é um jogo no estilo Tower Defense ambientado nos pontos icônicos do Recife, Pernambuco. O jogador defende a cidade em três fases distintas, cada uma localizada em um cenário culturalmente importante da região.
