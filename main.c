@@ -199,9 +199,9 @@ int main(void){
     InitTropas(&Frevista, "./textures/frevista2.png", "./textures/sombrinha.png" , "Frevista5" , 20, 290, 25, 300, 1, 2);
     InitTropas(&Frevista2, "./textures/frevista2.png" , "./textures/sombrinha.png" , "Frevista5" , 20, 290, 25, 300, 1, 1);
     InitTropas(&Frevista3, "./textures/frevista2.png" , "./textures/sombrinha.png" , "Frevista5" , 20, 290, 25, 300, 1, 1);
-    Frevista.tempoAtaque=7;
-    Frevista2.tempoAtaque=7;
-    Frevista3.tempoAtaque=7;
+    Frevista.tempoAtaque=5;
+    Frevista2.tempoAtaque=5;
+    Frevista3.tempoAtaque=5;
 
     InitTropas(&Gonzaga1, "./textures/gonzaga.png", "./textures/Gonzaga-ataque.png" , "L.Gonzaga" , 20, 290, 25, 300, 4, 3);
     InitTropas(&Gonzaga2, "./textures/gonzaga.png" , "./textures/Gonzaga-ataque.png" , "L.Gonzaga" , 20, 290, 25, 300, 4, 3);
@@ -2312,7 +2312,7 @@ void DrawAtaqueFrevista(Inimigo *inimigos, Tropa *Frevista, int *numInimigos, Bo
                             scoreTotal += inimigos[i].xp;
                             inimigos[i] = inimigos[*numInimigos - 1];
                             (*numInimigos)--;
-                            Frevista->tempoAtaque=8;
+                            Frevista->tempoAtaque=5;
                         }
                         
                     } 
@@ -2321,7 +2321,7 @@ void DrawAtaqueFrevista(Inimigo *inimigos, Tropa *Frevista, int *numInimigos, Bo
 
         }
         else{
-            Frevista->tempoAtaque=8;
+            Frevista->tempoAtaque=5;
         }
    
     }
